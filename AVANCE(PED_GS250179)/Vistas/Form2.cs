@@ -72,7 +72,7 @@ namespace AVANCE_PED_GS250179_
 
         private void btnU_Click(object sender, EventArgs e)
         {
-            Form6 Uni = new Form6();
+            GestionUnidades Uni = new GestionUnidades();
             Uni.Show(this);
 
             this.Hide();

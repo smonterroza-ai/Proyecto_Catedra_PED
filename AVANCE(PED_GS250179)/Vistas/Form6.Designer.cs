@@ -29,35 +29,27 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form6));
-            btnAU = new PictureBox();
             btnAtras = new PictureBox();
             AñadirU = new PictureBox();
             EditarU = new PictureBox();
             EliminarU = new PictureBox();
-            ((System.ComponentModel.ISupportInitialize)btnAU).BeginInit();
+            dataGridView1 = new DataGridView();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AñadirU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EditarU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EliminarU).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
-            // 
-            // btnAU
-            // 
-            btnAU.Image = (Image)resources.GetObject("btnAU.Image");
-            btnAU.Location = new Point(-1, 0);
-            btnAU.Name = "btnAU";
-            btnAU.Size = new Size(1112, 639);
-            btnAU.SizeMode = PictureBoxSizeMode.StretchImage;
-            btnAU.TabIndex = 5;
-            btnAU.TabStop = false;
             // 
             // btnAtras
             // 
             btnAtras.Cursor = Cursors.Hand;
             btnAtras.Image = (Image)resources.GetObject("btnAtras.Image");
-            btnAtras.Location = new Point(26, 573);
+            btnAtras.Location = new Point(33, 434);
+            btnAtras.Margin = new Padding(3, 2, 3, 2);
             btnAtras.Name = "btnAtras";
-            btnAtras.Size = new Size(139, 45);
+            btnAtras.Size = new Size(122, 34);
             btnAtras.SizeMode = PictureBoxSizeMode.StretchImage;
             btnAtras.TabIndex = 7;
             btnAtras.TabStop = false;
@@ -67,9 +59,10 @@
             // 
             AñadirU.Cursor = Cursors.Hand;
             AñadirU.Image = (Image)resources.GetObject("AñadirU.Image");
-            AñadirU.Location = new Point(629, 44);
+            AñadirU.Location = new Point(514, 21);
+            AñadirU.Margin = new Padding(3, 2, 3, 2);
             AñadirU.Name = "AñadirU";
-            AñadirU.Size = new Size(139, 44);
+            AñadirU.Size = new Size(122, 33);
             AñadirU.SizeMode = PictureBoxSizeMode.StretchImage;
             AñadirU.TabIndex = 8;
             AñadirU.TabStop = false;
@@ -79,9 +72,10 @@
             // 
             EditarU.Cursor = Cursors.Hand;
             EditarU.Image = (Image)resources.GetObject("EditarU.Image");
-            EditarU.Location = new Point(774, 44);
+            EditarU.Location = new Point(641, 21);
+            EditarU.Margin = new Padding(3, 2, 3, 2);
             EditarU.Name = "EditarU";
-            EditarU.Size = new Size(139, 44);
+            EditarU.Size = new Size(122, 33);
             EditarU.SizeMode = PictureBoxSizeMode.StretchImage;
             EditarU.TabIndex = 9;
             EditarU.TabStop = false;
@@ -91,45 +85,70 @@
             // 
             EliminarU.Cursor = Cursors.Hand;
             EliminarU.Image = (Image)resources.GetObject("EliminarU.Image");
-            EliminarU.Location = new Point(919, 44);
+            EliminarU.Location = new Point(768, 21);
+            EliminarU.Margin = new Padding(3, 2, 3, 2);
             EliminarU.Name = "EliminarU";
-            EliminarU.Size = new Size(154, 44);
+            EliminarU.Size = new Size(135, 33);
             EliminarU.SizeMode = PictureBoxSizeMode.StretchImage;
             EliminarU.TabIndex = 10;
             EliminarU.TabStop = false;
             EliminarU.Click += EliminarU_Click;
             // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(78, 146);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(782, 238);
+            dataGridView1.TabIndex = 11;
+            // 
+            // label1
+            // 
+            label1.BackColor = Color.MidnightBlue;
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = SystemColors.ControlLightLight;
+            label1.Location = new Point(308, 96);
+            label1.Name = "label1";
+            label1.Size = new Size(337, 29);
+            label1.TabIndex = 12;
+            label1.Text = "Gestión de unidades";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // Form6
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1112, 639);
+            BackgroundImage = Properties.Resources.fondo1;
+            BackgroundImageLayout = ImageLayout.Zoom;
+            ClientSize = new Size(936, 479);
+            Controls.Add(label1);
+            Controls.Add(dataGridView1);
             Controls.Add(EliminarU);
             Controls.Add(EditarU);
             Controls.Add(AñadirU);
             Controls.Add(btnAtras);
-            Controls.Add(btnAU);
+            DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.None;
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Form6";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form6";
             Load += Form6_Load;
-            ((System.ComponentModel.ISupportInitialize)btnAU).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
             ((System.ComponentModel.ISupportInitialize)AñadirU).EndInit();
             ((System.ComponentModel.ISupportInitialize)EditarU).EndInit();
             ((System.ComponentModel.ISupportInitialize)EliminarU).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private PictureBox btnAU;
         private PictureBox btnAtras;
         private PictureBox AñadirU;
         private PictureBox pictureBox1;
         private PictureBox EliminarU;
         private PictureBox EditarU;
-       
+        private DataGridView dataGridView1;
+        private Label label1;
     }
 }
