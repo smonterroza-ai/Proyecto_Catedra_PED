@@ -114,7 +114,7 @@ namespace AVANCE_PED_GS250179_
 
             // 2. Simulamos la validación (aquí irá luego tu lógica de base de datos)
             // Supongamos que tu formulario del menú principal se llama 'MenuPrincipalForm'
-            Form2 menu = new Form2();
+           /* Form2 menu = new Form2();
 
             // Mostramos el menú principal
             menu.Show();
@@ -125,7 +125,7 @@ namespace AVANCE_PED_GS250179_
             // NOTA PROFESIONAL: 
             // Para que la aplicación se cierre por completo cuando el usuario cierre el menú principal,
             // enlazamos el evento 'FormClosed' del menú para que destruya el proceso del Login oculto:
-            menu.FormClosed += (s, args) => this.Close();
+            menu.FormClosed += (s, args) => this.Close();*/
         }
 
 

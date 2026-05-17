@@ -36,8 +36,13 @@ namespace AVANCE_PED_GS250179_
 
         private void Confi_U_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("No se puede realizar este proceso, ya que el sistema no está conectado con la Base de Datos.", 
+            MessageBox.Show("No se puede realizar este proceso, ya que el sistema no está conectado con la Base de Datos.",
                 "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
