@@ -89,5 +89,15 @@ namespace AVANCE_PED_GS250179_.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap fondo2_Agregar_ {
+            get {
+                object obj = ResourceManager.GetObject("fondo2(Agregar)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
