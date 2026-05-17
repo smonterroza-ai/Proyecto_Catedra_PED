@@ -38,8 +38,19 @@ namespace AVANCE_PED_GS250179_
 
         private void EditarU_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("No se puede editar ninguna Unidad, ya que no existe información.",
-                "ERROR", MessageBoxButtons.OK);
+            if (dgvUnidades.Rows.Count > 0)
+            {
+                int id = Convert.ToInt32(dgvUnidades.CurrentRow.Cells[0].Value);
+
+                Form7 Au = new Form7();
+                Au.Show();
+
+                this.Hide();
+
+                Au.ShowDialog();
+
+                CargarTabla();
+            }
         }
 
         private void EliminarU_Click(object sender, EventArgs e)
@@ -50,32 +61,21 @@ namespace AVANCE_PED_GS250179_
                     dgvUnidades.CurrentRow.Cells[0].Value
                 );
 
-                DialogResult resultado =
-                    MessageBox.Show(
-                        "¿Desea eliminar esta unidad?",
-                        "Confirmar",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question
-                    );
+                DialogResult resultado = MessageBox.Show("¿Desea eliminar esta unidad?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (resultado == DialogResult.Yes)
                 {
-                    bool eliminado =
-                        service.EliminarUnidad(id);
+                    bool eliminado = service.EliminarUnidad(id);
 
                     if (eliminado)
                     {
-                        MessageBox.Show(
-                            "Unidad eliminada"
-                        );
+                        MessageBox.Show("Unidad eliminada");
 
                         CargarTabla();
                     }
                     else
                     {
-                        MessageBox.Show(
-                            "Error al eliminar"
-                        );
+                        MessageBox.Show("Error al eliminar");
                     }
                 }
             }
@@ -89,6 +89,14 @@ namespace AVANCE_PED_GS250179_
         private void CargarTabla()
         {
             dgvUnidades.DataSource = service.MostrarUnidades();
+
+            dgvUnidades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvUnidades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvUnidades.EnableHeadersVisualStyles = false;
+            dgvUnidades.ColumnHeadersDefaultCellStyle.BackColor = Color.LightSlateGray;
+            dgvUnidades.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+
         }
     }
 }

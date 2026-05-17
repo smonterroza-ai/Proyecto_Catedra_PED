@@ -31,18 +31,20 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form7));
             btnAtras = new PictureBox();
             Confi_U = new PictureBox();
-            textBox1 = new TextBox();
+            txtPlaca = new TextBox();
             label1 = new Label();
             label2 = new Label();
-            textBox2 = new TextBox();
+            txtConductor = new TextBox();
             label3 = new Label();
-            textBox3 = new TextBox();
+            txtMarca = new TextBox();
             label4 = new Label();
-            textBox4 = new TextBox();
+            txtModelo = new TextBox();
             label5 = new Label();
-            textBox5 = new TextBox();
             label6 = new Label();
-            textBox6 = new TextBox();
+            txtRuta = new TextBox();
+            cmbEstado = new ComboBox();
+            cmbTipoVehiculo = new ComboBox();
+            label7 = new Label();
             ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Confi_U).BeginInit();
             SuspendLayout();
@@ -73,12 +75,12 @@
             Confi_U.TabStop = false;
             Confi_U.Click += Confi_U_Click;
             // 
-            // textBox1
+            // txtPlaca
             // 
-            textBox1.Location = new Point(305, 186);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(84, 23);
-            textBox1.TabIndex = 16;
+            txtPlaca.Location = new Point(305, 186);
+            txtPlaca.Name = "txtPlaca";
+            txtPlaca.Size = new Size(84, 23);
+            txtPlaca.TabIndex = 16;
             // 
             // label1
             // 
@@ -105,12 +107,12 @@
             label2.Text = "Conductor";
             label2.Click += label2_Click;
             // 
-            // textBox2
+            // txtConductor
             // 
-            textBox2.Location = new Point(305, 251);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(125, 23);
-            textBox2.TabIndex = 18;
+            txtConductor.Location = new Point(305, 251);
+            txtConductor.Name = "txtConductor";
+            txtConductor.Size = new Size(161, 23);
+            txtConductor.TabIndex = 18;
             // 
             // label3
             // 
@@ -124,12 +126,12 @@
             label3.TabIndex = 21;
             label3.Text = "Marca";
             // 
-            // textBox3
+            // txtMarca
             // 
-            textBox3.Location = new Point(305, 321);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(125, 23);
-            textBox3.TabIndex = 20;
+            txtMarca.Location = new Point(305, 321);
+            txtMarca.Name = "txtMarca";
+            txtMarca.Size = new Size(134, 23);
+            txtMarca.TabIndex = 20;
             // 
             // label4
             // 
@@ -143,12 +145,12 @@
             label4.TabIndex = 23;
             label4.Text = "Modelo";
             // 
-            // textBox4
+            // txtModelo
             // 
-            textBox4.Location = new Point(445, 321);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(125, 23);
-            textBox4.TabIndex = 22;
+            txtModelo.Location = new Point(445, 321);
+            txtModelo.Name = "txtModelo";
+            txtModelo.Size = new Size(132, 23);
+            txtModelo.TabIndex = 22;
             // 
             // label5
             // 
@@ -156,18 +158,11 @@
             label5.BackColor = Color.Transparent;
             label5.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = SystemColors.ControlLightLight;
-            label5.Location = new Point(445, 221);
+            label5.Location = new Point(485, 156);
             label5.Name = "label5";
             label5.Size = new Size(49, 17);
             label5.TabIndex = 25;
             label5.Text = "Estado";
-            // 
-            // textBox5
-            // 
-            textBox5.Location = new Point(445, 251);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(125, 23);
-            textBox5.TabIndex = 24;
             // 
             // label6
             // 
@@ -175,18 +170,49 @@
             label6.BackColor = Color.Transparent;
             label6.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label6.ForeColor = SystemColors.ControlLightLight;
-            label6.Location = new Point(445, 156);
+            label6.Location = new Point(395, 156);
             label6.Name = "label6";
             label6.Size = new Size(36, 17);
             label6.TabIndex = 27;
             label6.Text = "Ruta";
             // 
-            // textBox6
+            // txtRuta
             // 
-            textBox6.Location = new Point(445, 186);
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(84, 23);
-            textBox6.TabIndex = 26;
+            txtRuta.Location = new Point(395, 186);
+            txtRuta.Name = "txtRuta";
+            txtRuta.Size = new Size(84, 23);
+            txtRuta.TabIndex = 26;
+            txtRuta.TextChanged += txtRuta_TextChanged;
+            // 
+            // cmbEstado
+            // 
+            cmbEstado.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbEstado.FormattingEnabled = true;
+            cmbEstado.Location = new Point(485, 186);
+            cmbEstado.Name = "cmbEstado";
+            cmbEstado.Size = new Size(92, 23);
+            cmbEstado.TabIndex = 28;
+            // 
+            // cmbTipoVehiculo
+            // 
+            cmbTipoVehiculo.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTipoVehiculo.FormattingEnabled = true;
+            cmbTipoVehiculo.Location = new Point(472, 251);
+            cmbTipoVehiculo.Name = "cmbTipoVehiculo";
+            cmbTipoVehiculo.Size = new Size(105, 23);
+            cmbTipoVehiculo.TabIndex = 30;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.BackColor = Color.Transparent;
+            label7.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label7.ForeColor = SystemColors.ControlLightLight;
+            label7.Location = new Point(472, 221);
+            label7.Name = "label7";
+            label7.Size = new Size(111, 17);
+            label7.TabIndex = 29;
+            label7.Text = "Tipo de vehiculo";
             // 
             // Form7
             // 
@@ -195,18 +221,20 @@
             BackgroundImage = Properties.Resources.fondo2_Agregar_;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(873, 475);
+            Controls.Add(cmbTipoVehiculo);
+            Controls.Add(label7);
+            Controls.Add(cmbEstado);
             Controls.Add(label6);
-            Controls.Add(textBox6);
+            Controls.Add(txtRuta);
             Controls.Add(label5);
-            Controls.Add(textBox5);
             Controls.Add(label4);
-            Controls.Add(textBox4);
+            Controls.Add(txtModelo);
             Controls.Add(label3);
-            Controls.Add(textBox3);
+            Controls.Add(txtMarca);
             Controls.Add(label2);
-            Controls.Add(textBox2);
+            Controls.Add(txtConductor);
             Controls.Add(label1);
-            Controls.Add(textBox1);
+            Controls.Add(txtPlaca);
             Controls.Add(Confi_U);
             Controls.Add(btnAtras);
             FormBorderStyle = FormBorderStyle.None;
@@ -224,17 +252,19 @@
         #endregion
         private PictureBox btnAtras;
         private PictureBox Confi_U;
-        private TextBox textBox1;
+        private TextBox txtPlaca;
         private Label label1;
         private Label label2;
-        private TextBox textBox2;
+        private TextBox txtConductor;
         private Label label3;
-        private TextBox textBox3;
+        private TextBox txtMarca;
         private Label label4;
-        private TextBox textBox4;
+        private TextBox txtModelo;
         private Label label5;
-        private TextBox textBox5;
         private Label label6;
-        private TextBox textBox6;
+        private TextBox txtRuta;
+        private ComboBox cmbEstado;
+        private ComboBox cmbTipoVehiculo;
+        private Label label7;
     }
 }

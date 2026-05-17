@@ -27,11 +27,5 @@ namespace AVANCE_PED_GS250179_.Modelos
         public int IdTipoVehiculo { get; set; }
 
         public string TipoVehiculo { get; set; }
-
-        public int IdRecorridoRuta { get; set; }
-
-        public string InicioRuta { get; set; }
-
-        public string FinalRuta { get; set; }
     }
 }

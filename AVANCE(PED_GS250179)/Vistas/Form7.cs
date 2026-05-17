@@ -5,25 +5,61 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using AVANCE_PED_GS250179_.Modelos;
+using AVANCE_PED_GS250179_.Servicio;
 
 namespace AVANCE_PED_GS250179_
 {
     public partial class Form7 : Form
     {
+        GestionUnidadesService service = new GestionUnidadesService();
+
+        private int idRutaEditar = 0;
+        private bool esEditar = false;
+
         public Form7()
         {
             InitializeComponent();
         }
 
-        private static bool MostrarM = false;
+        public Form7(int idRutaBuses)
+        {
+            InitializeComponent();
+            idRutaEditar = idRutaBuses;
+            esEditar = true;
+        }
 
         private void Form7_Load(object sender, EventArgs e)
         {
-            if (!MostrarM)
-                MessageBox.Show("En este apartado se encuentra la Insersión de Datos sobre nuevas Unidades", "INFORMACIÓN",
-                    MessageBoxButtons.OK);
+            CargarTiposVehiculo();
 
-            MostrarM = true;
+            cmbEstado.Items.Clear();
+            cmbEstado.Items.Add("Activo");
+            cmbEstado.Items.Add("Mantenimiento");
+            cmbEstado.Items.Add("Inactivo");
+
+            cmbEstado.SelectedIndex = -1;
+
+            if (esEditar)
+            {
+                GestionUnidades unidad =
+                    service.ObtenerUnidadPorId(idRutaEditar);
+
+                if (unidad == null)
+                {
+                    MessageBox.Show("No se encontró la unidad");
+                    return;
+                }
+
+                txtPlaca.Text = unidad.PlacaVehiculo;
+                txtRuta.Text = unidad.NumeroRuta.ToString();
+                txtConductor.Text = unidad.MotoristaNombre;
+                cmbEstado.Text = unidad.EstadoVehiculo;
+                txtMarca.Text = unidad.Marca;
+                txtModelo.Text = unidad.Modelo;
+
+                cmbTipoVehiculo.SelectedValue = unidad.IdTipoVehiculo;
+            }
         }
 
         private void btnAtras_Click(object sender, EventArgs e)
@@ -36,13 +72,80 @@ namespace AVANCE_PED_GS250179_
 
         private void Confi_U_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("No se puede realizar este proceso, ya que el sistema no está conectado con la Base de Datos.",
-                "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try
+            {
+                // VALIDACIÓN
+                if (txtPlaca.Text.Trim() == "" ||
+                    txtRuta.Text.Trim() == "" ||
+                    txtConductor.Text.Trim() == "" ||
+                    cmbEstado.Text.Trim() == "" ||
+                    txtMarca.Text.Trim() == "" ||
+                    txtModelo.Text.Trim() == "" ||
+                    cmbTipoVehiculo.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Complete todos los campos");
+                    return;
+                }
+
+                GestionUnidades unidad = new GestionUnidades();
+
+                if (esEditar)
+                {
+                    unidad.IdRutaBuses = idRutaEditar;
+                }
+
+                unidad.PlacaVehiculo = txtPlaca.Text.Trim();
+                unidad.NumeroRuta = Convert.ToInt32(txtRuta.Text.Trim());
+                unidad.MotoristaNombre = txtConductor.Text.Trim();
+                unidad.EstadoVehiculo = cmbEstado.Text;
+                unidad.Marca = txtMarca.Text.Trim();
+                unidad.Modelo = txtModelo.Text.Trim();
+
+                unidad.IdTipoVehiculo =
+                    Convert.ToInt32(cmbTipoVehiculo.SelectedValue);
+
+                bool resultado = esEditar
+                    ? service.EditarUnidad(unidad)
+                    : service.AgregarUnidad(unidad);
+
+                if (resultado)
+                {
+                    MessageBox.Show("Guardado correctamente");
+
+                    Form6 form = new Form6();
+                    form.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Error al guardar");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void CargarTiposVehiculo()
+        {
+            var lista = service.ObtenerTiposVehiculo();
+
+            cmbTipoVehiculo.DataSource = lista;
+            cmbTipoVehiculo.DisplayMember = "TipoVehiculoNombre";
+            cmbTipoVehiculo.ValueMember = "IdTipoVehiculo";
+            cmbTipoVehiculo.SelectedIndex = -1;
         }
 
         private void label2_Click(object sender, EventArgs e)
         {
 
         }
+
+        private void txtRuta_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
     }
 }

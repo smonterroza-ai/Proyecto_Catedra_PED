@@ -36,7 +36,6 @@
             dgvUnidades = new DataGridView();
             label1 = new Label();
             txtBuscar = new TextBox();
-            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AñadirU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EditarU).BeginInit();
@@ -111,27 +110,21 @@
             label1.ForeColor = SystemColors.ControlLightLight;
             label1.Location = new Point(78, 94);
             label1.Name = "label1";
-            label1.Size = new Size(337, 29);
+            label1.Size = new Size(371, 29);
             label1.TabIndex = 12;
             label1.Text = "Gestión de unidades";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(535, 100);
+            txtBuscar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtBuscar.ForeColor = SystemColors.WindowText;
+            txtBuscar.Location = new Point(613, 98);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(247, 23);
+            txtBuscar.PlaceholderText = "Buscar por placa";
+            txtBuscar.Size = new Size(247, 25);
             txtBuscar.TabIndex = 13;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(785, 100);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 14;
-            button1.Text = "Buscar";
-            button1.UseVisualStyleBackColor = true;
             // 
             // Form6
             // 
@@ -140,7 +133,6 @@
             BackgroundImage = Properties.Resources.fondo1;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(936, 479);
-            Controls.Add(button1);
             Controls.Add(txtBuscar);
             Controls.Add(label1);
             Controls.Add(dgvUnidades);
@@ -173,6 +165,5 @@
         private DataGridView dgvUnidades;
         private Label label1;
         private TextBox txtBuscar;
-        private Button button1;
     }
 }
