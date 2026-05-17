@@ -19,11 +19,11 @@ namespace AVANCE_PED_GS250179_
                     "\tPresiona Ok para continuar.", "BIENVENIDO/A ;)",
                     MessageBoxButtons.OK);
 
-                if (r == DialogResult.OK)
+               /* if (r == DialogResult.OK)
                 {
                     MessageBox.Show("En esta versión beta no necesitas registrarte, presiona el botón de <Iniciar Sesión>", "AVISO",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                }*/
 
                 MostrarMensaje = true;
             }
