@@ -73,7 +73,11 @@ namespace AVANCE_PED_GS250179_
         private void btnU_Click(object sender, EventArgs e)
         {
             GestionUnidades Uni = new GestionUnidades();
+<<<<<<< Updated upstream
             Uni.Show(this);
+=======
+            Uni.Show();
+>>>>>>> Stashed changes
 
             this.Hide();
         }
