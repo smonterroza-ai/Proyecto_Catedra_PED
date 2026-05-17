@@ -20,10 +20,9 @@ namespace AVANCE_PED_GS250179_
 
         private void btnAtras_Click(object sender, EventArgs e)
         {
-            Form2 menu = new Form2();
-            menu.Show();
+            this.Owner.Show();
 
-            this.Hide();
+            this.Close();
         }
 
         private void Form5_Load(object sender, EventArgs e)

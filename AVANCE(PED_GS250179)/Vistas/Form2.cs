@@ -26,7 +26,7 @@ namespace AVANCE_PED_GS250179_
         private void btnR_Click(object sender, EventArgs e)
         {
             Form3 ruta = new Form3();
-            ruta.Show();
+            ruta.Show(this);
             this.Hide();
 
 
@@ -65,7 +65,7 @@ namespace AVANCE_PED_GS250179_
         private void btnT_Click(object sender, EventArgs e)
         {
             Form5 Tran = new Form5();
-            Tran.Show();
+            Tran.Show(this);
 
             this.Hide();
         }
@@ -73,7 +73,7 @@ namespace AVANCE_PED_GS250179_
         private void btnU_Click(object sender, EventArgs e)
         {
             Form6 Uni = new Form6();
-            Uni.Show();
+            Uni.Show(this);
 
             this.Hide();
         }
