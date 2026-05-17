@@ -29,27 +29,17 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
-            pictureBox1 = new PictureBox();
             btnR = new PictureBox();
             btnT = new PictureBox();
             btnU = new PictureBox();
             btnSalir = new PictureBox();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)btnR).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnT).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnSalir).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(-6, -1);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(1128, 639);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.TabIndex = 1;
-            pictureBox1.TabStop = false;
             // 
             // btnR
             // 
@@ -67,7 +57,7 @@
             // 
             btnT.Cursor = Cursors.Hand;
             btnT.Image = (Image)resources.GetObject("btnT.Image");
-            btnT.Location = new Point(431, 158);
+            btnT.Location = new Point(425, 158);
             btnT.Name = "btnT";
             btnT.Size = new Size(254, 250);
             btnT.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -99,6 +89,16 @@
             btnSalir.TabStop = false;
             btnSalir.Click += btnSalir_Click;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(-6, -1);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(1128, 639);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 1;
+            pictureBox1.TabStop = false;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -114,20 +114,19 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Menu Principal";
             Load += Form2_Load;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnR).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnT).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnU).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnSalir).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private PictureBox pictureBox1;
         private PictureBox btnR;
         private PictureBox btnT;
         private PictureBox btnU;
         private PictureBox btnSalir;
+        private PictureBox pictureBox1;
     }
 }
