@@ -23,11 +23,11 @@ namespace AVANCE_PED_GS250179_
                     "\tPresiona Ok para continuar.", "BIENVENIDO/A ;)",
                     MessageBoxButtons.OK);
 
-               /* if (r == DialogResult.OK)
-                {
-                    MessageBox.Show("En esta versión beta no necesitas registrarte, presiona el botón de <Iniciar Sesión>", "AVISO",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }*/
+                /* if (r == DialogResult.OK)
+                 {
+                     MessageBox.Show("En esta versión beta no necesitas registrarte, presiona el botón de <Iniciar Sesión>", "AVISO",
+                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                 }*/
 
                 MostrarMensaje = true;
             }
@@ -50,11 +50,11 @@ namespace AVANCE_PED_GS250179_
 
             if (empLogueado != null)
             {
-                
-                    Form2 formAdmin = new Form2(empLogueado.IdEmpleado);
-                    formAdmin.Show();
-                    this.Hide(); // Oculta el login
-                
+
+                Form2 formAdmin = new Form2(empLogueado.IdEmpleado);
+                formAdmin.Show();
+                this.Hide(); // Oculta el login
+
             }
             else
             {
@@ -73,7 +73,35 @@ namespace AVANCE_PED_GS250179_
             {
                 Application.Exit();
             }
-            
+
+        }
+
+        bool contraseñaVisible = false;
+        private void ptojo_Click(object sender, EventArgs e)
+        {
+            if (contraseñaVisible == true)
+            {
+                // Volver a poner la máscara (el asterisco)
+                txtpass.PasswordChar = '*';
+
+                // Cambiar la imagen al ojo cerrado (reemplaza 'ojo_cerrado' por el nombre de tu imagen en recursos)
+                ptojo.Image = Properties.Resources.icons8_ojo_cerrado_24;
+
+                // Actualizamos el estado
+                contraseñaVisible = false;
+            }
+            // Si está oculta, la mostramos
+            else
+            {
+                // Quitar la máscara ('\0' significa carácter nulo, o sea, sin máscara)
+                txtpass.PasswordChar = '\0';
+
+                // Cambiar la imagen al ojo abierto (reemplaza 'ojo_abierto' por el nombre de tu imagen)
+                ptojo.Image = Properties.Resources.icons8_eye_24;
+
+                // Actualizamos el estado
+                contraseñaVisible = true;
+            }
         }
     }
 }

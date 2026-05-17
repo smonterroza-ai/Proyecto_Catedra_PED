@@ -31,14 +31,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form5));
             pictureBox1 = new PictureBox();
             btnAtras = new PictureBox();
+            label6 = new Label();
+            dgvMonitor = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvMonitor).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(1, 0);
+            pictureBox1.Location = new Point(3, 0);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(1112, 639);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -57,11 +60,35 @@
             btnAtras.TabStop = false;
             btnAtras.Click += btnAtras_Click;
             // 
+            // label6
+            // 
+            label6.BackColor = Color.FromArgb(0, 0, 64);
+            label6.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.ForeColor = Color.White;
+            label6.ImageAlign = ContentAlignment.BottomCenter;
+            label6.Location = new Point(423, 104);
+            label6.Name = "label6";
+            label6.Size = new Size(643, 37);
+            label6.TabIndex = 13;
+            label6.Text = "MONITOR DE TRANSACCIONES";
+            label6.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // dgvMonitor
+            // 
+            dgvMonitor.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvMonitor.Location = new Point(423, 154);
+            dgvMonitor.Name = "dgvMonitor";
+            dgvMonitor.RowHeadersWidth = 51;
+            dgvMonitor.Size = new Size(643, 431);
+            dgvMonitor.TabIndex = 14;
+            // 
             // Form5
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1112, 639);
+            Controls.Add(dgvMonitor);
+            Controls.Add(label6);
             Controls.Add(btnAtras);
             Controls.Add(pictureBox1);
             FormBorderStyle = FormBorderStyle.None;
@@ -71,6 +98,7 @@
             Load += Form5_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvMonitor).EndInit();
             ResumeLayout(false);
         }
 
@@ -78,5 +106,7 @@
 
         private PictureBox pictureBox1;
         private PictureBox btnAtras;
+        private Label label6;
+        private DataGridView dgvMonitor;
     }
 }

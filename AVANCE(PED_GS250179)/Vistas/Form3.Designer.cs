@@ -29,33 +29,26 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
-            pictureBox1 = new PictureBox();
             btnAtras = new PictureBox();
             btnAR = new PictureBox();
             btnEditarR = new PictureBox();
             btnEliminarRuta = new PictureBox();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            label3 = new Label();
+            label6 = new Label();
+            dgvRutas = new DataGridView();
+            txtBuscar = new TextBox();
             ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnAR).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnEditarR).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnEliminarRuta).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvRutas).BeginInit();
             SuspendLayout();
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(-8, -6);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(1128, 651);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.TabIndex = 2;
-            pictureBox1.TabStop = false;
             // 
             // btnAtras
             // 
             btnAtras.Cursor = Cursors.Hand;
             btnAtras.Image = (Image)resources.GetObject("btnAtras.Image");
-            btnAtras.Location = new Point(23, 582);
+            btnAtras.Location = new Point(26, 558);
             btnAtras.Name = "btnAtras";
             btnAtras.Size = new Size(139, 45);
             btnAtras.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -99,34 +92,86 @@
             btnEliminarRuta.TabStop = false;
             btnEliminarRuta.Click += btnEliminarRuta_Click;
             // 
+            // label3
+            // 
+            label3.BackColor = SystemColors.ActiveCaptionText;
+            label3.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.ForeColor = Color.White;
+            label3.ImageAlign = ContentAlignment.BottomCenter;
+            label3.Location = new Point(-2, -1);
+            label3.Name = "label3";
+            label3.Size = new Size(1115, 32);
+            label3.TabIndex = 9;
+            // 
+            // label6
+            // 
+            label6.BackColor = Color.FromArgb(0, 0, 64);
+            label6.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.ForeColor = Color.White;
+            label6.ImageAlign = ContentAlignment.BottomCenter;
+            label6.Location = new Point(74, 132);
+            label6.Name = "label6";
+            label6.Size = new Size(545, 37);
+            label6.TabIndex = 12;
+            label6.Text = "GESTION DE RUTAS";
+            label6.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // dgvRutas
+            // 
+            dgvRutas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvRutas.Location = new Point(74, 181);
+            dgvRutas.Name = "dgvRutas";
+            dgvRutas.RowHeadersWidth = 51;
+            dgvRutas.Size = new Size(955, 301);
+            dgvRutas.TabIndex = 13;
+            // 
+            // txtBuscar
+            // 
+            txtBuscar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtBuscar.ForeColor = SystemColors.WindowText;
+            txtBuscar.Location = new Point(747, 140);
+            txtBuscar.Margin = new Padding(3, 4, 3, 4);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.PlaceholderText = "Buscar por placa";
+            txtBuscar.Size = new Size(282, 29);
+            txtBuscar.TabIndex = 14;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = Properties.Resources.fondo1;
+            BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(1112, 639);
+            Controls.Add(txtBuscar);
+            Controls.Add(dgvRutas);
+            Controls.Add(label6);
+            Controls.Add(label3);
             Controls.Add(btnEliminarRuta);
             Controls.Add(btnEditarR);
             Controls.Add(btnAR);
             Controls.Add(btnAtras);
-            Controls.Add(pictureBox1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form3";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Rutas";
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnAR).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnEditarR).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnEliminarRuta).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvRutas).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private PictureBox pictureBox1;
         private PictureBox btnAtras;
         private PictureBox btnAR;
         private PictureBox btnEditarR;
         private PictureBox btnEliminarRuta;
+        private Label label3;
+        private Label label6;
+        private DataGridView dgvRutas;
+        private TextBox txtBuscar;
     }
 }
