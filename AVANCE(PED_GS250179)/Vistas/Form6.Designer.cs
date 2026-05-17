@@ -33,13 +33,15 @@
             AñadirU = new PictureBox();
             EditarU = new PictureBox();
             EliminarU = new PictureBox();
-            dataGridView1 = new DataGridView();
+            dgvUnidades = new DataGridView();
             label1 = new Label();
+            txtBuscar = new TextBox();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AñadirU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EditarU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EliminarU).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvUnidades).BeginInit();
             SuspendLayout();
             // 
             // btnAtras
@@ -94,25 +96,42 @@
             EliminarU.TabStop = false;
             EliminarU.Click += EliminarU_Click;
             // 
-            // dataGridView1
+            // dgvUnidades
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(78, 146);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(782, 238);
-            dataGridView1.TabIndex = 11;
+            dgvUnidades.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvUnidades.Location = new Point(78, 146);
+            dgvUnidades.Name = "dgvUnidades";
+            dgvUnidades.Size = new Size(782, 238);
+            dgvUnidades.TabIndex = 11;
             // 
             // label1
             // 
             label1.BackColor = Color.MidnightBlue;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = SystemColors.ControlLightLight;
-            label1.Location = new Point(308, 96);
+            label1.Location = new Point(78, 94);
             label1.Name = "label1";
             label1.Size = new Size(337, 29);
             label1.TabIndex = 12;
             label1.Text = "Gestión de unidades";
             label1.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // txtBuscar
+            // 
+            txtBuscar.Location = new Point(535, 100);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(247, 23);
+            txtBuscar.TabIndex = 13;
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(785, 100);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 14;
+            button1.Text = "Buscar";
+            button1.UseVisualStyleBackColor = true;
             // 
             // Form6
             // 
@@ -121,8 +140,10 @@
             BackgroundImage = Properties.Resources.fondo1;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(936, 479);
+            Controls.Add(button1);
+            Controls.Add(txtBuscar);
             Controls.Add(label1);
-            Controls.Add(dataGridView1);
+            Controls.Add(dgvUnidades);
             Controls.Add(EliminarU);
             Controls.Add(EditarU);
             Controls.Add(AñadirU);
@@ -138,8 +159,9 @@
             ((System.ComponentModel.ISupportInitialize)AñadirU).EndInit();
             ((System.ComponentModel.ISupportInitialize)EditarU).EndInit();
             ((System.ComponentModel.ISupportInitialize)EliminarU).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvUnidades).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -148,7 +170,9 @@
         private PictureBox pictureBox1;
         private PictureBox EliminarU;
         private PictureBox EditarU;
-        private DataGridView dataGridView1;
+        private DataGridView dgvUnidades;
         private Label label1;
+        private TextBox txtBuscar;
+        private Button button1;
     }
 }
