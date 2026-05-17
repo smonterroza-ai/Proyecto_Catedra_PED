@@ -1,3 +1,7 @@
+using AVANCE_PED_GS250179_.Modelos;
+using AVANCE_PED_GS250179_.Servicio;
+using System.Diagnostics.Contracts;
+
 namespace AVANCE_PED_GS250179_
 {
     public partial class Form1 : Form
@@ -32,12 +36,32 @@ namespace AVANCE_PED_GS250179_
 
         private void btnIS_Click(object sender, EventArgs e)
         {
-            Form2 menu = new Form2();
-            menu.Show();
+            string login = txtuser.Text;
+            string clave = txtpass.Text;
+            if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(clave))
+            {
+                MessageBox.Show("Complete todos los campos", "Atención",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            this.Hide();
+            EmpleadoService service = new EmpleadoService();
+            Empleado empLogueado = service.ValidarLogin(login, clave);
 
-            
+            if (empLogueado != null)
+            {
+                
+                    Form2 formAdmin = new Form2(empLogueado.IdEmpleado);
+                    formAdmin.Show();
+                    this.Hide(); // Oculta el login
+                
+            }
+            else
+            {
+                MessageBox.Show("Credenciales incorrectas");
+            }
+
+
         }
 
         private void btnSalir_Click(object sender, EventArgs e)

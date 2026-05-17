@@ -10,9 +10,15 @@ namespace AVANCE_PED_GS250179_
 {
     public partial class Form2 : Form
     {
-        public Form2()
+        public Form2(int idRol)
         {
             InitializeComponent();
+
+            if (idRol == 2) 
+            {
+                // Aquí pones el nombre de los botones ocultas
+                btnT.Visible = false;
+            }
         }
 
         private static bool MostrarMensaje = false;
