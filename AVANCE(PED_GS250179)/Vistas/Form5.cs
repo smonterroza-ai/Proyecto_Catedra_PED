@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AVANCE_PED_GS250179_.Servicio;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,7 @@ namespace AVANCE_PED_GS250179_
     {
 
         private static bool MostrarMensaje = false;
+        TransaccionService transaccionService = new TransaccionService();
 
         public Form5()
         {
@@ -27,11 +29,29 @@ namespace AVANCE_PED_GS250179_
 
         private void Form5_Load(object sender, EventArgs e)
         {
-            if (!MostrarMensaje)
-                MessageBox.Show("En este apartado se podrá ver el registro de transacciones.","INFORMACIÓN",
-                    MessageBoxButtons.OK);
+            try
+            {
+                dgvTransaccion.DataSource = transaccionService.ObtenerTransacciones();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error de carga", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-            MostrarMensaje = true;
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string textoBusqueda = txtBuscar.Text.Trim();
+
+                // Le pasamos al DataGridView la tabla filtrada
+                dgvTransaccion.DataSource = transaccionService.BuscarTransacciones(textoBusqueda);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al buscar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

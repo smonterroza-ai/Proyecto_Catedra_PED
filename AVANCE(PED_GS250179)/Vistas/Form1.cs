@@ -81,13 +81,10 @@ namespace AVANCE_PED_GS250179_
         {
             if (contraseñaVisible == true)
             {
-                // Volver a poner la máscara (el asterisco)
                 txtpass.PasswordChar = '*';
 
-                // Cambiar la imagen al ojo cerrado (reemplaza 'ojo_cerrado' por el nombre de tu imagen en recursos)
                 ptojo.Image = Properties.Resources.icons8_ojo_cerrado_24;
 
-                // Actualizamos el estado
                 contraseñaVisible = false;
             }
             // Si está oculta, la mostramos

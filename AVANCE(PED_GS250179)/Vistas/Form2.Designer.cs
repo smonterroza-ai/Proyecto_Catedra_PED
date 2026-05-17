@@ -47,13 +47,13 @@
             label13 = new Label();
             panel1 = new Panel();
             panel2 = new Panel();
-            pictureBox1 = new PictureBox();
+            ptConductor = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)btnR).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnT).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnSalir).BeginInit();
             panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptConductor).BeginInit();
             SuspendLayout();
             // 
             // btnR
@@ -72,7 +72,7 @@
             // 
             btnT.Cursor = Cursors.Hand;
             btnT.Image = (Image)resources.GetObject("btnT.Image");
-            btnT.Location = new Point(290, 158);
+            btnT.Location = new Point(301, 158);
             btnT.Name = "btnT";
             btnT.Size = new Size(237, 250);
             btnT.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -84,7 +84,7 @@
             // 
             btnU.Cursor = Cursors.Hand;
             btnU.Image = (Image)resources.GetObject("btnU.Image");
-            btnU.Location = new Point(597, 158);
+            btnU.Location = new Point(586, 158);
             btnU.Name = "btnU";
             btnU.Size = new Size(237, 250);
             btnU.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -251,23 +251,24 @@
             panel2.Size = new Size(254, 93);
             panel2.TabIndex = 20;
             // 
-            // pictureBox1
+            // ptConductor
             // 
-            pictureBox1.Cursor = Cursors.Hand;
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(863, 158);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(237, 250);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.TabIndex = 21;
-            pictureBox1.TabStop = false;
+            ptConductor.Cursor = Cursors.Hand;
+            ptConductor.Image = Properties.Resources.conductor;
+            ptConductor.Location = new Point(863, 158);
+            ptConductor.Name = "ptConductor";
+            ptConductor.Size = new Size(237, 250);
+            ptConductor.SizeMode = PictureBoxSizeMode.StretchImage;
+            ptConductor.TabIndex = 21;
+            ptConductor.TabStop = false;
+            ptConductor.Click += ptConductor_Click;
             // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1112, 639);
-            Controls.Add(pictureBox1);
+            Controls.Add(ptConductor);
             Controls.Add(label11);
             Controls.Add(label9);
             Controls.Add(label3);
@@ -295,7 +296,7 @@
             ((System.ComponentModel.ISupportInitialize)btnSalir).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptConductor).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -319,6 +320,6 @@
         private Label label13;
         private Panel panel1;
         private Panel panel2;
-        private PictureBox pictureBox1;
+        private PictureBox ptConductor;
     }
 }

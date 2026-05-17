@@ -32,39 +32,39 @@ namespace AVANCE_PED_GS250179_.Servicio
 
             try
             {
+                
                 string query = @"
-                    SELECT 
-                        ie.IdEmpleado, 
-                        ie.Nombre, 
-                        ie.Apellido, 
-                        ie.Correo,
-                        e.IdEmpresa,
-                        r.IdRolEmpleado,
-                        r.Roles
-                    FROM InfoEmpleado ie
-                    INNER JOIN Empleado e ON ie.IdEmpleado = e.IdEmpleado
-                    INNER JOIN RolEmpleado r ON e.IdRolEmpleado = r.IdRolEmpleado
-                    WHERE ie.Correo = @correo AND ie.Contraseña = @contra";
+        SELECT 
+            ie.IdEmpleado,     -- Posición 0
+            ie.Nombre,         -- Posición 1
+            ie.Correo,         -- Posición 2
+            ie.Usuario,        -- Posición 3
+            r.IdRolEmpleado,   -- Posición 4
+            r.Roles            -- Posición 5
+        FROM InfoEmpleado ie
+        INNER JOIN Empleado e ON ie.IdEmpleado = e.IdEmpleado
+        INNER JOIN RolEmpleado r ON e.IdRolEmpleado = r.IdRolEmpleado
+        WHERE ie.Usuario = @usuario AND ie.Contraseña = @contra";
+                
 
                 SqlCommand cmd = new SqlCommand(query, cn);
-                cmd.Parameters.AddWithValue("@correo", correo);
 
-                // antes de compararla con la base de datos.
+                cmd.Parameters.AddWithValue("@usuario", correo);
                 cmd.Parameters.AddWithValue("@contra", HashearContrasena(contrasena));
 
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 if (reader.Read())
                 {
+                    // Empaquetamos los datos usando los nuevos números de posición
                     empleado = new Empleado
                     {
                         IdEmpleado = reader.GetInt32(0),
                         Nombre = reader.GetString(1),
-                        Apellido = reader.GetString(2),
-                        Correo = reader.GetString(3),
-                        IdEmpresa = reader.GetInt32(4),
-                        IdRolEmpleado = reader.GetInt32(5),
-                        NombreRol = reader.GetString(6)
+                        Correo = reader.GetString(2),
+                        Usuario = reader.GetString(3),
+                        IdRolEmpleado = reader.GetInt32(4),
+                        NombreRol = reader.GetString(5)
                     };
                 }
                 reader.Close();

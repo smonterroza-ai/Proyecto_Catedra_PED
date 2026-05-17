@@ -32,10 +32,11 @@
             pictureBox1 = new PictureBox();
             btnAtras = new PictureBox();
             label6 = new Label();
-            dgvMonitor = new DataGridView();
+            dgvTransaccion = new DataGridView();
+            txtBuscar = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dgvMonitor).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvTransaccion).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
@@ -71,23 +72,37 @@
             label6.Size = new Size(643, 37);
             label6.TabIndex = 13;
             label6.Text = "MONITOR DE TRANSACCIONES";
-            label6.TextAlign = ContentAlignment.MiddleCenter;
+            label6.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // dgvMonitor
+            // dgvTransaccion
             // 
-            dgvMonitor.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvMonitor.Location = new Point(423, 154);
-            dgvMonitor.Name = "dgvMonitor";
-            dgvMonitor.RowHeadersWidth = 51;
-            dgvMonitor.Size = new Size(643, 431);
-            dgvMonitor.TabIndex = 14;
+            dgvTransaccion.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvTransaccion.Location = new Point(423, 154);
+            dgvTransaccion.Name = "dgvTransaccion";
+            dgvTransaccion.RowHeadersWidth = 51;
+            dgvTransaccion.Size = new Size(643, 431);
+            dgvTransaccion.TabIndex = 14;
+            // 
+            // txtBuscar
+            // 
+            txtBuscar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtBuscar.ForeColor = SystemColors.WindowText;
+            txtBuscar.Location = new Point(773, 104);
+            txtBuscar.Margin = new Padding(3, 4, 3, 4);
+            txtBuscar.Multiline = true;
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.PlaceholderText = "Buscar por placa";
+            txtBuscar.Size = new Size(293, 37);
+            txtBuscar.TabIndex = 15;
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
             // Form5
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1112, 639);
-            Controls.Add(dgvMonitor);
+            Controls.Add(txtBuscar);
+            Controls.Add(dgvTransaccion);
             Controls.Add(label6);
             Controls.Add(btnAtras);
             Controls.Add(pictureBox1);
@@ -98,8 +113,9 @@
             Load += Form5_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dgvMonitor).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvTransaccion).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -107,6 +123,7 @@
         private PictureBox pictureBox1;
         private PictureBox btnAtras;
         private Label label6;
-        private DataGridView dgvMonitor;
+        private DataGridView dgvTransaccion;
+        private TextBox txtBuscar;
     }
 }

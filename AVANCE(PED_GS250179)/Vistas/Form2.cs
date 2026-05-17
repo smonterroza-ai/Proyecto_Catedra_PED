@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AVANCE_PED_GS250179_.Vistas;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,10 +15,11 @@ namespace AVANCE_PED_GS250179_
         {
             InitializeComponent();
 
-            if (idRol == 2) 
+            if (idRol == 2)
             {
                 // Aquí pones el nombre de los botones ocultas
                 btnT.Visible = false;
+                ptConductor.Visible = false;
             }
         }
 
@@ -74,6 +76,14 @@ namespace AVANCE_PED_GS250179_
         {
             Form6 Uni = new Form6();
             Uni.Show(this);
+
+            this.Hide();
+        }
+
+        private void ptConductor_Click(object sender, EventArgs e)
+        {
+            Form8 Conductor = new Form8();
+            Conductor.Show(this);
 
             this.Hide();
         }
