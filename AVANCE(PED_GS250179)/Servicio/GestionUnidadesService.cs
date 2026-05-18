@@ -514,25 +514,25 @@ namespace AVANCE_PED_GS250179_.Servicio
                         reader.GetInt32(0);
 
                     unidad.NumeroRuta =
-                        Convert.ToInt32(reader[1]);
-
-                    unidad.PlacaVehiculo =
                         reader.GetString(2);
 
-                    unidad.Marca =
+                    unidad.PlacaVehiculo =
                         reader.GetString(3);
 
-                    unidad.Modelo =
+                    unidad.Marca =
                         reader.GetString(4);
 
-                    unidad.MotoristaNombre =
+                    unidad.Modelo =
                         reader.GetString(5);
 
-                    unidad.EstadoVehiculo =
+                    unidad.MotoristaNombre =
                         reader.GetString(6);
 
+                    unidad.EstadoVehiculo =
+                        reader.GetString(7);
+
                     unidad.IdTipoVehiculo =
-                        reader.GetInt32(7);
+                        reader.GetInt32(8);
                 }
 
                 reader.Close();
@@ -584,6 +584,82 @@ namespace AVANCE_PED_GS250179_.Servicio
                     {
                         IdTipoVehiculo = Convert.ToInt32(dr["IdTipoVehiculo"]),
                         TipoVehiculoNombre = dr["TipoVehiculo"].ToString()
+                    });
+                }
+            }
+
+            return lista;
+        }
+
+        public List<Ruta> ObtenerRutas()
+        {
+            List<Ruta> lista =
+                new List<Ruta>();
+
+            using (SqlConnection cn =
+                conexion.AbrirConexion())
+            {
+                string query = @"
+        SELECT
+            IdRutaBuses,
+            NumeroRuta
+        FROM InfoRutaBuses";
+
+                SqlCommand cmd =
+                    new SqlCommand(query, cn);
+
+                SqlDataReader dr =
+                    cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    lista.Add(new Ruta
+                    {
+                        IdRutaBuses =
+                            Convert.ToInt32(
+                                dr["IdRutaBuses"]
+                            ),
+
+                        NumeroRuta =
+                            dr["NumeroRuta"].ToString()
+                    });
+                }
+            }
+
+            return lista;
+        }
+
+        public List<Empleado> ObtenerConductores()
+        {
+            List<Empleado> lista =
+                new List<Empleado>();
+
+            using (SqlConnection cn =
+                conexion.AbrirConexion())
+            {
+                string query = @"
+        SELECT
+            IdEmpleado,
+            Nombre
+        FROM InfoEmpleado";
+
+                SqlCommand cmd =
+                    new SqlCommand(query, cn);
+
+                SqlDataReader dr =
+                    cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    lista.Add(new Empleado
+                    {
+                        IdEmpleado =
+                            Convert.ToInt32(
+                                dr["IdEmpleado"]
+                            ),
+
+                        Nombre =
+                            dr["Nombre"].ToString()
                     });
                 }
             }

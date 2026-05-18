@@ -34,17 +34,17 @@
             txtPlaca = new TextBox();
             label1 = new Label();
             label2 = new Label();
-            txtConductor = new TextBox();
             label3 = new Label();
             txtMarca = new TextBox();
             label4 = new Label();
             txtModelo = new TextBox();
             label5 = new Label();
             label6 = new Label();
-            txtRuta = new TextBox();
             cmbEstado = new ComboBox();
             cmbTipoVehiculo = new ComboBox();
             label7 = new Label();
+            cmbConductor = new ComboBox();
+            cmbRuta = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Confi_U).BeginInit();
             SuspendLayout();
@@ -106,13 +106,6 @@
             label2.TabIndex = 19;
             label2.Text = "Conductor";
             label2.Click += label2_Click;
-            // 
-            // txtConductor
-            // 
-            txtConductor.Location = new Point(305, 251);
-            txtConductor.Name = "txtConductor";
-            txtConductor.Size = new Size(161, 23);
-            txtConductor.TabIndex = 18;
             // 
             // label3
             // 
@@ -176,14 +169,6 @@
             label6.TabIndex = 27;
             label6.Text = "Ruta";
             // 
-            // txtRuta
-            // 
-            txtRuta.Location = new Point(395, 186);
-            txtRuta.Name = "txtRuta";
-            txtRuta.Size = new Size(84, 23);
-            txtRuta.TabIndex = 26;
-            txtRuta.TextChanged += txtRuta_TextChanged;
-            // 
             // cmbEstado
             // 
             cmbEstado.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -214,6 +199,24 @@
             label7.TabIndex = 29;
             label7.Text = "Tipo de vehiculo";
             // 
+            // cmbConductor
+            // 
+            cmbConductor.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbConductor.FormattingEnabled = true;
+            cmbConductor.Location = new Point(305, 251);
+            cmbConductor.Name = "cmbConductor";
+            cmbConductor.Size = new Size(161, 23);
+            cmbConductor.TabIndex = 31;
+            // 
+            // cmbRuta
+            // 
+            cmbRuta.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbRuta.FormattingEnabled = true;
+            cmbRuta.Location = new Point(395, 186);
+            cmbRuta.Name = "cmbRuta";
+            cmbRuta.Size = new Size(84, 23);
+            cmbRuta.TabIndex = 32;
+            // 
             // Form7
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -221,18 +224,18 @@
             BackgroundImage = Properties.Resources.fondo2_Agregar_;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(873, 475);
+            Controls.Add(cmbRuta);
+            Controls.Add(cmbConductor);
             Controls.Add(cmbTipoVehiculo);
             Controls.Add(label7);
             Controls.Add(cmbEstado);
             Controls.Add(label6);
-            Controls.Add(txtRuta);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(txtModelo);
             Controls.Add(label3);
             Controls.Add(txtMarca);
             Controls.Add(label2);
-            Controls.Add(txtConductor);
             Controls.Add(label1);
             Controls.Add(txtPlaca);
             Controls.Add(Confi_U);
@@ -255,16 +258,16 @@
         private TextBox txtPlaca;
         private Label label1;
         private Label label2;
-        private TextBox txtConductor;
         private Label label3;
         private TextBox txtMarca;
         private Label label4;
         private TextBox txtModelo;
         private Label label5;
         private Label label6;
-        private TextBox txtRuta;
         private ComboBox cmbEstado;
         private ComboBox cmbTipoVehiculo;
         private Label label7;
+        private ComboBox cmbConductor;
+        private ComboBox cmbRuta;
     }
 }

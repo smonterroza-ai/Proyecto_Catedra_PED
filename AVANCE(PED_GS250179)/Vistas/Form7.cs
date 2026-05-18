@@ -39,6 +39,8 @@ namespace AVANCE_PED_GS250179_
             cmbEstado.Items.Add("Inactivo");
 
             cmbEstado.SelectedIndex = -1;
+            CargarRutas();
+            CargarConductores();
 
             if (esEditar)
             {
@@ -52,13 +54,15 @@ namespace AVANCE_PED_GS250179_
                 }
 
                 txtPlaca.Text = unidad.PlacaVehiculo;
-                txtRuta.Text = unidad.NumeroRuta.ToString();
-                txtConductor.Text = unidad.MotoristaNombre;
+                cmbRuta.Text = unidad.NumeroRuta.ToString();
+                cmbConductor.Text = unidad.MotoristaNombre;
                 cmbEstado.Text = unidad.EstadoVehiculo;
                 txtMarca.Text = unidad.Marca;
                 txtModelo.Text = unidad.Modelo;
 
                 cmbTipoVehiculo.SelectedValue = unidad.IdTipoVehiculo;
+                cmbRuta.SelectedValue = unidad.IdRutaBuses;
+                cmbConductor.SelectedValue = unidad.IdEmpleado;
             }
         }
 
@@ -76,8 +80,8 @@ namespace AVANCE_PED_GS250179_
             {
                 // VALIDACIÓN
                 if (txtPlaca.Text.Trim() == "" ||
-                    txtRuta.Text.Trim() == "" ||
-                    txtConductor.Text.Trim() == "" ||
+                    cmbRuta.Text.Trim() == "" ||
+                    cmbConductor.Text.Trim() == "" ||
                     cmbEstado.Text.Trim() == "" ||
                     txtMarca.Text.Trim() == "" ||
                     txtModelo.Text.Trim() == "" ||
@@ -95,8 +99,8 @@ namespace AVANCE_PED_GS250179_
                 }
 
                 unidad.PlacaVehiculo = txtPlaca.Text.Trim();
-                unidad.NumeroRuta = Convert.ToInt32(txtRuta.Text.Trim());
-                unidad.MotoristaNombre = txtConductor.Text.Trim();
+                unidad.NumeroRuta = cmbRuta.Text.Trim();
+                unidad.MotoristaNombre = cmbConductor.Text.Trim();
                 unidad.EstadoVehiculo = cmbEstado.Text;
                 unidad.Marca = txtMarca.Text.Trim();
                 unidad.Modelo = txtModelo.Text.Trim();
@@ -135,6 +139,40 @@ namespace AVANCE_PED_GS250179_
             cmbTipoVehiculo.DisplayMember = "TipoVehiculoNombre";
             cmbTipoVehiculo.ValueMember = "IdTipoVehiculo";
             cmbTipoVehiculo.SelectedIndex = -1;
+        }
+
+        private void CargarRutas()
+        {
+            var lista =
+                service.ObtenerRutas();
+
+            cmbRuta.DataSource =
+                lista;
+
+            cmbRuta.DisplayMember =
+                "NumeroRuta";
+
+            cmbRuta.ValueMember =
+                "IdRutaBuses";
+
+            cmbRuta.SelectedIndex = -1;
+        }
+
+        private void CargarConductores()
+        {
+            var lista =
+                service.ObtenerConductores();
+
+            cmbConductor.DataSource =
+                lista;
+
+            cmbConductor.DisplayMember =
+                "Nombre";
+
+            cmbConductor.ValueMember =
+                "IdEmpleado";
+
+            cmbConductor.SelectedIndex = -1;
         }
 
         private void label2_Click(object sender, EventArgs e)
