@@ -34,13 +34,15 @@
             txtpass = new TextBox();
             btnIS = new Button();
             btnSalir = new Button();
+            ptojo = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptojo).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(-8, -1);
+            pictureBox1.Location = new Point(-4, -1);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(1128, 651);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -60,6 +62,7 @@
             txtpass.Cursor = Cursors.IBeam;
             txtpass.Location = new Point(588, 372);
             txtpass.Name = "txtpass";
+            txtpass.PasswordChar = '*';
             txtpass.Size = new Size(336, 27);
             txtpass.TabIndex = 2;
             // 
@@ -70,7 +73,7 @@
             btnIS.FlatStyle = FlatStyle.Flat;
             btnIS.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnIS.ForeColor = Color.White;
-            btnIS.Location = new Point(680, 432);
+            btnIS.Location = new Point(682, 432);
             btnIS.Name = "btnIS";
             btnIS.Size = new Size(150, 36);
             btnIS.TabIndex = 3;
@@ -93,11 +96,22 @@
             btnSalir.UseVisualStyleBackColor = false;
             btnSalir.Click += btnSalir_Click;
             // 
+            // ptojo
+            // 
+            ptojo.Image = Properties.Resources.icons8_eye_24;
+            ptojo.Location = new Point(893, 372);
+            ptojo.Name = "ptojo";
+            ptojo.Size = new Size(31, 27);
+            ptojo.TabIndex = 5;
+            ptojo.TabStop = false;
+            ptojo.Click += ptojo_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1112, 639);
+            Controls.Add(ptojo);
             Controls.Add(btnSalir);
             Controls.Add(btnIS);
             Controls.Add(txtpass);
@@ -109,6 +123,7 @@
             Text = "reise";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptojo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -120,5 +135,6 @@
         private TextBox txtpass;
         private Button btnIS;
         private Button btnSalir;
+        private PictureBox ptojo;
     }
 }

@@ -53,5 +53,10 @@ namespace AVANCE_PED_GS250179_
             MessageBox.Show("No se Crear una Ruta, ya que el sistema no está conectado con la Base de Datos.",
                 "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
