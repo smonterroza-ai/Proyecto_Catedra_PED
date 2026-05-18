@@ -4,10 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
+using System.Windows.Forms;
 
 namespace AVANCE_PED_GS250179_.Servicio
 {
@@ -20,9 +17,11 @@ namespace AVANCE_PED_GS250179_.Servicio
         // =========================================
         public DataTable MostrarUnidades()
         {
-            DataTable tabla = new DataTable();
+            DataTable tabla =
+                new DataTable();
 
-            using (SqlConnection cn = conexion.AbrirConexion())
+            using (SqlConnection cn =
+                conexion.AbrirConexion())
             {
                 string query = @"
                 SELECT
@@ -50,34 +49,35 @@ namespace AVANCE_PED_GS250179_.Servicio
         }
 
         // =========================================
-        // AGREGAR UNIDAD
+        // AGREGAR
         // =========================================
-        public bool AgregarUnidad(GestionUnidades unidad)
+        public bool AgregarUnidad(
+            GestionUnidades unidad
+        )
         {
-            using (SqlConnection cn = conexion.AbrirConexion())
+            using (SqlConnection cn =
+                conexion.AbrirConexion())
             {
                 SqlTransaction transaccion =
                     cn.BeginTransaction();
 
                 try
                 {
-                    // =====================================
-                    // GENERAR IDS
-                    // =====================================
+                    int idDetalle =
+                        ObtenerUltimoId(
+                            "DetalleBuses",
+                            "IdDetalleBuses",
+                            cn,
+                            transaccion
+                        );
 
-                    int idDetalle = ObtenerUltimoId(
-                        "DetalleBuses",
-                        "IdDetalleBuses",
-                        cn,
-                        transaccion
-                    );
-
-                    int idRuta = ObtenerUltimoId(
-                        "InfoRutaBuses",
-                        "IdRutaBuses",
-                        cn,
-                        transaccion
-                    );
+                    int idRuta =
+                        ObtenerUltimoId(
+                            "RutaBuses",
+                            "IdRutaBuses",
+                            cn,
+                            transaccion
+                        );
 
                     // =====================================
                     // INSERT DETALLE
@@ -143,6 +143,55 @@ namespace AVANCE_PED_GS250179_.Servicio
                     cmdDetalle.ExecuteNonQuery();
 
                     // =====================================
+                    // INSERT RUTA BUSES
+                    // =====================================
+
+                    string queryRuta = @"
+                    INSERT INTO RutaBuses
+                    (
+                        IdRutaBuses,
+                        IdEmpresa,
+                        IdRecorridoRuta,
+                        CostoDelPasaje
+                    )
+                    VALUES
+                    (
+                        @IdRuta,
+                        @IdEmpresa,
+                        @IdRecorrido,
+                        @Costo
+                    )";
+
+                    SqlCommand cmdRuta =
+                        new SqlCommand(
+                            queryRuta,
+                            cn,
+                            transaccion
+                        );
+
+                    cmdRuta.Parameters.AddWithValue(
+                        "@IdRuta",
+                        idRuta
+                    );
+
+                    cmdRuta.Parameters.AddWithValue(
+                        "@IdEmpresa",
+                        1
+                    );
+
+                    cmdRuta.Parameters.AddWithValue(
+                        "@IdRecorrido",
+                        1
+                    );
+
+                    cmdRuta.Parameters.AddWithValue(
+                        "@Costo",
+                        0.25
+                    );
+
+                    cmdRuta.ExecuteNonQuery();
+
+                    // =====================================
                     // INSERT INFO RUTA
                     // =====================================
 
@@ -195,9 +244,13 @@ namespace AVANCE_PED_GS250179_.Servicio
 
                     return true;
                 }
-                catch
+                catch (Exception ex)
                 {
                     transaccion.Rollback();
+
+                    MessageBox.Show(
+                        ex.ToString()
+                    );
 
                     return false;
                 }
@@ -205,21 +258,20 @@ namespace AVANCE_PED_GS250179_.Servicio
         }
 
         // =========================================
-        // EDITAR UNIDAD
+        // EDITAR
         // =========================================
-        public bool EditarUnidad(GestionUnidades unidad)
+        public bool EditarUnidad(
+            GestionUnidades unidad
+        )
         {
-            using (SqlConnection cn = conexion.AbrirConexion())
+            using (SqlConnection cn =
+                conexion.AbrirConexion())
             {
                 SqlTransaction transaccion =
                     cn.BeginTransaction();
 
                 try
                 {
-                    // =====================================
-                    // OBTENER ID DETALLE
-                    // =====================================
-
                     string obtenerDetalle = @"
                     SELECT IdDetalleBuses
                     FROM InfoRutaBuses
@@ -237,13 +289,21 @@ namespace AVANCE_PED_GS250179_.Servicio
                         unidad.IdRutaBuses
                     );
 
-                    int idDetalle =
-                        Convert.ToInt32(
-                            cmdObtener.ExecuteScalar()
+                    object resultado =
+                        cmdObtener.ExecuteScalar();
+
+                    if (resultado == null)
+                    {
+                        throw new Exception(
+                            "No existe el detalle"
                         );
+                    }
+
+                    int idDetalle =
+                        Convert.ToInt32(resultado);
 
                     // =====================================
-                    // ACTUALIZAR DETALLE
+                    // UPDATE DETALLE
                     // =====================================
 
                     string queryDetalle = @"
@@ -296,7 +356,7 @@ namespace AVANCE_PED_GS250179_.Servicio
                     cmdDetalle.ExecuteNonQuery();
 
                     // =====================================
-                    // ACTUALIZAR INFO RUTA
+                    // UPDATE INFO RUTA
                     // =====================================
 
                     string queryInfo = @"
@@ -334,9 +394,13 @@ namespace AVANCE_PED_GS250179_.Servicio
 
                     return true;
                 }
-                catch
+                catch (Exception ex)
                 {
                     transaccion.Rollback();
+
+                    MessageBox.Show(
+                        ex.ToString()
+                    );
 
                     return false;
                 }
@@ -344,11 +408,14 @@ namespace AVANCE_PED_GS250179_.Servicio
         }
 
         // =========================================
-        // ELIMINAR UNIDAD
+        // ELIMINAR
         // =========================================
-        public bool EliminarUnidad(int idRutaBus)
+        public bool EliminarUnidad(
+            int idRutaBus
+        )
         {
-            using (SqlConnection cn = conexion.AbrirConexion())
+            using (SqlConnection cn =
+                conexion.AbrirConexion())
             {
                 SqlTransaction transaccion =
                     cn.BeginTransaction();
@@ -380,10 +447,15 @@ namespace AVANCE_PED_GS250179_.Servicio
                     if (resultado != null)
                     {
                         idDetalle =
-                            Convert.ToInt32(resultado);
+                            Convert.ToInt32(
+                                resultado
+                            );
                     }
 
-                    // ELIMINAR INFO RUTA
+                    // =====================================
+                    // DELETE INFO RUTA
+                    // =====================================
+
                     SqlCommand cmdInfo =
                         new SqlCommand(
                             "DELETE FROM InfoRutaBuses WHERE IdRutaBuses=@Id",
@@ -398,7 +470,28 @@ namespace AVANCE_PED_GS250179_.Servicio
 
                     cmdInfo.ExecuteNonQuery();
 
-                    // ELIMINAR DETALLE
+                    // =====================================
+                    // DELETE RUTA BUSES
+                    // =====================================
+
+                    SqlCommand cmdRuta =
+                        new SqlCommand(
+                            "DELETE FROM RutaBuses WHERE IdRutaBuses=@Id",
+                            cn,
+                            transaccion
+                        );
+
+                    cmdRuta.Parameters.AddWithValue(
+                        "@Id",
+                        idRutaBus
+                    );
+
+                    cmdRuta.ExecuteNonQuery();
+
+                    // =====================================
+                    // DELETE DETALLE
+                    // =====================================
+
                     SqlCommand cmdBus =
                         new SqlCommand(
                             "DELETE FROM DetalleBuses WHERE IdDetalleBuses=@Id",
@@ -417,9 +510,13 @@ namespace AVANCE_PED_GS250179_.Servicio
 
                     return true;
                 }
-                catch
+                catch (Exception ex)
                 {
                     transaccion.Rollback();
+
+                    MessageBox.Show(
+                        ex.ToString()
+                    );
 
                     return false;
                 }
@@ -429,11 +526,15 @@ namespace AVANCE_PED_GS250179_.Servicio
         // =========================================
         // BUSCAR
         // =========================================
-        public DataTable BuscarUnidad(string texto)
+        public DataTable BuscarUnidad(
+            string texto
+        )
         {
-            DataTable tabla = new DataTable();
+            DataTable tabla =
+                new DataTable();
 
-            using (SqlConnection cn = conexion.AbrirConexion())
+            using (SqlConnection cn =
+                conexion.AbrirConexion())
             {
                 string query = @"
                 SELECT
@@ -452,9 +553,8 @@ namespace AVANCE_PED_GS250179_.Servicio
                     ON db.IdTipoVehiculo = tv.IdTipoVehiculo
                 WHERE
                     db.PlacaVehiculo LIKE @texto
-                    OR irb.MotoristaNombre LIKE @texto
                     OR irb.NumeroRuta LIKE @texto
-                    OR tv.TipoVehiculo LIKE @texto";
+                    OR irb.MotoristaNombre LIKE @texto";
 
                 SqlDataAdapter da =
                     new SqlDataAdapter(query, cn);
@@ -480,7 +580,8 @@ namespace AVANCE_PED_GS250179_.Servicio
             GestionUnidades unidad =
                 new GestionUnidades();
 
-            using (SqlConnection cn = conexion.AbrirConexion())
+            using (SqlConnection cn =
+                conexion.AbrirConexion())
             {
                 string query = @"
                 SELECT
@@ -514,25 +615,25 @@ namespace AVANCE_PED_GS250179_.Servicio
                         reader.GetInt32(0);
 
                     unidad.NumeroRuta =
-                        reader.GetString(2);
+                        reader.GetString(1);
 
                     unidad.PlacaVehiculo =
-                        reader.GetString(3);
+                        reader.GetString(2);
 
                     unidad.Marca =
-                        reader.GetString(4);
+                        reader.GetString(3);
 
                     unidad.Modelo =
-                        reader.GetString(5);
+                        reader.GetString(4);
 
                     unidad.MotoristaNombre =
-                        reader.GetString(6);
+                        reader.GetString(5);
 
                     unidad.EstadoVehiculo =
-                        reader.GetString(7);
+                        reader.GetString(6);
 
                     unidad.IdTipoVehiculo =
-                        reader.GetInt32(8);
+                        reader.GetInt32(7);
                 }
 
                 reader.Close();
@@ -542,7 +643,7 @@ namespace AVANCE_PED_GS250179_.Servicio
         }
 
         // =========================================
-        // GENERAR IDS
+        // IDS
         // =========================================
         private int ObtenerUltimoId(
             string tabla,
@@ -566,44 +667,23 @@ namespace AVANCE_PED_GS250179_.Servicio
             );
         }
 
-        public List<TipoVehiculo> ObtenerTiposVehiculo()
+        // =========================================
+        // TIPOS VEHÍCULO
+        // =========================================
+        public List<TipoVehiculo>
+            ObtenerTiposVehiculo()
         {
-            List<TipoVehiculo> lista = new List<TipoVehiculo>();
-
-            using (SqlConnection cn = conexion.AbrirConexion())
-            {
-                string query = "SELECT IdTipoVehiculo, TipoVehiculo FROM TipoVehiculo";
-
-                SqlCommand cmd = new SqlCommand(query, cn);
-
-                SqlDataReader dr = cmd.ExecuteReader();
-
-                while (dr.Read())
-                {
-                    lista.Add(new TipoVehiculo
-                    {
-                        IdTipoVehiculo = Convert.ToInt32(dr["IdTipoVehiculo"]),
-                        TipoVehiculoNombre = dr["TipoVehiculo"].ToString()
-                    });
-                }
-            }
-
-            return lista;
-        }
-
-        public List<Ruta> ObtenerRutas()
-        {
-            List<Ruta> lista =
-                new List<Ruta>();
+            List<TipoVehiculo> lista =
+                new List<TipoVehiculo>();
 
             using (SqlConnection cn =
                 conexion.AbrirConexion())
             {
                 string query = @"
-        SELECT
-            IdRutaBuses,
-            NumeroRuta
-        FROM InfoRutaBuses";
+                SELECT
+                    IdTipoVehiculo,
+                    TipoVehiculo
+                FROM TipoVehiculo";
 
                 SqlCommand cmd =
                     new SqlCommand(query, cn);
@@ -613,23 +693,29 @@ namespace AVANCE_PED_GS250179_.Servicio
 
                 while (dr.Read())
                 {
-                    lista.Add(new Ruta
-                    {
-                        IdRutaBuses =
-                            Convert.ToInt32(
-                                dr["IdRutaBuses"]
-                            ),
+                    lista.Add(
+                        new TipoVehiculo
+                        {
+                            IdTipoVehiculo =
+                                Convert.ToInt32(
+                                    dr["IdTipoVehiculo"]
+                                ),
 
-                        NumeroRuta =
-                            dr["NumeroRuta"].ToString()
-                    });
+                            TipoVehiculoNombre =
+                                dr["TipoVehiculo"].ToString()
+                        }
+                    );
                 }
             }
 
             return lista;
         }
 
-        public List<Empleado> ObtenerConductores()
+        // =========================================
+        // CONDUCTORES
+        // =========================================
+        public List<Empleado>
+            ObtenerConductores()
         {
             List<Empleado> lista =
                 new List<Empleado>();
@@ -638,10 +724,10 @@ namespace AVANCE_PED_GS250179_.Servicio
                 conexion.AbrirConexion())
             {
                 string query = @"
-        SELECT
-            IdEmpleado,
-            Nombre
-        FROM InfoEmpleado";
+                SELECT
+                    IdEmpleado,
+                    Nombre
+                FROM InfoEmpleado";
 
                 SqlCommand cmd =
                     new SqlCommand(query, cn);
@@ -651,16 +737,62 @@ namespace AVANCE_PED_GS250179_.Servicio
 
                 while (dr.Read())
                 {
-                    lista.Add(new Empleado
-                    {
-                        IdEmpleado =
-                            Convert.ToInt32(
-                                dr["IdEmpleado"]
-                            ),
+                    lista.Add(
+                        new Empleado
+                        {
+                            IdEmpleado =
+                                Convert.ToInt32(
+                                    dr["IdEmpleado"]
+                                ),
 
-                        Nombre =
-                            dr["Nombre"].ToString()
-                    });
+                            Nombre =
+                                dr["Nombre"].ToString()
+                        }
+                    );
+                }
+            }
+
+            return lista;
+        }
+
+        // =========================================
+        // RUTAS
+        // =========================================
+        public List<Ruta>
+            ObtenerRutas()
+        {
+            List<Ruta> lista =
+                new List<Ruta>();
+
+            using (SqlConnection cn =
+                conexion.AbrirConexion())
+            {
+                string query = @"
+                SELECT
+                    IdRutaBuses,
+                    NumeroRuta
+                FROM InfoRutaBuses";
+
+                SqlCommand cmd =
+                    new SqlCommand(query, cn);
+
+                SqlDataReader dr =
+                    cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    lista.Add(
+                        new Ruta
+                        {
+                            IdRutaBuses =
+                                Convert.ToInt32(
+                                    dr["IdRutaBuses"]
+                                ),
+
+                            NumeroRuta =
+                                dr["NumeroRuta"].ToString()
+                        }
+                    );
                 }
             }
 

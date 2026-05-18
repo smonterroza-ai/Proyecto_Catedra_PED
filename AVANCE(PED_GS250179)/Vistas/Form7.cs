@@ -32,6 +32,8 @@ namespace AVANCE_PED_GS250179_
         private void Form7_Load(object sender, EventArgs e)
         {
             CargarTiposVehiculo();
+            CargarConductores();
+            CargarRutas();
 
             cmbEstado.Items.Clear();
             cmbEstado.Items.Add("Activo");
@@ -39,8 +41,6 @@ namespace AVANCE_PED_GS250179_
             cmbEstado.Items.Add("Inactivo");
 
             cmbEstado.SelectedIndex = -1;
-            CargarRutas();
-            CargarConductores();
 
             if (esEditar)
             {
@@ -141,23 +141,6 @@ namespace AVANCE_PED_GS250179_
             cmbTipoVehiculo.SelectedIndex = -1;
         }
 
-        private void CargarRutas()
-        {
-            var lista =
-                service.ObtenerRutas();
-
-            cmbRuta.DataSource =
-                lista;
-
-            cmbRuta.DisplayMember =
-                "NumeroRuta";
-
-            cmbRuta.ValueMember =
-                "IdRutaBuses";
-
-            cmbRuta.SelectedIndex = -1;
-        }
-
         private void CargarConductores()
         {
             var lista =
@@ -173,6 +156,27 @@ namespace AVANCE_PED_GS250179_
                 "IdEmpleado";
 
             cmbConductor.SelectedIndex = -1;
+        }
+
+
+        // =========================================
+        // CARGAR RUTAS
+        // =========================================
+        private void CargarRutas()
+        {
+            var lista =
+                service.ObtenerRutas();
+
+            cmbRuta.DataSource =
+                lista;
+
+            cmbRuta.DisplayMember =
+                "NumeroRuta";
+
+            cmbRuta.ValueMember =
+                "IdRutaBuses";
+
+            cmbRuta.SelectedIndex = -1;
         }
 
         private void label2_Click(object sender, EventArgs e)

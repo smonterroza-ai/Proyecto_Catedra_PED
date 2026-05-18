@@ -46,10 +46,6 @@ namespace AVANCE_PED_GS250179_
                 Au.Show();
 
                 this.Hide();
-
-                Au.ShowDialog();
-
-                CargarTabla();
             }
         }
 
