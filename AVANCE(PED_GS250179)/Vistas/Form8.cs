@@ -1,5 +1,6 @@
-﻿using AVANCE_PED_GS250179_.Servicio;
-using AVANCE_PED_GS250179_.Modelos;
+﻿using AVANCE_PED_GS250179_.Modelos;
+using AVANCE_PED_GS250179_.Servicio;
+using AVANCE_PED_GS250179_.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -55,24 +56,12 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void btnAR_Click(object sender, EventArgs e)
         {
-            Form11 form = new Form11();
-            form.Show();
 
-            this.Hide();
         }
 
         private void btnAtras_Click(object sender, EventArgs e)
         {
-            if (this.Owner != null)
-            {
-                this.Owner.Show(); // Volvemos a mostrar el menú principal con su rol intacto
-                this.Close();      // Cerramos esta ventana por completo para no saturar la memoria
-            }
-            else
-            {
-                // Por seguridad, si se abriera sin dueño en alguna prueba, evitamos que se quede colgado
-                this.Close();
-            }
+
         }
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
@@ -81,6 +70,70 @@ namespace AVANCE_PED_GS250179_.Vistas
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditarM_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            Form11 form = new Form11();
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgvEmpleados.Rows.Count == 0)
+                {
+                    MessageBox.Show(
+                        "No hay datos"
+                    );
+
+                    return;
+                }
+
+                if (dgvEmpleados.CurrentRow == null)
+                {
+                    MessageBox.Show(
+                        "Seleccione una fila"
+                    );
+
+                    return;
+                }
+
+                int idEmpleado =
+                    Convert.ToInt32(
+                        dgvEmpleados.CurrentRow.Cells["idEmpleado"].Value
+                    );
+
+                this.Hide();
+
+                Form12 form =
+                    new Form12(idEmpleado);
+
+                form.ShowDialog();
+
+                this.Hide();
+
+                CargarTabla();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message
+                );
+            }
+        }
+
+        private void btnEliminar_Click_1(object sender, EventArgs e)
         {
             if (dgvEmpleados.Rows.Count > 0)
             {
@@ -107,62 +160,17 @@ namespace AVANCE_PED_GS250179_.Vistas
             }
         }
 
-        private void btnEditarM_Click(object sender, EventArgs e)
+        private void Form8_Shown(object sender, EventArgs e)
         {
-            try
-            {
-                if (dgvEmpleados.Rows.Count == 0)
-                {
-                    MessageBox.Show(
-                        "No hay datos"
-                    );
+            RedondearBoton.RedondearBotones(btnAgregar, 30);
+            RedondearBoton.RedondearBotones(btnEditar, 30);
+            RedondearBoton.RedondearBotones(btnEliminar, 30);
+            RedondearBoton.RedondearBotones(btnRegresar, 30);
+        }
 
-                    return;
-                }
-
-                if (dgvEmpleados.CurrentRow == null)
-                {
-                    MessageBox.Show(
-                        "Seleccione una fila"
-                    );
-
-                    return;
-                }
-
-                // =====================================
-                // OBTENER ID
-                // =====================================
-
-                int idEmpleado =
-                    Convert.ToInt32(
-                        dgvEmpleados.CurrentRow.Cells["idEmpleado"].Value
-                    );
-
-                // =====================================
-                // ABRIR FORM EDITAR
-                // =====================================
-
-                this.Hide();
-
-                Form11 form =
-                    new Form11(idEmpleado);
-
-                form.ShowDialog();
-
-                this.Hide();
-
-                // =====================================
-                // RECARGAR TABLA
-                // =====================================
-
-                CargarTabla();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    ex.Message
-                );
-            }
+        private void btnRegresar_Click(object sender, EventArgs e)
+        {
+            this.Hide();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AVANCE_PED_GS250179_.Estructuras;
 using AVANCE_PED_GS250179_.Modelos;
 using AVANCE_PED_GS250179_.Servicio;
+using AVANCE_PED_GS250179_.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,17 +11,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace AVANCE_PED_GS250179_.Vistas
 {
     public partial class Form11 : Form
     {
-        EmpleadoService service =
-            new EmpleadoService();
-
-        private int idEmpleadoEditar = 0;
-
-        private bool esEditar = false;
+        EmpleadoService service = new EmpleadoService();
 
         public Form11()
         {
@@ -30,10 +27,6 @@ namespace AVANCE_PED_GS250179_.Vistas
         public Form11(int idEmpleado)
         {
             InitializeComponent();
-
-            idEmpleadoEditar = idEmpleado;
-
-            esEditar = true;
         }
 
         private void label10_Click(object sender, EventArgs e)
@@ -43,138 +36,8 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void btnguardar_Click(object sender, EventArgs e)
         {
-            try
-            {
-                // ============================
-                // VALIDACIONES
-                // ============================
 
-                if (
-                    txtNombre.Text.Trim() == "" ||
-                    txtDUI.Text.Trim() == "" ||
-                    txtTelefono.Text.Trim() == "" ||
-                    txtCorreo.Text.Trim() == "" ||
-                    txtUsuario.Text.Trim() == "" ||
-                    txtDireccion.Text.Trim() == "" ||
-                    txtContraseña.Text.Trim() == "" ||
-                    txtConfirmarContraseña.Text.Trim() == "" ||
-                    cmbRol.SelectedIndex == -1
-                )
-                {
-                    MessageBox.Show(
-                        "Complete todos los campos"
-                    );
-
-                    return;
-                }
-
-                // ============================
-                // VALIDAR CONTRASEÑAS
-                // ============================
-
-                if (
-                    txtContraseña.Text.Trim() !=
-                    txtConfirmarContraseña.Text.Trim()
-                )
-                {
-                    MessageBox.Show(
-                        "Las contraseñas no coinciden"
-                    );
-
-                    return;
-                }
-
-                // ============================
-                // OBJETO
-                // ============================
-
-                Empleado empleado =
-                    new Empleado();
-
-                if (esEditar)
-                {
-                    empleado.IdEmpleado =
-                        idEmpleadoEditar;
-                }
-
-                empleado.Nombre =
-                    txtNombre.Text.Trim();
-
-                empleado.DUI =
-                    txtDUI.Text.Trim();
-
-                empleado.Telefono =
-                    txtTelefono.Text.Trim();
-
-                empleado.Correo =
-                    txtCorreo.Text.Trim();
-
-                empleado.Usuario =
-                    txtUsuario.Text.Trim();
-
-                empleado.Direccion =
-                    txtDireccion.Text.Trim();
-
-                empleado.Contraseña =
-                    txtContraseña.Text.Trim();
-
-                empleado.FechaNacimiento =
-                    dtpNacimiento.Value;
-
-                empleado.FechaContratacion =
-                    dtpContratacion.Value;
-
-                empleado.IdRolEmpleado =
-                    Convert.ToInt32(
-                        cmbRol.SelectedValue
-                    );
-
-                // ============================
-                // GUARDAR / EDITAR
-                // ============================
-
-                bool resultado =
-                    esEditar
-                    ? service.EditarEmpleado(
-                        empleado
-                    )
-                    : service.AgregarEmpleado(
-                        empleado
-                    );
-
-                if (resultado)
-                {
-                    MessageBox.Show(
-                        esEditar
-                        ? "Empleado editado correctamente"
-                        : "Empleado agregado correctamente"
-                    );
-
-                    Form8 form =
-                        new Form8();
-
-                    form.Show();
-
-                    this.Hide();
-                }
-                else
-                {
-                    MessageBox.Show(
-                        "Error al guardar"
-                    );
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    "Error: " + ex.Message
-                );
-            }
         }
-
-        // ============================
-        // CARGAR ROLES
-        // ============================
 
         private void CargarRoles()
         {
@@ -192,6 +55,9 @@ namespace AVANCE_PED_GS250179_.Vistas
 
                 actual = actual.Siguiente;
             }
+
+            cmbRol.DisplayMember = "Roles";
+            cmbRol.ValueMember = "IdRolEmpleado";
 
             cmbRol.SelectedIndex = -1;
         }
@@ -212,86 +78,6 @@ namespace AVANCE_PED_GS250179_.Vistas
         private void Form11_Load(object sender, EventArgs e)
         {
             CargarRoles();
-
-            // ============================
-            // EDITAR
-            // ============================
-
-            if (esEditar)
-            {
-                Empleado empleado =
-                    service.ObtenerEmpleadoPorId(
-                        idEmpleadoEditar
-                    );
-
-                if (empleado == null)
-                {
-                    MessageBox.Show(
-                        "No se encontró el empleado"
-                    );
-
-                    return;
-                }
-
-                // ============================
-                // TEXTBOX
-                // ============================
-
-                txtNombre.Text =
-                    empleado.Nombre;
-
-                txtDUI.Text =
-                    empleado.DUI;
-
-                txtTelefono.Text =
-                    empleado.Telefono;
-
-                txtCorreo.Text =
-                    empleado.Correo;
-
-                txtUsuario.Text =
-                    empleado.Usuario;
-
-                txtDireccion.Text =
-                    empleado.Direccion;
-
-                txtContraseña.Text = "";
-
-                txtConfirmarContraseña.Text = "";
-
-                // ============================
-                // FECHAS
-                // ============================
-
-                if (empleado.FechaNacimiento > dtpNacimiento.MinDate)
-                {
-                    dtpNacimiento.Value =
-                        empleado.FechaNacimiento;
-                }
-                else
-                {
-                    dtpNacimiento.Value =
-                        DateTime.Now;
-                }
-
-                if (empleado.FechaContratacion > dtpContratacion.MinDate)
-                {
-                    dtpContratacion.Value =
-                        empleado.FechaContratacion;
-                }
-                else
-                {
-                    dtpContratacion.Value =
-                        DateTime.Now;
-                }
-
-                // ============================
-                // COMBOBOX
-                // ============================
-
-                cmbRol.SelectedValue =
-                    empleado.IdRolEmpleado;
-            }
         }
 
         private void btnAtras_Click_1(object sender, EventArgs e)
@@ -300,6 +86,84 @@ namespace AVANCE_PED_GS250179_.Vistas
             frm.Show();
 
             this.Hide();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtNombre.Text.Trim() == "" ||
+                    txtDUI.Text.Trim() == "" ||
+                    txtTelefono.Text.Trim() == "" ||
+                    txtCorreo.Text.Trim() == "" ||
+                    txtUsuario.Text.Trim() == "" ||
+                    txtDireccion.Text.Trim() == "" ||
+                    txtContraseña.Text.Trim() == "" ||
+                    txtConfirmarContraseña.Text.Trim() == "" ||
+                    cmbRol.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Complete todos los campos");
+                    return;
+                }
+
+                if (txtContraseña.Text != txtConfirmarContraseña.Text)
+                {
+                    MessageBox.Show("Las contraseñas no coinciden");
+                    return;
+                }
+
+                RolEmpleado rolSeleccionado =
+                    (RolEmpleado)cmbRol.SelectedItem;
+
+                Empleado emp = new Empleado()
+                {
+                    Nombre = txtNombre.Text.Trim(),
+                    DUI = txtDUI.Text.Trim(),
+                    FechaNacimiento = dtpNacimiento.Value,
+                    Direccion = txtDireccion.Text.Trim(),
+                    Telefono = txtTelefono.Text.Trim(),
+                    FechaContratacion = dtpContratacion.Value,
+                    Correo = txtCorreo.Text.Trim(),
+                    Usuario = txtUsuario.Text.Trim(),
+
+                    Contraseña = service.HashearContrasena(
+                        txtContraseña.Text.Trim()
+                    ),
+
+                    IdRolEmpleado =
+                        rolSeleccionado.IdRolEmpleado
+                };
+
+                bool resultado =
+                    service.AgregarEmpleadoCompleto(emp);
+
+                if (resultado)
+                {
+                    MessageBox.Show(
+                        "Empleado agregado correctamente"
+                    );
+
+                    Form8 form = new Form8();
+                    form.Show();
+
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Error al guardar");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error: " + ex.Message
+                );
+            }
+        }
+
+        private void Form11_Shown(object sender, EventArgs e)
+        {
+            RedondearBoton.RedondearBotones(button1, 30);
         }
     }
 }

@@ -57,7 +57,6 @@ namespace AVANCE_PED_GS250179_.Servicio
 
                 if (reader.Read())
                 {
-                    // Empaquetamos los datos usando los nuevos números de posición
                     empleado = new Empleado
                     {
                         IdEmpleado = reader.GetInt32(0),
@@ -81,10 +80,6 @@ namespace AVANCE_PED_GS250179_.Servicio
 
             return empleado;
         }
-
-        // =========================================
-        // MOSTRAR
-        // =========================================
 
         public DataTable MostrarEmpleados()
         {
@@ -118,319 +113,169 @@ namespace AVANCE_PED_GS250179_.Servicio
             return tabla;
         }
 
-        // =========================================
-        // AGREGAR
-        // =========================================
-
-        public bool AgregarEmpleado(
-            Empleado empleado
-        )
+        public bool AgregarEmpleadoCompleto(Empleado e)
         {
-            using (SqlConnection cn =
-                conexion.AbrirConexion())
+            try
             {
-                SqlTransaction transaccion =
-                    cn.BeginTransaction();
-
-                try
+                using (SqlConnection cn = conexion.AbrirConexion())
                 {
-                    int idEmpleado =
-                        ObtenerUltimoId(
-                            "Empleado",
-                            "IdEmpleado",
-                            cn,
-                            transaccion
-                        );
+                    SqlTransaction tr = cn.BeginTransaction();
 
-                    // =========================
-                    // INSERT EMPLEADO
-                    // =========================
+                    try
+                    {
+                        // INFO
+                        string q1 = @"
+                        INSERT INTO InfoEmpleado
+                        (Nombre, DUI, FechaNacimiento, Direccion, Telefono,
+                         FechaContratacion, Correo, Usuario, Contraseña)
+                        VALUES
+                        (@Nombre, @DUI, @FechaNacimiento, @Direccion, @Telefono,
+                         @FechaContratacion, @Correo, @Usuario, @Contraseña);
+                        SELECT SCOPE_IDENTITY();";
 
-                    string queryEmpleado = @"
-                    INSERT INTO Empleado
-                    (
-                        IdEmpleado,
-                        IdRolEmpleado
-                    )
-                    VALUES
-                    (
-                        @IdEmpleado,
-                        @IdRol
-                    )";
+                        SqlCommand cmd1 = new SqlCommand(q1, cn, tr);
 
-                    SqlCommand cmdEmpleado =
-                        new SqlCommand(
-                            queryEmpleado,
-                            cn,
-                            transaccion
-                        );
+                        cmd1.Parameters.AddWithValue("@Nombre", e.Nombre);
+                        cmd1.Parameters.AddWithValue("@DUI", e.DUI);
+                        cmd1.Parameters.AddWithValue("@FechaNacimiento", e.FechaNacimiento);
+                        cmd1.Parameters.AddWithValue("@Direccion", e.Direccion);
+                        cmd1.Parameters.AddWithValue("@Telefono", e.Telefono);
+                        cmd1.Parameters.AddWithValue("@FechaContratacion", e.FechaContratacion);
+                        cmd1.Parameters.AddWithValue("@Correo", e.Correo);
+                        cmd1.Parameters.AddWithValue("@Usuario", e.Usuario);
+                        cmd1.Parameters.AddWithValue("@Contraseña", e.Contraseña);
 
-                    cmdEmpleado.Parameters.AddWithValue(
-                        "@IdEmpleado",
-                        idEmpleado
-                    );
+                        int id = Convert.ToInt32(cmd1.ExecuteScalar());
 
-                    cmdEmpleado.Parameters.AddWithValue(
-                        "@IdRol",
-                        empleado.IdRolEmpleado
-                    );
+                        // EMPLEADO (ROL FK)
+                        string q2 = @"
+                        INSERT INTO Empleado (IdEmpleado, IdRolEmpleado)
+                        VALUES (@IdEmpleado, @IdRolEmpleado)";
 
-                    cmdEmpleado.ExecuteNonQuery();
+                        SqlCommand cmd2 = new SqlCommand(q2, cn, tr);
 
-                    // =========================
-                    // INSERT INFO
-                    // =========================
+                        cmd2.Parameters.AddWithValue("@IdEmpleado", id);
+                        cmd2.Parameters.AddWithValue("@IdRolEmpleado", e.IdRolEmpleado);
 
-                    string queryInfo = @"
-                    INSERT INTO InfoEmpleado
-                    (
-                        IdEmpleado,
-                        Nombre,
-                        DUI,
-                        FechaNacimiento,
-                        Direccion,
-                        Telefono,
-                        FechaContratacion,
-                        Correo,
-                        Usuario,
-                        Contraseña
-                    )
-                    VALUES
-                    (
-                        @IdEmpleado,
-                        @Nombre,
-                        @DUI,
-                        @FechaNacimiento,
-                        @Direccion,
-                        @Telefono,
-                        @FechaContratacion,
-                        @Correo,
-                        @Usuario,
-                        @Contraseña
-                    )";
+                        cmd2.ExecuteNonQuery();
 
-                    SqlCommand cmdInfo =
-                        new SqlCommand(
-                            queryInfo,
-                            cn,
-                            transaccion
-                        );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@IdEmpleado",
-                        idEmpleado
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@Nombre",
-                        empleado.Nombre
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@DUI",
-                        empleado.DUI
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@FechaNacimiento",
-                        empleado.FechaNacimiento
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@Direccion",
-                        empleado.Direccion
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@Telefono",
-                        empleado.Telefono
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@FechaContratacion",
-                        empleado.FechaContratacion
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@Correo",
-                        empleado.Correo
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@Usuario",
-                        empleado.Usuario
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@Contraseña",
-                        HashearContrasena(
-                            empleado.Contraseña
-                        )
-                    );
-
-                    cmdInfo.ExecuteNonQuery();
-
-                    transaccion.Commit();
-
-                    return true;
+                        tr.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        tr.Rollback();
+                        MessageBox.Show(ex.Message);
+                        return false;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    transaccion.Rollback();
-
-                    MessageBox.Show(
-                        ex.ToString()
-                    );
-
-                    return false;
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
             }
         }
 
-        // =========================================
-        // EDITAR
-        // =========================================
-
-        public bool EditarEmpleado(
-            Empleado empleado
-        )
+        public bool EditarEmpleado(Empleado e)
         {
-            using (SqlConnection cn =
-                conexion.AbrirConexion())
+            try
             {
-                SqlTransaction transaccion =
-                    cn.BeginTransaction();
-
-                try
+                using (SqlConnection cn = conexion.AbrirConexion())
                 {
-                    // =========================
-                    // UPDATE EMPLEADO
-                    // =========================
-
-                    string queryEmpleado = @"
-                    UPDATE Empleado
-                    SET
-                        IdRolEmpleado = @IdRol
-                    WHERE IdEmpleado = @IdEmpleado";
-
-                    SqlCommand cmdEmpleado =
-                        new SqlCommand(
-                            queryEmpleado,
-                            cn,
-                            transaccion
-                        );
-
-                    cmdEmpleado.Parameters.AddWithValue(
-                        "@IdRol",
-                        empleado.IdRolEmpleado
-                    );
-
-                    cmdEmpleado.Parameters.AddWithValue(
-                        "@IdEmpleado",
-                        empleado.IdEmpleado
-                    );
-
-                    cmdEmpleado.ExecuteNonQuery();
-
-                    // =========================
-                    // UPDATE INFO
-                    // =========================
-
-                    string queryInfo = @"
+                    string query = @"
                     UPDATE InfoEmpleado
-                    SET
-                        Nombre = @Nombre,
-                        DUI = @DUI,
-                        FechaNacimiento = @FechaNacimiento,
-                        Direccion = @Direccion,
-                        Telefono = @Telefono,
-                        FechaContratacion = @FechaContratacion,
-                        Correo = @Correo,
-                        Usuario = @Usuario,
-                        Contraseña = @Contraseña
-                    WHERE IdEmpleado = @IdEmpleado";
+                    SET Nombre=@Nombre,
+                        DUI=@DUI,
+                        FechaNacimiento=@FechaNacimiento,
+                        Direccion=@Direccion,
+                        Telefono=@Telefono,
+                        FechaContratacion=@FechaContratacion,
+                        Correo=@Correo
+                    WHERE IdEmpleado=@IdEmpleado";
 
-                    SqlCommand cmdInfo =
-                        new SqlCommand(
-                            queryInfo,
-                            cn,
-                            transaccion
-                        );
+                    SqlCommand cmd = new SqlCommand(query, cn);
 
-                    cmdInfo.Parameters.AddWithValue(
-                        "@Nombre",
-                        empleado.Nombre
-                    );
+                    cmd.Parameters.AddWithValue("@IdEmpleado", e.IdEmpleado);
+                    cmd.Parameters.AddWithValue("@Nombre", e.Nombre);
+                    cmd.Parameters.AddWithValue("@DUI", e.DUI);
+                    cmd.Parameters.AddWithValue("@FechaNacimiento", e.FechaNacimiento);
+                    cmd.Parameters.AddWithValue("@Direccion", e.Direccion);
+                    cmd.Parameters.AddWithValue("@Telefono", e.Telefono);
+                    cmd.Parameters.AddWithValue("@FechaContratacion", e.FechaContratacion);
+                    cmd.Parameters.AddWithValue("@Correo", e.Correo);
 
-                    cmdInfo.Parameters.AddWithValue(
-                        "@DUI",
-                        empleado.DUI
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@FechaNacimiento",
-                        empleado.FechaNacimiento
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@Direccion",
-                        empleado.Direccion
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@Telefono",
-                        empleado.Telefono
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@FechaContratacion",
-                        empleado.FechaContratacion
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@Correo",
-                        empleado.Correo
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@Usuario",
-                        empleado.Usuario
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@Contraseña",
-                        HashearContrasena(
-                            empleado.Contraseña
-                        )
-                    );
-
-                    cmdInfo.Parameters.AddWithValue(
-                        "@IdEmpleado",
-                        empleado.IdEmpleado
-                    );
-
-                    cmdInfo.ExecuteNonQuery();
-
-                    transaccion.Commit();
-
-                    return true;
+                    return cmd.ExecuteNonQuery() > 0;
                 }
-                catch (Exception ex)
-                {
-                    transaccion.Rollback();
-
-                    MessageBox.Show(
-                        ex.ToString()
-                    );
-
-                    return false;
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
             }
         }
 
-        // =========================================
-        // ELIMINAR EMPLEADO
-        // =========================================
+        public Empleado ObtenerEmpleadoPorId(int id)
+        {
+            Empleado e = null;
+
+            using (SqlConnection cn = conexion.AbrirConexion())
+            {
+                string query = @"
+                SELECT ie.*, em.IdRolEmpleado
+                FROM InfoEmpleado ie
+                INNER JOIN Empleado em ON ie.IdEmpleado = em.IdEmpleado
+                WHERE ie.IdEmpleado=@Id";
+
+                SqlCommand cmd = new SqlCommand(query, cn);
+                cmd.Parameters.AddWithValue("@Id", id);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    e = new Empleado()
+                    {
+                        IdEmpleado = (int)dr["IdEmpleado"],
+                        Nombre = dr["Nombre"].ToString(),
+                        DUI = dr["DUI"].ToString(),
+                        FechaNacimiento = (DateTime)dr["FechaNacimiento"],
+                        Direccion = dr["Direccion"].ToString(),
+                        Telefono = dr["Telefono"].ToString(),
+                        FechaContratacion = (DateTime)dr["FechaContratacion"],
+                        Correo = dr["Correo"].ToString(),
+                        IdRolEmpleado = (int)dr["IdRolEmpleado"]
+                    };
+                }
+            }
+
+            return e;
+        }
+
+        public ListaEnlazada ObtenerRoles()
+        {
+            ListaEnlazada lista = new ListaEnlazada();
+
+            using (SqlConnection cn = conexion.AbrirConexion())
+            {
+                string query = "SELECT * FROM RolEmpleado";
+
+                SqlCommand cmd = new SqlCommand(query, cn);
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    lista.Agregar(new RolEmpleado()
+                    {
+                        IdRolEmpleado = Convert.ToInt32(dr["IdRolEmpleado"]),
+                        Roles = dr["Roles"].ToString()
+                    });
+                }
+            }
+
+            return lista;
+        }
+
         public bool EliminarEmpleado(
             int idEmpleado
         )
@@ -488,9 +333,6 @@ namespace AVANCE_PED_GS250179_.Servicio
             }
         }
 
-        // =========================================
-        // BUSCAR EMPLEADOS
-        // =========================================
         public DataTable BuscarEmpleado(
             string texto
         )
@@ -534,132 +376,6 @@ namespace AVANCE_PED_GS250179_.Servicio
 
             return tabla;
         }
-
-        // =========================================
-        // OBTENER POR ID
-        // =========================================
-
-        public Empleado ObtenerEmpleadoPorId(
-    int idEmpleado
-)
-        {
-            Empleado empleado = null;
-
-            using (SqlConnection cn =
-                conexion.AbrirConexion())
-            {
-                string query = @"
-        SELECT
-            ie.IdEmpleado,
-            ie.Nombre,
-            ie.DUI,
-            ie.FechaNacimiento,
-            ie.Direccion,
-            ie.Telefono,
-            ie.FechaContratacion,
-            ie.Correo,
-            ie.Usuario,
-            e.IdRolEmpleado
-        FROM InfoEmpleado ie
-        INNER JOIN Empleado e
-            ON ie.IdEmpleado = e.IdEmpleado
-        WHERE ie.IdEmpleado = @IdEmpleado";
-
-                SqlCommand cmd =
-                    new SqlCommand(query, cn);
-
-                cmd.Parameters.AddWithValue(
-                    "@IdEmpleado",
-                    idEmpleado
-                );
-
-                SqlDataReader reader =
-                    cmd.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    empleado = new Empleado();
-
-                    empleado.IdEmpleado =
-                        Convert.ToInt32(
-                            reader["IdEmpleado"]
-                        );
-
-                    empleado.Nombre =
-                        reader["Nombre"].ToString();
-
-                    empleado.DUI =
-                        reader["DUI"].ToString();
-
-                    empleado.Direccion =
-                        reader["Direccion"].ToString();
-
-                    empleado.Telefono =
-                        reader["Telefono"].ToString();
-
-                    empleado.Correo =
-                        reader["Correo"].ToString();
-
-                    empleado.Usuario =
-                        reader["Usuario"].ToString();
-
-                    empleado.IdRolEmpleado =
-                        Convert.ToInt32(
-                            reader["IdRolEmpleado"]
-                        );
-
-                    empleado.FechaNacimiento =
-                        Convert.ToDateTime(
-                            reader["FechaNacimiento"]
-                        );
-
-                    empleado.FechaContratacion =
-                        Convert.ToDateTime(
-                            reader["FechaContratacion"]
-                        );
-                }
-
-                reader.Close();
-            }
-
-            return empleado;
-        }
-
-        // =========================================
-        // ROLES
-        // =========================================
-
-        public ListaEnlazada ObtenerRoles()
-        {
-            ListaEnlazada lista = new ListaEnlazada();
-
-            using (SqlConnection cn = conexion.AbrirConexion())
-            {
-                string query = @"
-            SELECT IdRolEmpleado, Roles
-            FROM RolEmpleado";
-
-                SqlCommand cmd = new SqlCommand(query, cn);
-                SqlDataReader dr = cmd.ExecuteReader();
-
-                while (dr.Read())
-                {
-                    RolEmpleado r = new RolEmpleado
-                    {
-                        IdRolEmpleado = Convert.ToInt32(dr["IdRolEmpleado"]),
-                        Roles = dr["Roles"].ToString()
-                    };
-
-                    lista.Agregar(r);
-                }
-            }
-
-            return lista;
-        }
-
-        // =========================================
-        // IDS
-        // =========================================
 
         private int ObtenerUltimoId(
             string tabla,
