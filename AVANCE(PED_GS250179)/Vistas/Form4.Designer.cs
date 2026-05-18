@@ -29,29 +29,20 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form4));
-            pictureBox1 = new PictureBox();
             btnAtras = new PictureBox();
             txtRuta = new TextBox();
             txtTari = new TextBox();
             txtRecorrido = new TextBox();
             btnAMapa = new PictureBox();
             Confi_R = new PictureBox();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            label1 = new Label();
+            label4 = new Label();
+            label2 = new Label();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnAMapa).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Confi_R).BeginInit();
             SuspendLayout();
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(1, 1);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(1112, 639);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.TabIndex = 3;
-            pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
             // 
             // btnAtras
             // 
@@ -91,8 +82,9 @@
             txtRecorrido.Cursor = Cursors.IBeam;
             txtRecorrido.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtRecorrido.Location = new Point(390, 310);
+            txtRecorrido.Multiline = true;
             txtRecorrido.Name = "txtRecorrido";
-            txtRecorrido.Size = new Size(360, 27);
+            txtRecorrido.Size = new Size(360, 138);
             txtRecorrido.TabIndex = 7;
             // 
             // btnAMapa
@@ -119,24 +111,73 @@
             Confi_R.TabStop = false;
             Confi_R.Click += Confi_R_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(390, 195);
+            label1.Name = "label1";
+            label1.Size = new Size(0, 20);
+            label1.TabIndex = 0;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.BackColor = Color.Transparent;
+            label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.ForeColor = SystemColors.ControlLightLight;
+            label4.Location = new Point(390, 201);
+            label4.Name = "label4";
+            label4.Size = new Size(54, 23);
+            label4.TabIndex = 18;
+            label4.Text = "RUTA";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.ForeColor = SystemColors.ControlLightLight;
+            label2.Location = new Point(518, 201);
+            label2.Name = "label2";
+            label2.Size = new Size(67, 23);
+            label2.TabIndex = 19;
+            label2.Text = "TARIFA";
+            label2.Click += label2_Click;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.BackColor = Color.Transparent;
+            label3.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.ForeColor = SystemColors.ControlLightLight;
+            label3.Location = new Point(390, 284);
+            label3.Name = "label3";
+            label3.Size = new Size(107, 23);
+            label3.TabIndex = 20;
+            label3.Text = "RECORRIDO";
+            // 
             // Form4
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = Properties.Resources.fondo2_Agregar_;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1112, 639);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label4);
             Controls.Add(Confi_R);
             Controls.Add(btnAMapa);
+            Controls.Add(label1);
             Controls.Add(txtRecorrido);
             Controls.Add(txtTari);
             Controls.Add(txtRuta);
             Controls.Add(btnAtras);
-            Controls.Add(pictureBox1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form4";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form4";
             Load += Form4_Load;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnAMapa).EndInit();
             ((System.ComponentModel.ISupportInitialize)Confi_R).EndInit();
@@ -145,13 +186,15 @@
         }
 
         #endregion
-
-        private PictureBox pictureBox1;
         private PictureBox btnAtras;
         private TextBox txtRuta;
         private TextBox txtTari;
         private TextBox txtRecorrido;
         private PictureBox btnAMapa;
         private PictureBox Confi_R;
+        private Label label1;
+        private Label label4;
+        private Label label2;
+        private Label label3;
     }
 }
