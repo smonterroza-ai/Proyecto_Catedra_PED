@@ -28,19 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form8));
             txtBuscar = new TextBox();
             dgvEmpleados = new DataGridView();
             label6 = new Label();
-            btnEliminar = new PictureBox();
-            btnEditarM = new PictureBox();
-            btnAR = new PictureBox();
-            btnAtras = new PictureBox();
+            btnAgregar = new Button();
+            btnEditar = new Button();
+            btnEliminar = new Button();
+            btnRegresar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvEmpleados).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)btnEliminar).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)btnEditarM).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)btnAR).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
             SuspendLayout();
             // 
             // txtBuscar
@@ -77,57 +72,75 @@
             label6.Text = "GESTION DE CONDUCTORES";
             label6.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // btnAgregar
+            // 
+            btnAgregar.BackColor = Color.SteelBlue;
+            btnAgregar.FlatAppearance.BorderSize = 0;
+            btnAgregar.FlatStyle = FlatStyle.Flat;
+            btnAgregar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAgregar.ForeColor = SystemColors.ControlLightLight;
+            btnAgregar.Image = Properties.Resources.boton_agregar;
+            btnAgregar.Location = new Point(543, 22);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(110, 38);
+            btnAgregar.TabIndex = 22;
+            btnAgregar.Text = "  Agregar";
+            btnAgregar.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnAgregar.UseVisualStyleBackColor = false;
+            btnAgregar.Click += btnAgregar_Click;
+            // 
+            // btnEditar
+            // 
+            btnEditar.BackColor = Color.Orange;
+            btnEditar.BackgroundImageLayout = ImageLayout.None;
+            btnEditar.FlatAppearance.BorderSize = 0;
+            btnEditar.FlatStyle = FlatStyle.Flat;
+            btnEditar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEditar.ForeColor = SystemColors.ControlLightLight;
+            btnEditar.Image = Properties.Resources.boligrafo;
+            btnEditar.Location = new Point(671, 22);
+            btnEditar.Name = "btnEditar";
+            btnEditar.Size = new Size(110, 38);
+            btnEditar.TabIndex = 23;
+            btnEditar.Text = "  Editar";
+            btnEditar.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnEditar.UseVisualStyleBackColor = false;
+            btnEditar.Click += btnEditar_Click;
+            // 
             // btnEliminar
             // 
-            btnEliminar.Cursor = Cursors.Hand;
-            btnEliminar.Image = (Image)resources.GetObject("btnEliminar.Image");
-            btnEliminar.Location = new Point(792, 22);
-            btnEliminar.Margin = new Padding(3, 2, 3, 2);
+            btnEliminar.BackColor = Color.IndianRed;
+            btnEliminar.BackgroundImageLayout = ImageLayout.None;
+            btnEliminar.FlatAppearance.BorderSize = 0;
+            btnEliminar.FlatStyle = FlatStyle.Flat;
+            btnEliminar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEliminar.ForeColor = SystemColors.ControlLightLight;
+            btnEliminar.Image = Properties.Resources.eliminar;
+            btnEliminar.Location = new Point(796, 22);
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(110, 30);
-            btnEliminar.SizeMode = PictureBoxSizeMode.StretchImage;
-            btnEliminar.TabIndex = 18;
-            btnEliminar.TabStop = false;
-            btnEliminar.Click += btnEliminar_Click;
+            btnEliminar.Size = new Size(110, 38);
+            btnEliminar.TabIndex = 24;
+            btnEliminar.Text = "  Eliminar";
+            btnEliminar.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnEliminar.UseVisualStyleBackColor = false;
+            btnEliminar.Click += btnEliminar_Click_1;
             // 
-            // btnEditarM
+            // btnRegresar
             // 
-            btnEditarM.Cursor = Cursors.Hand;
-            btnEditarM.Image = (Image)resources.GetObject("btnEditarM.Image");
-            btnEditarM.Location = new Point(664, 22);
-            btnEditarM.Margin = new Padding(3, 2, 3, 2);
-            btnEditarM.Name = "btnEditarM";
-            btnEditarM.Size = new Size(110, 30);
-            btnEditarM.SizeMode = PictureBoxSizeMode.StretchImage;
-            btnEditarM.TabIndex = 17;
-            btnEditarM.TabStop = false;
-            btnEditarM.Click += btnEditarM_Click;
-            // 
-            // btnAR
-            // 
-            btnAR.Cursor = Cursors.Hand;
-            btnAR.Image = (Image)resources.GetObject("btnAR.Image");
-            btnAR.Location = new Point(538, 22);
-            btnAR.Margin = new Padding(3, 2, 3, 2);
-            btnAR.Name = "btnAR";
-            btnAR.Size = new Size(110, 30);
-            btnAR.SizeMode = PictureBoxSizeMode.StretchImage;
-            btnAR.TabIndex = 16;
-            btnAR.TabStop = false;
-            btnAR.Click += btnAR_Click;
-            // 
-            // btnAtras
-            // 
-            btnAtras.Cursor = Cursors.Hand;
-            btnAtras.Image = (Image)resources.GetObject("btnAtras.Image");
-            btnAtras.Location = new Point(33, 434);
-            btnAtras.Margin = new Padding(3, 2, 3, 2);
-            btnAtras.Name = "btnAtras";
-            btnAtras.Size = new Size(122, 34);
-            btnAtras.SizeMode = PictureBoxSizeMode.StretchImage;
-            btnAtras.TabIndex = 15;
-            btnAtras.TabStop = false;
-            btnAtras.Click += btnAtras_Click;
+            btnRegresar.BackColor = Color.DarkGray;
+            btnRegresar.FlatAppearance.BorderSize = 0;
+            btnRegresar.FlatStyle = FlatStyle.Flat;
+            btnRegresar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnRegresar.ForeColor = SystemColors.ControlLightLight;
+            btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
+            btnRegresar.Location = new Point(31, 429);
+            btnRegresar.Name = "btnRegresar";
+            btnRegresar.Size = new Size(111, 38);
+            btnRegresar.TabIndex = 25;
+            btnRegresar.Text = "  Regresar";
+            btnRegresar.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnRegresar.UseVisualStyleBackColor = false;
+            btnRegresar.Click += btnRegresar_Click;
             // 
             // Form8
             // 
@@ -137,23 +150,20 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(936, 479);
             ControlBox = false;
+            Controls.Add(btnRegresar);
+            Controls.Add(btnEliminar);
+            Controls.Add(btnEditar);
+            Controls.Add(btnAgregar);
             Controls.Add(txtBuscar);
             Controls.Add(dgvEmpleados);
             Controls.Add(label6);
-            Controls.Add(btnEliminar);
-            Controls.Add(btnEditarM);
-            Controls.Add(btnAR);
-            Controls.Add(btnAtras);
             FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(3, 2, 3, 2);
             Name = "Form8";
             Text = "Form8";
             Load += Form8_Load;
+            Shown += Form8_Shown;
             ((System.ComponentModel.ISupportInitialize)dgvEmpleados).EndInit();
-            ((System.ComponentModel.ISupportInitialize)btnEliminar).EndInit();
-            ((System.ComponentModel.ISupportInitialize)btnEditarM).EndInit();
-            ((System.ComponentModel.ISupportInitialize)btnAR).EndInit();
-            ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -163,9 +173,9 @@
         private TextBox txtBuscar;
         private DataGridView dgvEmpleados;
         private Label label6;
-        private PictureBox btnEliminar;
-        private PictureBox btnEditarM;
-        private PictureBox btnAR;
-        private PictureBox btnAtras;
+        private Button btnAgregar;
+        private Button btnEditar;
+        private Button btnEliminar;
+        private Button btnRegresar;
     }
 }

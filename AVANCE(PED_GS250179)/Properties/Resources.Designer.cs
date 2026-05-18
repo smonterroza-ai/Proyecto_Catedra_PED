@@ -73,9 +73,59 @@ namespace AVANCE_PED_GS250179_.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap agregar__2_ {
+            get {
+                object obj = ResourceManager.GetObject("agregar (2)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap boligrafo {
+            get {
+                object obj = ResourceManager.GetObject("boligrafo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap boton_agregar {
+            get {
+                object obj = ResourceManager.GetObject("boton-agregar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap conductor {
             get {
                 object obj = ResourceManager.GetObject("conductor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap eliminar {
+            get {
+                object obj = ResourceManager.GetObject("eliminar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap esquema_de_boton_circular_de_flecha_hacia_atras_izquierda {
+            get {
+                object obj = ResourceManager.GetObject("esquema-de-boton-circular-de-flecha-hacia-atras-izquierda", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -166,6 +216,16 @@ namespace AVANCE_PED_GS250179_.Properties {
         internal static System.Drawing.Bitmap icons8_ojo_cerrado_24 {
             get {
                 object obj = ResourceManager.GetObject("icons8-ojo-cerrado-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap marca_de_verificacion {
+            get {
+                object obj = ResourceManager.GetObject("marca-de-verificacion", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

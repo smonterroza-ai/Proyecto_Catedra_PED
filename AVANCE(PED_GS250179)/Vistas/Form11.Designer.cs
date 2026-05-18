@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form11));
             txtConfirmarContraseña = new TextBox();
-            btnguardar = new PictureBox();
             label9 = new Label();
             dtpContratacion = new DateTimePicker();
             label8 = new Label();
@@ -53,7 +52,7 @@
             cmbRol = new ComboBox();
             label11 = new Label();
             txtDireccion = new TextBox();
-            ((System.ComponentModel.ISupportInitialize)btnguardar).BeginInit();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
             SuspendLayout();
             // 
@@ -64,19 +63,6 @@
             txtConfirmarContraseña.PasswordChar = '*';
             txtConfirmarContraseña.Size = new Size(253, 23);
             txtConfirmarContraseña.TabIndex = 38;
-            // 
-            // btnguardar
-            // 
-            btnguardar.Cursor = Cursors.Hand;
-            btnguardar.Image = (Image)resources.GetObject("btnguardar.Image");
-            btnguardar.Location = new Point(433, 508);
-            btnguardar.Margin = new Padding(3, 2, 3, 2);
-            btnguardar.Name = "btnguardar";
-            btnguardar.Size = new Size(108, 29);
-            btnguardar.SizeMode = PictureBoxSizeMode.StretchImage;
-            btnguardar.TabIndex = 37;
-            btnguardar.TabStop = false;
-            btnguardar.Click += btnguardar_Click;
             // 
             // label9
             // 
@@ -297,6 +283,23 @@
             txtDireccion.Size = new Size(215, 23);
             txtDireccion.TabIndex = 42;
             // 
+            // button1
+            // 
+            button1.BackColor = Color.SteelBlue;
+            button1.FlatAppearance.BorderSize = 0;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.ForeColor = SystemColors.ControlLightLight;
+            button1.Image = Properties.Resources.marca_de_verificacion;
+            button1.Location = new Point(442, 507);
+            button1.Name = "button1";
+            button1.Size = new Size(101, 38);
+            button1.TabIndex = 44;
+            button1.Text = "  Listo";
+            button1.TextImageRelation = TextImageRelation.ImageBeforeText;
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
             // Form11
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -304,13 +307,13 @@
             BackgroundImage = Properties.Resources.fondo_agregarconductor_;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(990, 580);
+            Controls.Add(button1);
             Controls.Add(label11);
             Controls.Add(txtDireccion);
             Controls.Add(cmbRol);
             Controls.Add(label10);
             Controls.Add(btnAtras);
             Controls.Add(txtConfirmarContraseña);
-            Controls.Add(btnguardar);
             Controls.Add(label9);
             Controls.Add(dtpContratacion);
             Controls.Add(label8);
@@ -334,7 +337,7 @@
             Name = "Form11";
             Text = "Form11";
             Load += Form11_Load;
-            ((System.ComponentModel.ISupportInitialize)btnguardar).EndInit();
+            Shown += Form11_Shown;
             ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -343,7 +346,6 @@
         #endregion
 
         private TextBox txtConfirmarContraseña;
-        private PictureBox btnguardar;
         private Label label9;
         private DateTimePicker dtpContratacion;
         private Label label8;
@@ -366,5 +368,6 @@
         private ComboBox cmbRol;
         private Label label11;
         private TextBox txtDireccion;
+        private Button button1;
     }
 }

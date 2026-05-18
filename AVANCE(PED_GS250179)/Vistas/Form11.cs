@@ -1,6 +1,7 @@
 ﻿using AVANCE_PED_GS250179_.Estructuras;
 using AVANCE_PED_GS250179_.Modelos;
 using AVANCE_PED_GS250179_.Servicio;
+using AVANCE_PED_GS250179_.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace AVANCE_PED_GS250179_.Vistas
 {
@@ -33,6 +35,60 @@ namespace AVANCE_PED_GS250179_.Vistas
         }
 
         private void btnguardar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CargarRoles()
+        {
+            cmbRol.Items.Clear();
+
+            ListaEnlazada lista = service.ObtenerRoles();
+
+            NodoLista actual = lista.Cabeza;
+
+            while (actual != null)
+            {
+                RolEmpleado r = (RolEmpleado)actual.Datos;
+
+                cmbRol.Items.Add(r);
+
+                actual = actual.Siguiente;
+            }
+
+            cmbRol.DisplayMember = "Roles";
+            cmbRol.ValueMember = "IdRolEmpleado";
+
+            cmbRol.SelectedIndex = -1;
+        }
+
+        private void btnAtras_Click(
+            object sender,
+            EventArgs e
+        )
+        {
+            Form8 form =
+                new Form8();
+
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void Form11_Load(object sender, EventArgs e)
+        {
+            CargarRoles();
+        }
+
+        private void btnAtras_Click_1(object sender, EventArgs e)
+        {
+            Form8 frm = new Form8();
+            frm.Show();
+
+            this.Hide();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
         {
             try
             {
@@ -105,53 +161,9 @@ namespace AVANCE_PED_GS250179_.Vistas
             }
         }
 
-        private void CargarRoles()
+        private void Form11_Shown(object sender, EventArgs e)
         {
-            cmbRol.Items.Clear();
-
-            ListaEnlazada lista = service.ObtenerRoles();
-
-            NodoLista actual = lista.Cabeza;
-
-            while (actual != null)
-            {
-                RolEmpleado r = (RolEmpleado)actual.Datos;
-
-                cmbRol.Items.Add(r);
-
-                actual = actual.Siguiente;
-            }
-
-            cmbRol.DisplayMember = "Roles";
-            cmbRol.ValueMember = "IdRolEmpleado";
-
-            cmbRol.SelectedIndex = -1;
-        }
-
-        private void btnAtras_Click(
-            object sender,
-            EventArgs e
-        )
-        {
-            Form8 form =
-                new Form8();
-
-            form.Show();
-
-            this.Hide();
-        }
-
-        private void Form11_Load(object sender, EventArgs e)
-        {
-            CargarRoles();
-        }
-
-        private void btnAtras_Click_1(object sender, EventArgs e)
-        {
-            Form8 frm = new Form8();
-            frm.Show();
-
-            this.Hide();
+            RedondearBoton.RedondearBotones(button1, 30);
         }
     }
 }
