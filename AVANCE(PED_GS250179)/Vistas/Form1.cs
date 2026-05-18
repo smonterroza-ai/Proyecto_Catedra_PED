@@ -35,34 +35,62 @@ namespace AVANCE_PED_GS250179_
         }
 
         private void btnIS_Click(object sender, EventArgs e)
+{
+    string login = txtuser.Text.Trim(); // .Trim() elimina espacios accidentales
+    string clave = txtpass.Text.Trim();
+
+    if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(clave))
+    {
+        MessageBox.Show("Complete todos los campos", "Atención",
+            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return;
+    }
+
+    try
+    {
+        // INTENTAR AUTENTICAR COMO CLIENTE
+        ClienteService clienteService = new ClienteService();
+        Cliente clienteLogueado = clienteService.ValidarLogin(login, clave);
+
+        if (clienteLogueado != null)
         {
-            string login = txtuser.Text;
-            string clave = txtpass.Text;
-            if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(clave))
-            {
-                MessageBox.Show("Complete todos los campos", "Atención",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            MessageBox.Show($"¡Bienvenido/a {clienteLogueado.Nombre}!", "Acceso Cliente", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            EmpleadoService service = new EmpleadoService();
-            Empleado empLogueado = service.ValidarLogin(login, clave);
-
-            if (empLogueado != null)
-            {
-
-                Form2 formAdmin = new Form2(empLogueado.IdEmpleado);
-                formAdmin.Show();
-                this.Hide(); // Oculta el login
-
-            }
-            else
-            {
-                MessageBox.Show("Credenciales incorrectas");
-            }
-
-
+            MenuCliente formCliente = new MenuCliente(clienteLogueado.IdCliente);
+            formCliente.Show();
+            this.Hide();
+            return; // Finaliza el método con éxito
         }
+    }
+    catch (Exception ex)
+    {
+        // Si hay un error de conexión, nombre de columna inválido, etc., saltará aquí:
+        MessageBox.Show("Error interno en Login Cliente:\n" + ex.Message, "Depuración", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        return;
+    }
+
+    // SI NO ENCONTRÓ CLIENTE, INTENTA COMO EMPLEADO
+    try
+    {
+        EmpleadoService service = new EmpleadoService();
+        Empleado empLogueado = service.ValidarLogin(login, clave);
+
+        if (empLogueado != null)
+        {
+            Form2 formAdmin = new Form2(empLogueado.IdEmpleado);
+            formAdmin.Show();
+            this.Hide(); // Oculta el login
+        }
+        else
+        {
+            MessageBox.Show("Credenciales incorrectas", "Acceso Denegado", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+        }
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show("Error interno en Login Empleado:\n" + ex.Message, "Depuración", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
