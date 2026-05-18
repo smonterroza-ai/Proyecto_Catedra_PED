@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AVANCE_PED_GS250179_.Datos;
+using System;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -8,8 +9,8 @@ namespace AVANCE_PED_GS250179_
 {
     public partial class RecargarForm : Form
     {
-        // Cadena de conexión heredada de tu arquitectura
-        //private string connectionString = "Server=TU_SERVIDOR;Database=ReiseDB;Trusted_Connection=True;";
+        // Variable para almacenar el ID del cliente que inició sesión
+        private int idClienteLogueado;
 
         // Elementos de interfaz
         private ComboBox cmbMonto;
@@ -20,8 +21,11 @@ namespace AVANCE_PED_GS250179_
         private Button btnPagar;
         private Button btnCancelar;
 
-        public RecargarForm()
+        // MODIFICADO: Ahora el constructor requiere obligatoriamente el ID del cliente
+        public RecargarForm(int idCliente)
         {
+            this.idClienteLogueado = idCliente;
+
             // Configuración de la ventana (Estilo modal moderno)
             this.Size = new Size(460, 580);
             this.FormBorderStyle = FormBorderStyle.None;
@@ -33,7 +37,7 @@ namespace AVANCE_PED_GS250179_
 
         private void ConstruirInterfazRecarga()
         {
-            // Panel Superior / Encabezado Temático (Inspirado en paga-todo.com)
+            // Panel Superior / Encabezado Temático
             Panel pnlHeader = new Panel { Size = new Size(460, 65), Location = new Point(0, 0), BackColor = Color.FromArgb(245, 247, 250) };
             Label lblHeaderTitulo = new Label
             {
@@ -69,7 +73,7 @@ namespace AVANCE_PED_GS250179_
                 DropDownStyle = ComboBoxStyle.DropDownList
             };
             cmbMonto.Items.AddRange(new object[] { "$3.00", "$5.00", "$10.00", "$20.00", "$50.00" });
-            cmbMonto.SelectedIndex = 0; // Por defecto $3.00 como la muestra
+            cmbMonto.SelectedIndex = 0;
             this.Controls.Add(cmbMonto);
 
             // Subtítulo de Tarjeta
@@ -114,7 +118,7 @@ namespace AVANCE_PED_GS250179_
             txtCVV.MaxLength = 3;
             this.Controls.Add(txtCVV);
 
-            // Botón de Acción Principal: PAGAR CON TARJETA (Azul corporativo como la muestra)
+            // Botón de Acción Principal: PAGAR CON TARJETA
             btnPagar = new Button
             {
                 Text = "PAGAR CON TARJETA",
@@ -147,10 +151,10 @@ namespace AVANCE_PED_GS250179_
             this.Controls.Add(btnCancelar);
         }
 
-        // Evento que procesa y valida la lógica de negocio
+        // Evento que procesa la transacción de recarga
         private void BtnPagar_Click(object sender, EventArgs e)
         {
-            // Validaciones rápidas de campos vacíos
+            // 1. Validaciones rigurosas de la interfaz
             if (string.IsNullOrWhiteSpace(txtNombreTarjeta.Text) ||
                 txtNumeroTarjeta.Text.Length < 16 ||
                 string.IsNullOrWhiteSpace(txtExpiracion.Text) ||
@@ -161,17 +165,58 @@ namespace AVANCE_PED_GS250179_
                 return;
             }
 
-            // Extracción limpia del monto numérico eliminando el signo '$'
+            // 2. Extracción limpia en decimal para evitar discrepancias con SQL Server
             string itemSeleccionado = cmbMonto.SelectedItem.ToString();
-            double montoARecargar = Convert.ToDouble(itemSeleccionado.Replace("$", ""));
+            decimal montoARecargar = Convert.ToDecimal(itemSeleccionado.Replace("$", "").Trim());
 
-            // CONEXIÓN DIRECTA A TU SQL SERVER PARA ACTUALIZAR EL SALDO
-            // NOTA: Ajusta el WHERE según cómo manejes la sesión del usuario (ej. ID de Cliente)
-           
-            
+            // 3. Conexión e incremento de saldo directo en BD
+            Conexion con = new Conexion();
+            SqlConnection cn = con.AbrirConexion();
+
+            if (cn == null)
+            {
+                MessageBox.Show("No se pudo establecer conexión con el servidor de base de datos.", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                // Sumamos el dinero de forma segura usando parámetros numéricos
+                string queryRecarga = "UPDATE InfoCliente SET Saldo = Saldo + @Monto WHERE IdCliente = @IdCliente";
+
+                using (SqlCommand cmd = new SqlCommand(queryRecarga, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Monto", montoARecargar);
+                    cmd.Parameters.AddWithValue("@IdCliente", idClienteLogueado);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show($"¡Transacción Exitosa!\nSe han abonado ${montoARecargar:F2} a tu cuenta de reise.",
+                                        "Pago Procesado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        this.DialogResult = DialogResult.OK; // Indica al formulario padre que se efectuó el pago
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("El usuario no fue encontrado en el sistema central. No se alteró el saldo.",
+                                        "Error de Destinatario", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error crítico al procesar el pago con el banco: " + ex.Message,
+                                "Fallo de Transacción", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                con.CerrarConexion(cn);
+            }
         }
 
-        // Generador auxiliar de cajas de texto consistentes
         private TextBox CrearTextBoxEstilizado(int x, int y, int ancho)
         {
             TextBox tb = new TextBox
@@ -184,7 +229,6 @@ namespace AVANCE_PED_GS250179_
             return tb;
         }
 
-        // Pintar borde exterior al formulario completo para darle presencia visual
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
