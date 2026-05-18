@@ -75,6 +75,7 @@
             txtTari.Name = "txtTari";
             txtTari.Size = new Size(56, 27);
             txtTari.TabIndex = 6;
+            txtTari.KeyPress += txtTari_KeyPress;
             // 
             // txtRecorrido
             // 
@@ -84,7 +85,7 @@
             txtRecorrido.Location = new Point(390, 310);
             txtRecorrido.Multiline = true;
             txtRecorrido.Name = "txtRecorrido";
-            txtRecorrido.Size = new Size(360, 138);
+            txtRecorrido.Size = new Size(360, 125);
             txtRecorrido.TabIndex = 7;
             // 
             // btnAMapa

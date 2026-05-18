@@ -46,11 +46,12 @@ namespace AVANCE_PED_GS250179_
             MostrarMensaje = true;
         }
 
+        Form10 ventanaMapa = new Form10();
         private void btnAMapa_Click(object sender, EventArgs e)
         {
-            Form10 ventanaMapa = new Form10();
-
             
+
+
             if (ventanaMapa.ShowDialog() == DialogResult.OK)
             {
 
@@ -100,7 +101,7 @@ namespace AVANCE_PED_GS250179_
                 SqlCommand cmdRutaBuses = new SqlCommand(queryRutaBuses, cn);
                 cmdRutaBuses.Parameters.AddWithValue("@idRuta", nuevoIdRuta);
                 cmdRutaBuses.Parameters.AddWithValue("@idRecorrido", nuevoIdRecorrido);
-                cmdRutaBuses.Parameters.AddWithValue("@costo", Convert.ToDecimal(txtTari.Text)); 
+                cmdRutaBuses.Parameters.AddWithValue("@costo", Convert.ToDecimal(txtTari.Text));
                 cmdRutaBuses.ExecuteNonQuery();
 
                 string queryInfoRuta = "INSERT INTO InfoRutaBuses (IdRutaBuses, NumeroRuta, MotoristaNombre, IdDetalleBuses) VALUES (@idRuta, @numRuta, 'Pendiente', 1)";
@@ -128,6 +129,21 @@ namespace AVANCE_PED_GS250179_
         private void label2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void txtTari_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // Solo permitir un punto decimal
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
