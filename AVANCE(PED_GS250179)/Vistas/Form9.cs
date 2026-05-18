@@ -16,5 +16,10 @@ namespace AVANCE_PED_GS250179_.Vistas
         {
             InitializeComponent();
         }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

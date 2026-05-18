@@ -39,8 +39,6 @@ namespace AVANCE_PED_GS250179_
             cmbEstado.Items.Add("Inactivo");
 
             cmbEstado.SelectedIndex = -1;
-            CargarRutas();
-            CargarConductores();
 
             if (esEditar)
             {
@@ -61,8 +59,6 @@ namespace AVANCE_PED_GS250179_
                 txtModelo.Text = unidad.Modelo;
 
                 cmbTipoVehiculo.SelectedValue = unidad.IdTipoVehiculo;
-                cmbRuta.SelectedValue = unidad.IdRutaBuses;
-                cmbConductor.SelectedValue = unidad.IdEmpleado;
             }
         }
 
@@ -141,38 +137,22 @@ namespace AVANCE_PED_GS250179_
             cmbTipoVehiculo.SelectedIndex = -1;
         }
 
-        private void CargarRutas()
+        private void CargarComboRutas()
         {
-            var lista =
-                service.ObtenerRutas();
-
-            cmbRuta.DataSource =
-                lista;
-
-            cmbRuta.DisplayMember =
-                "NumeroRuta";
-
-            cmbRuta.ValueMember =
-                "IdRutaBuses";
-
-            cmbRuta.SelectedIndex = -1;
+            var dt = service.ObtenerRutas();
+            cmbRutas.DataSource = dt;
+            cmbRutas.DisplayMember = "Nombre"; // columna para mostrar
+            cmbRutas.ValueMember = "Id";      // id real
+            cmbRutas.SelectedIndex = -1;
         }
 
-        private void CargarConductores()
+        private void CargarComboConductores()
         {
-            var lista =
-                service.ObtenerConductores();
-
-            cmbConductor.DataSource =
-                lista;
-
-            cmbConductor.DisplayMember =
-                "Nombre";
-
-            cmbConductor.ValueMember =
-                "IdEmpleado";
-
-            cmbConductor.SelectedIndex = -1;
+            var dt = service.ObtenerConductores();
+            cmbConductores.DataSource = dt;
+            cmbConductores.DisplayMember = "Nombre";
+            cmbConductores.ValueMember = "Id";
+            cmbConductores.SelectedIndex = -1;
         }
 
         private void label2_Click(object sender, EventArgs e)
