@@ -1,6 +1,7 @@
 ﻿using AVANCE_PED_GS250179_.Estructuras;
 using AVANCE_PED_GS250179_.Modelos;
 using AVANCE_PED_GS250179_.Servicio;
+using AVANCE_PED_GS250179_.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -68,6 +69,43 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void btnguardar_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void CargarRoles()
+        {
+            cmbRol.Items.Clear();
+
+            ListaEnlazada lista = service.ObtenerRoles();
+
+            NodoLista actual = lista.Cabeza;
+
+            while (actual != null)
+            {
+                cmbRol.Items.Add(actual.Datos);
+                actual = actual.Siguiente;
+            }
+
+            cmbRol.SelectedIndex = -1;
+        }
+
+        private void btnAtras_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRegresar_Click(object sender, EventArgs e)
+        {
+            Form8 form =
+                new Form8();
+
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
             try
             {
                 if (txtNombre.Text.Trim() == "" ||
@@ -117,31 +155,10 @@ namespace AVANCE_PED_GS250179_.Vistas
             }
         }
 
-        private void CargarRoles()
+        private void Form12_Shown(object sender, EventArgs e)
         {
-            cmbRol.Items.Clear();
-
-            ListaEnlazada lista = service.ObtenerRoles();
-
-            NodoLista actual = lista.Cabeza;
-
-            while (actual != null)
-            {
-                cmbRol.Items.Add(actual.Datos);
-                actual = actual.Siguiente;
-            }
-
-            cmbRol.SelectedIndex = -1;
-        }
-
-        private void btnAtras_Click(object sender, EventArgs e)
-        {
-            Form8 form =
-                new Form8();
-
-            form.Show();
-
-            this.Hide();
+            RedondearBoton.RedondearBotones(button1, 30);
+            RedondearBoton.RedondearBotones(btnRegresar, 30);
         }
     }
 }

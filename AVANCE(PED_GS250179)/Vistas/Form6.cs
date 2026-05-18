@@ -1,11 +1,12 @@
-﻿using System;
+﻿using AVANCE_PED_GS250179_.Servicio;
+using AVANCE_PED_GS250179_.Utilidades;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using AVANCE_PED_GS250179_.Servicio;
 
 namespace AVANCE_PED_GS250179_
 {
@@ -25,6 +26,7 @@ namespace AVANCE_PED_GS250179_
 
         private void btnAtras_Click(object sender, EventArgs e)
         {
+<<<<<<< Updated upstream
             if (this.Owner != null)
             {
                 this.Owner.Show(); // Volvemos a mostrar el Form2 original con su rol intacto
@@ -37,9 +39,45 @@ namespace AVANCE_PED_GS250179_
                 menu.Show();
                 this.Hide();
             }
+=======
+
+>>>>>>> Stashed changes
         }
 
         private void Añadir_U_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void EditarU_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void EliminarU_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            dgvUnidades.DataSource = service.BuscarUnidad(txtBuscar.Text);
+        }
+
+        private void CargarTabla()
+        {
+            dgvUnidades.DataSource = service.MostrarUnidades();
+
+            dgvUnidades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvUnidades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvUnidades.EnableHeadersVisualStyles = false;
+            dgvUnidades.ColumnHeadersDefaultCellStyle.BackColor = Color.LightSlateGray;
+            dgvUnidades.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
         {
             Form7 Au = new Form7();
             Au.Show();
@@ -47,9 +85,8 @@ namespace AVANCE_PED_GS250179_
             this.Hide();
         }
 
-        private void EditarU_Click(object sender, EventArgs e)
+        private void btnEditar_Click(object sender, EventArgs e)
         {
-
             try
             {
                 if (dgvUnidades.Rows.Count == 0)
@@ -70,27 +107,15 @@ namespace AVANCE_PED_GS250179_
                     return;
                 }
 
-                // =====================================
-                // OBTENER ID
-                // =====================================
-
                 int id =
                     Convert.ToInt32(
                         dgvUnidades.CurrentRow.Cells["Id"].Value
                     );
 
-                // =====================================
-                // ABRIR FORM EDITAR
-                // =====================================
-
                 Form7 form =
                     new Form7(id);
 
                 form.ShowDialog();
-
-                // =====================================
-                // RECARGAR TABLA
-                // =====================================
 
                 CargarTabla();
             }
@@ -102,7 +127,7 @@ namespace AVANCE_PED_GS250179_
             }
         }
 
-        private void EliminarU_Click(object sender, EventArgs e)
+        private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvUnidades.Rows.Count > 0)
             {
@@ -130,22 +155,17 @@ namespace AVANCE_PED_GS250179_
             }
         }
 
-        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        private void btnRegresar_Click(object sender, EventArgs e)
         {
-            dgvUnidades.DataSource = service.BuscarUnidad(txtBuscar.Text);
+            this.Hide();
         }
 
-        private void CargarTabla()
+        private void Form6_Shown(object sender, EventArgs e)
         {
-            dgvUnidades.DataSource = service.MostrarUnidades();
-
-            dgvUnidades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvUnidades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-            dgvUnidades.EnableHeadersVisualStyles = false;
-            dgvUnidades.ColumnHeadersDefaultCellStyle.BackColor = Color.LightSlateGray;
-            dgvUnidades.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-
+            RedondearBoton.RedondearBotones(btnAgregar, 30);
+            RedondearBoton.RedondearBotones(btnEditar, 30);
+            RedondearBoton.RedondearBotones(btnEliminar, 30);
+            RedondearBoton.RedondearBotones(btnRegresar, 30);
         }
     }
 }

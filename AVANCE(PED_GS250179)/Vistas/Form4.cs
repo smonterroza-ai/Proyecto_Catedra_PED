@@ -1,5 +1,6 @@
 ﻿using AVANCE_PED_GS250179_.Datos;
 using AVANCE_PED_GS250179_.Servicio;
+using AVANCE_PED_GS250179_.Utilidades;
 using AVANCE_PED_GS250179_.Vistas;
 using System;
 using System.Collections.Generic;
@@ -37,23 +38,18 @@ namespace AVANCE_PED_GS250179_
 
             txtRecorrido.Text = _rutaService.ObtenerRecorridoPorIdRuta(ruta.IdRutaBuses);
 
-            
-            
+
+
             coordenadasGPSEditar = _rutaService.ObtenerCoordenadasGPS(ruta.IdRutaBuses);
 
             ventanaMapa.ReconstruirMapa(coordenadasGPSEditar);
-          
+
         }
 
         private static bool MostrarMensaje = false;
 
         private void btnAtras_Click(object sender, EventArgs e)
         {
-            Form3 Rutas = new Form3();
-            Rutas.Show();
-
-            this.Hide();
-
 
         }
 
@@ -74,6 +70,36 @@ namespace AVANCE_PED_GS250179_
         Form10 ventanaMapa = new Form10();
         private void btnAMapa_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void Confi_R_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtTari_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // Solo permitir un punto decimal
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
             if (ventanaMapa.ShowDialog() == DialogResult.OK)
             {
 
@@ -83,7 +109,15 @@ namespace AVANCE_PED_GS250179_
             }
         }
 
-        private void Confi_R_Click(object sender, EventArgs e)
+        private void btnRegresar_Click(object sender, EventArgs e)
+        {
+            Form3 Rutas = new Form3();
+            Rutas.Show();
+
+            this.Hide();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtRuta.Text) || string.IsNullOrWhiteSpace(txtTari.Text) || string.IsNullOrWhiteSpace(txtRecorrido.Text))
             {
@@ -187,25 +221,11 @@ namespace AVANCE_PED_GS250179_
             }
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void Form4_Shown(object sender, EventArgs e)
         {
-
+            RedondearBoton.RedondearBotones(btnAgregar, 30);
+            RedondearBoton.RedondearBotones(button1, 30);
+            RedondearBoton.RedondearBotones(btnRegresar, 30);
         }
-
-        private void txtTari_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar) && (e.KeyChar != '.'))
-            {
-                e.Handled = true;
-            }
-
-            // Solo permitir un punto decimal
-            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
-            {
-                e.Handled = true;
-            }
-        }
-       
     }
 }

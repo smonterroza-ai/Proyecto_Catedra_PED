@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form11));
             txtConfirmarContraseña = new TextBox();
             label9 = new Label();
             dtpContratacion = new DateTimePicker();
@@ -47,13 +46,12 @@
             txtDUI = new TextBox();
             label1 = new Label();
             txtNombre = new TextBox();
-            btnAtras = new PictureBox();
             label10 = new Label();
             cmbRol = new ComboBox();
             label11 = new Label();
             txtDireccion = new TextBox();
             button1 = new Button();
-            ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
+            btnRegresar = new Button();
             SuspendLayout();
             // 
             // txtConfirmarContraseña
@@ -229,19 +227,6 @@
             txtNombre.Size = new Size(513, 23);
             txtNombre.TabIndex = 20;
             // 
-            // btnAtras
-            // 
-            btnAtras.Cursor = Cursors.Hand;
-            btnAtras.Image = (Image)resources.GetObject("btnAtras.Image");
-            btnAtras.Location = new Point(12, 533);
-            btnAtras.Margin = new Padding(3, 2, 3, 2);
-            btnAtras.Name = "btnAtras";
-            btnAtras.Size = new Size(122, 34);
-            btnAtras.SizeMode = PictureBoxSizeMode.StretchImage;
-            btnAtras.TabIndex = 39;
-            btnAtras.TabStop = false;
-            btnAtras.Click += btnAtras_Click_1;
-            // 
             // label10
             // 
             label10.AutoSize = true;
@@ -300,6 +285,23 @@
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
+            // btnRegresar
+            // 
+            btnRegresar.BackColor = Color.DarkGray;
+            btnRegresar.FlatAppearance.BorderSize = 0;
+            btnRegresar.FlatStyle = FlatStyle.Flat;
+            btnRegresar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnRegresar.ForeColor = SystemColors.ControlLightLight;
+            btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
+            btnRegresar.Location = new Point(12, 530);
+            btnRegresar.Name = "btnRegresar";
+            btnRegresar.Size = new Size(111, 38);
+            btnRegresar.TabIndex = 45;
+            btnRegresar.Text = "  Regresar";
+            btnRegresar.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnRegresar.UseVisualStyleBackColor = false;
+            btnRegresar.Click += btnRegresar_Click;
+            // 
             // Form11
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -307,12 +309,12 @@
             BackgroundImage = Properties.Resources.fondo_agregarconductor_;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(990, 580);
+            Controls.Add(btnRegresar);
             Controls.Add(button1);
             Controls.Add(label11);
             Controls.Add(txtDireccion);
             Controls.Add(cmbRol);
             Controls.Add(label10);
-            Controls.Add(btnAtras);
             Controls.Add(txtConfirmarContraseña);
             Controls.Add(label9);
             Controls.Add(dtpContratacion);
@@ -338,7 +340,6 @@
             Text = "Form11";
             Load += Form11_Load;
             Shown += Form11_Shown;
-            ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -363,11 +364,11 @@
         private TextBox txtDUI;
         private Label label1;
         private TextBox txtNombre;
-        private PictureBox btnAtras;
         private Label label10;
         private ComboBox cmbRol;
         private Label label11;
         private TextBox txtDireccion;
         private Button button1;
+        private Button btnRegresar;
     }
 }

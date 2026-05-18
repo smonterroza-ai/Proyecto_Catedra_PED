@@ -82,10 +82,7 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void btnAtras_Click_1(object sender, EventArgs e)
         {
-            Form8 frm = new Form8();
-            frm.Show();
 
-            this.Hide();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -164,6 +161,15 @@ namespace AVANCE_PED_GS250179_.Vistas
         private void Form11_Shown(object sender, EventArgs e)
         {
             RedondearBoton.RedondearBotones(button1, 30);
+            RedondearBoton.RedondearBotones(btnRegresar, 30);
+        }
+
+        private void btnRegresar_Click(object sender, EventArgs e)
+        {
+            Form8 frm = new Form8();
+            frm.Show();
+
+            this.Hide();
         }
     }
 }

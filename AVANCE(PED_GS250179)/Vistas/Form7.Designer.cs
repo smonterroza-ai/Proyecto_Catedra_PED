@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form7));
-            btnAtras = new PictureBox();
-            Confi_U = new PictureBox();
             txtPlaca = new TextBox();
             label1 = new Label();
             label2 = new Label();
@@ -45,35 +42,9 @@
             label7 = new Label();
             cmbConductor = new ComboBox();
             cmbRuta = new ComboBox();
-            ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)Confi_U).BeginInit();
+            btnRegresar = new Button();
+            button1 = new Button();
             SuspendLayout();
-            // 
-            // btnAtras
-            // 
-            btnAtras.Cursor = Cursors.Hand;
-            btnAtras.Image = (Image)resources.GetObject("btnAtras.Image");
-            btnAtras.Location = new Point(12, 430);
-            btnAtras.Margin = new Padding(3, 2, 3, 2);
-            btnAtras.Name = "btnAtras";
-            btnAtras.Size = new Size(122, 34);
-            btnAtras.SizeMode = PictureBoxSizeMode.StretchImage;
-            btnAtras.TabIndex = 8;
-            btnAtras.TabStop = false;
-            btnAtras.Click += btnAtras_Click;
-            // 
-            // Confi_U
-            // 
-            Confi_U.Cursor = Cursors.Hand;
-            Confi_U.Image = (Image)resources.GetObject("Confi_U.Image");
-            Confi_U.Location = new Point(387, 395);
-            Confi_U.Margin = new Padding(3, 2, 3, 2);
-            Confi_U.Name = "Confi_U";
-            Confi_U.Size = new Size(110, 31);
-            Confi_U.SizeMode = PictureBoxSizeMode.StretchImage;
-            Confi_U.TabIndex = 15;
-            Confi_U.TabStop = false;
-            Confi_U.Click += Confi_U_Click;
             // 
             // txtPlaca
             // 
@@ -217,6 +188,40 @@
             cmbRuta.Size = new Size(84, 23);
             cmbRuta.TabIndex = 32;
             // 
+            // btnRegresar
+            // 
+            btnRegresar.BackColor = Color.DarkGray;
+            btnRegresar.FlatAppearance.BorderSize = 0;
+            btnRegresar.FlatStyle = FlatStyle.Flat;
+            btnRegresar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnRegresar.ForeColor = SystemColors.ControlLightLight;
+            btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
+            btnRegresar.Location = new Point(12, 425);
+            btnRegresar.Name = "btnRegresar";
+            btnRegresar.Size = new Size(111, 38);
+            btnRegresar.TabIndex = 47;
+            btnRegresar.Text = "  Regresar";
+            btnRegresar.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnRegresar.UseVisualStyleBackColor = false;
+            btnRegresar.Click += btnRegresar_Click;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.SteelBlue;
+            button1.FlatAppearance.BorderSize = 0;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.ForeColor = SystemColors.ControlLightLight;
+            button1.Image = Properties.Resources.marca_de_verificacion;
+            button1.Location = new Point(395, 389);
+            button1.Name = "button1";
+            button1.Size = new Size(101, 38);
+            button1.TabIndex = 46;
+            button1.Text = "  Listo";
+            button1.TextImageRelation = TextImageRelation.ImageBeforeText;
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
             // Form7
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -224,6 +229,8 @@
             BackgroundImage = Properties.Resources.fondo2_Agregar_;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(873, 475);
+            Controls.Add(btnRegresar);
+            Controls.Add(button1);
             Controls.Add(cmbRuta);
             Controls.Add(cmbConductor);
             Controls.Add(cmbTipoVehiculo);
@@ -238,23 +245,18 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(txtPlaca);
-            Controls.Add(Confi_U);
-            Controls.Add(btnAtras);
             FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(3, 2, 3, 2);
             Name = "Form7";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form7";
             Load += Form7_Load;
-            ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
-            ((System.ComponentModel.ISupportInitialize)Confi_U).EndInit();
+            Shown += Form7_Shown;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private PictureBox btnAtras;
-        private PictureBox Confi_U;
         private TextBox txtPlaca;
         private Label label1;
         private Label label2;
@@ -269,5 +271,7 @@
         private Label label7;
         private ComboBox cmbConductor;
         private ComboBox cmbRuta;
+        private Button btnRegresar;
+        private Button button1;
     }
 }

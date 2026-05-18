@@ -1,4 +1,5 @@
 ﻿using AVANCE_PED_GS250179_.Servicio;
+using AVANCE_PED_GS250179_.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,21 +38,35 @@ namespace AVANCE_PED_GS250179_
 
         private void btnAtras_Click(object sender, EventArgs e)
         {
-            var menuPrincipal = Application.OpenForms.OfType<Form2>().FirstOrDefault();
 
-            if (menuPrincipal != null)
-            {
-                menuPrincipal.Show(); // Lo volvemos a mostrar
-            }
-            else if (this.Owner != null)
-            {
-                this.Owner.Show(); // Plan B, por si acaso sí tiene Owner
-            }
-
-            this.Close();
         }
 
         private void btnAR_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditarR_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEliminarRuta_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+            CargarDatosGrid();
+        }
+
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            CargarDatosGrid(txtBuscar.Text.Trim());
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
         {
             Form4 añadir = new Form4();
             añadir.Show();
@@ -59,23 +74,23 @@ namespace AVANCE_PED_GS250179_
             this.Hide();
         }
 
-        private void btnEditarR_Click(object sender, EventArgs e)
+        private void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvRutas.SelectedRows.Count > 0)
             {
-                
+
                 RutaDTO rutaSeleccionada = (RutaDTO)dgvRutas.SelectedRows[0].DataBoundItem;
 
-                
-                Form4 frmRuta = new Form4(); 
-                frmRuta.Owner = this; 
 
-               
+                Form4 frmRuta = new Form4();
+                frmRuta.Owner = this;
+
+
                 frmRuta.ConfigurarModoEditar(rutaSeleccionada);
 
                 if (frmRuta.ShowDialog() == DialogResult.OK)
                 {
-                    
+
                     CargarDatosGrid(txtBuscar.Text.Trim());
                 }
             }
@@ -85,7 +100,7 @@ namespace AVANCE_PED_GS250179_
             }
         }
 
-        private void btnEliminarRuta_Click(object sender, EventArgs e)
+        private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvRutas.SelectedRows.Count > 0)
             {
@@ -115,15 +130,28 @@ namespace AVANCE_PED_GS250179_
             }
         }
 
-        private void Form3_Load(object sender, EventArgs e)
+        private void btnRegresar_Click(object sender, EventArgs e)
         {
-            CargarDatosGrid();
+            var menuPrincipal = Application.OpenForms.OfType<Form2>().FirstOrDefault();
+
+            if (menuPrincipal != null)
+            {
+                menuPrincipal.Show(); // Lo volvemos a mostrar
+            }
+            else if (this.Owner != null)
+            {
+                this.Owner.Show(); // Plan B, por si acaso sí tiene Owner
+            }
+
+            this.Close();
         }
 
-        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        private void Form3_Shown(object sender, EventArgs e)
         {
-            CargarDatosGrid(txtBuscar.Text.Trim());
+            RedondearBoton.RedondearBotones(btnAgregar, 30);
+            RedondearBoton.RedondearBotones(btnEditar, 30);
+            RedondearBoton.RedondearBotones(btnEliminar, 30);
+            RedondearBoton.RedondearBotones(btnRegresar, 30);
         }
-
     }
 }
