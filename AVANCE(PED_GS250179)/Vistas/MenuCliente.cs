@@ -1,4 +1,4 @@
-﻿using AVANCE_PED_GS250179_;
+﻿using AVANCE_PED_GS250179_.Datos; // Asegura el acceso a tu clase Conexion
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -8,11 +8,13 @@ using System.Windows.Forms;
 
 namespace AVANCE_PED_GS250179_
 {
-    
     public partial class MenuCliente : Form
     {
-        // CADENA DE CONEXIÓN GLOBAL
-        private string connectionString = "Server=TU_SERVIDOR;Database=ReiseDB;Trusted_Connection=True;";
+        // Instancia de tu clase de conexión para no usar cadenas quemadas en el diseño
+        private Conexion conexion = new Conexion();
+
+        // Variable global indispensable para registrar las transacciones del cliente logueado
+        private int idClienteActual;
 
         // Controles principales de la Interfaz
         private Panel panelSuperior;
@@ -28,8 +30,12 @@ namespace AVANCE_PED_GS250179_
 
         private Panel panelDerecho;
 
-        public MenuCliente()
+        // CORREGIDO: Constructor recibe el ID enviado desde Form1 para romper el error de compilación
+        public MenuCliente(int idCliente)
         {
+            // Asignamos el parámetro a nuestra variable global
+            this.idClienteActual = idCliente;
+
             this.Size = new Size(1024, 640);
             this.MinimumSize = new Size(1024, 640);
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -38,7 +44,7 @@ namespace AVANCE_PED_GS250179_
 
             ConstruirEsqueletoInterfaz();
             MostrarMenuPrincipalCliente();
-            ActualizarLabelSaldoPantalla(); // Carga el saldo inicial al iniciar
+            ActualizarLabelSaldoPantalla(); // Carga el saldo real desde la BD
         }
 
         private void ConstruirEsqueletoInterfaz()
@@ -75,7 +81,7 @@ namespace AVANCE_PED_GS250179_
 
             lblSaldo = new Label
             {
-                Text = "SALDO: ----",
+                Text = "SALDO: $0.00",
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 Location = new Point(290, 26),
                 AutoSize = true
@@ -105,7 +111,7 @@ namespace AVANCE_PED_GS250179_
             };
             btnRecargar.FlatAppearance.BorderSize = 0;
             btnRecargar.Paint += (s, e) => RecortarBordesControl(btnRecargar, 8);
-            btnRecargar.Click += BtnRecargar_Click; // Vinculación de recarga
+            btnRecargar.Click += BtnRecargar_Click;
             panelSuperior.Controls.Add(btnRecargar);
 
             // ==========================================
@@ -184,8 +190,8 @@ namespace AVANCE_PED_GS250179_
             containerRutas.HorizontalScroll.Visible = false;
             panelDerecho.Controls.Add(containerRutas);
 
-            // Simulación o lectura SQL de Top 3 rutas sugeridas
-            
+            // Carga dinámica de Rutas Sugeridas desde la Base de Datos
+            CargarRutasDesdeBaseDatos(containerRutas);
         }
 
         // VISTA B: DASHBOARD CENTRAL
@@ -234,11 +240,54 @@ namespace AVANCE_PED_GS250179_
             gridRutasTotales.HorizontalScroll.Visible = false;
             panelDerecho.Controls.Add(gridRutasTotales);
 
-           //CONECION CON LA BD
-            
+            // Cargamos el listado completo en el lienzo dinámico derecho
+            CargarRutasDesdeBaseDatos(gridRutasTotales);
         }
 
-        // FUNCIÓN GENERADORA DE TARJETAS (Arreglada línea 219 de errores)
+        // Método auxiliar para consultar la tabla de Rutas e insertarlas en los paneles
+        private void CargarRutasDesdeBaseDatos(FlowLayoutPanel layoutDestino)
+        {
+            SqlConnection cn = conexion.AbrirConexion();
+            try
+            {
+                // Asumiendo la estructura estándar de tu módulo de rutas de buses
+                string query = "SELECT IdRuta, NombreRuta, Tarifa FROM InfoRutas";
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int idRuta = reader.GetInt32(0);
+                        string nombre = reader.GetString(1);
+                        decimal tarifa = reader.GetDecimal(2);
+
+                        // Generamos el componente gráfico dinámico
+                        Panel tarjeta = GenerarTarjetaComponente(nombre, $"${tarifa:F2}");
+
+                        // Buscamos el botón Comprar dentro del panel para asignarle el ID de la ruta en el Tag
+                        foreach (Control c in tarjeta.Controls)
+                        {
+                            if (c is Button && c.Text == "COMPRAR")
+                            {
+                                c.Tag = idRuta; // Guardamos el ID de la ruta para el proceso de compra posterior
+                                c.Click += BtnComprarRuta_Click;
+                            }
+                        }
+
+                        layoutDestino.Controls.Add(tarjeta);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar las rutas del sistema: " + ex.Message, "Error BD", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                conexion.CerrarConexion(cn);
+            }
+        }
+
         private Panel GenerarTarjetaComponente(string nombreRuta, string precio)
         {
             Panel card = new Panel
@@ -278,34 +327,71 @@ namespace AVANCE_PED_GS250179_
             return card;
         }
 
-        // MANEJADORES DE EVENTOS
+        // Manejador del botón Comprar dentro de las tarjetas de buses
+        private void BtnComprarRuta_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            int idRutaSeleccionada = Convert.ToInt32(btn.Tag);
+
+            MessageBox.Show($"Ruta seleccionada con éxito (ID: {idRutaSeleccionada}).\nCliente actual: {idClienteActual}",
+                            "Confirmación de Selección", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private void BtnRecargar_Click(object sender, EventArgs e)
         {
-            using (RecargarForm pantallaRecarga = new RecargarForm())
+            // Nota: Cambia "RecargarForm" al nombre real de tu formulario de recargas si se llama distinto
+            using (Form2 pantallaRecarga = new Form2(idClienteActual))
             {
-                if (pantallaRecarga.ShowDialog(this) == DialogResult.OK)
-                {
-                    ActualizarLabelSaldoPantalla();
-                }
+                pantallaRecarga.ShowDialog(this);
+                ActualizarLabelSaldoPantalla(); // Refresca el saldo en pantalla después de cerrar la recarga
             }
         }
 
+        // CONECTADO: Lee de forma exacta el saldo del cliente desde la base de datos
         private void ActualizarLabelSaldoPantalla()
         {
-            
+            SqlConnection cn = conexion.AbrirConexion();
+            try
+            {
+                // Agregamos una columna o tabla de Saldo si manejas un sistema prepago digital
+                string query = "SELECT Saldo FROM InfoCliente WHERE IdCliente = @Id";
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", idClienteActual);
+                    object resultado = cmd.ExecuteScalar();
+
+                    if (resultado != null && resultado != DBNull.Value)
+                    {
+                        decimal saldo = Convert.ToDecimal(resultado);
+                        lblSaldo.Text = $"SALDO: ${saldo:F2}";
+                    }
+                    else
+                    {
+                        lblSaldo.Text = "SALDO: $0.00";
+                    }
+                }
+            }
+            catch
+            {
+                lblSaldo.Text = "SALDO: Error";
+            }
+            finally
+            {
+                conexion.CerrarConexion(cn);
+            }
         }
 
         private void BtnSalirLogin_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("¿Desea cerrar sesión?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                LoginForm login = new LoginForm();
+                Form1 login = new Form1();
                 login.Show();
                 this.Close();
             }
         }
 
-        // MÉTODOS AUXILIARES GRÁFICOS (GDI+) - Solución a Errores CS0103
+        // MÉTODOS AUXILIARES GRÁFICOS (GDI+)
         private void RecortarBordesControl(Control ctrl, int radius)
         {
             GraphicsPath path = new GraphicsPath();
