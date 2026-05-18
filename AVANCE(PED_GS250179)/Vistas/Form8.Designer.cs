@@ -47,21 +47,21 @@
             // 
             txtBuscar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txtBuscar.ForeColor = SystemColors.WindowText;
-            txtBuscar.Location = new Point(609, 99);
+            txtBuscar.Location = new Point(696, 132);
+            txtBuscar.Margin = new Padding(3, 4, 3, 4);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.PlaceholderText = "Buscar por nombre";
-            txtBuscar.Size = new Size(247, 25);
+            txtBuscar.Size = new Size(282, 29);
             txtBuscar.TabIndex = 21;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
             // dgvEmpleados
             // 
             dgvEmpleados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEmpleados.Location = new Point(74, 148);
-            dgvEmpleados.Margin = new Padding(3, 2, 3, 2);
+            dgvEmpleados.Location = new Point(85, 197);
             dgvEmpleados.Name = "dgvEmpleados";
             dgvEmpleados.RowHeadersWidth = 51;
-            dgvEmpleados.Size = new Size(782, 238);
+            dgvEmpleados.Size = new Size(894, 317);
             dgvEmpleados.TabIndex = 20;
             // 
             // label6
@@ -70,9 +70,9 @@
             label6.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label6.ForeColor = Color.White;
             label6.ImageAlign = ContentAlignment.BottomCenter;
-            label6.Location = new Point(74, 95);
+            label6.Location = new Point(85, 127);
             label6.Name = "label6";
-            label6.Size = new Size(371, 29);
+            label6.Size = new Size(424, 39);
             label6.TabIndex = 19;
             label6.Text = "GESTION DE CONDUCTORES";
             label6.TextAlign = ContentAlignment.MiddleCenter;
@@ -81,10 +81,9 @@
             // 
             btnEliminar.Cursor = Cursors.Hand;
             btnEliminar.Image = (Image)resources.GetObject("btnEliminar.Image");
-            btnEliminar.Location = new Point(792, 22);
-            btnEliminar.Margin = new Padding(3, 2, 3, 2);
+            btnEliminar.Location = new Point(905, 29);
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(110, 30);
+            btnEliminar.Size = new Size(126, 40);
             btnEliminar.SizeMode = PictureBoxSizeMode.StretchImage;
             btnEliminar.TabIndex = 18;
             btnEliminar.TabStop = false;
@@ -94,10 +93,9 @@
             // 
             btnEditarM.Cursor = Cursors.Hand;
             btnEditarM.Image = (Image)resources.GetObject("btnEditarM.Image");
-            btnEditarM.Location = new Point(664, 22);
-            btnEditarM.Margin = new Padding(3, 2, 3, 2);
+            btnEditarM.Location = new Point(759, 29);
             btnEditarM.Name = "btnEditarM";
-            btnEditarM.Size = new Size(110, 30);
+            btnEditarM.Size = new Size(126, 40);
             btnEditarM.SizeMode = PictureBoxSizeMode.StretchImage;
             btnEditarM.TabIndex = 17;
             btnEditarM.TabStop = false;
@@ -107,10 +105,9 @@
             // 
             btnAR.Cursor = Cursors.Hand;
             btnAR.Image = (Image)resources.GetObject("btnAR.Image");
-            btnAR.Location = new Point(538, 22);
-            btnAR.Margin = new Padding(3, 2, 3, 2);
+            btnAR.Location = new Point(615, 29);
             btnAR.Name = "btnAR";
-            btnAR.Size = new Size(110, 30);
+            btnAR.Size = new Size(126, 40);
             btnAR.SizeMode = PictureBoxSizeMode.StretchImage;
             btnAR.TabIndex = 16;
             btnAR.TabStop = false;
@@ -120,10 +117,9 @@
             // 
             btnAtras.Cursor = Cursors.Hand;
             btnAtras.Image = (Image)resources.GetObject("btnAtras.Image");
-            btnAtras.Location = new Point(33, 434);
-            btnAtras.Margin = new Padding(3, 2, 3, 2);
+            btnAtras.Location = new Point(38, 579);
             btnAtras.Name = "btnAtras";
-            btnAtras.Size = new Size(122, 34);
+            btnAtras.Size = new Size(139, 45);
             btnAtras.SizeMode = PictureBoxSizeMode.StretchImage;
             btnAtras.TabIndex = 15;
             btnAtras.TabStop = false;
@@ -131,11 +127,11 @@
             // 
             // Form8
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.fondo1;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(936, 479);
+            ClientSize = new Size(1070, 639);
             ControlBox = false;
             Controls.Add(txtBuscar);
             Controls.Add(dgvEmpleados);
@@ -145,8 +141,8 @@
             Controls.Add(btnAR);
             Controls.Add(btnAtras);
             FormBorderStyle = FormBorderStyle.None;
-            Margin = new Padding(3, 2, 3, 2);
             Name = "Form8";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form8";
             Load += Form8_Load;
             ((System.ComponentModel.ISupportInitialize)dgvEmpleados).EndInit();

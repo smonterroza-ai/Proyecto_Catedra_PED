@@ -15,7 +15,7 @@ namespace AVANCE_PED_GS250179_
         // Instancia de tu clase de conexión para no usar cadenas quemadas en el diseño
         private Conexion conexion = new Conexion();
 
-        // CORREGIDO: Instancia del servicio utilizando camelCase para evitar conflictos de nombres con la clase
+        // Instancia del servicio utilizando camelCase para evitar conflictos de nombres con la clase
         private RutaService rutaService = new RutaService();
 
         // Variable global indispensable para registrar las transacciones del cliente logueado
@@ -61,26 +61,38 @@ namespace AVANCE_PED_GS250179_
             // ==========================================
             panelSuperior = new Panel { Height = 75, Dock = DockStyle.Top, BackColor = Color.White };
 
-            pnlPerfil = new Panel { Size = new Size(150, 42), Location = new Point(20, 16), BackColor = Color.White };
-            pnlPerfil.Paint += (s, e) => DibujarBordeSuave(pnlPerfil, e.Graphics, Color.Black, 2, 8);
+            // Contenedor con AutoSize dinámico para albergar nombres de cualquier longitud
+            pnlPerfil = new Panel { Location = new Point(20, 16), Height = 42, AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, BackColor = Color.White };
+            pnlPerfil.Paint += (s, e) => DibujarBordeSuave(pnlPerfil, e.Graphics, Color.FromArgb(230, 230, 230), 1, 8);
 
-            Label lblIconUser = new Label { Text = "👤", Font = new Font("Segoe UI", 14), Location = new Point(12, 6), AutoSize = true };
-            pnlPerfil.Controls.Add(lblIconUser);
+            // Label dinámico modificado: Muestra "Bienvenido/a: [Nombre]" sin íconos molestos
+            string nombreUsuarioLogueado = ObtenerNombreUsuarioBD();
+            Label lblNombreUser = new Label
+            {
+                Text = $"Bienvenido/a: {nombreUsuarioLogueado}",
+                Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
+                ForeColor = Color.Black,
+                Location = new Point(12, 12), // Ajustado al inicio del panel al no haber ícono
+                AutoSize = true,
+                Margin = new Padding(0, 0, 15, 0) // Previene que el borde toque el final del texto
+            };
+            pnlPerfil.Controls.Add(lblNombreUser);
             panelSuperior.Controls.Add(pnlPerfil);
 
+            // Manteniendo posición X fija original para evitar colisiones visuales
             btnSalirLogin = new Button
             {
                 Text = "❌ SALIR",
                 Font = new Font("Segoe UI", 9, FontStyle.Bold),
-                ForeColor = Color.FromArgb(200, 50, 50),
+                ForeColor = Color.FromArgb(220, 53, 69),
                 BackColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Size = new Size(85, 32),
-                Location = new Point(185, 21),
+                Size = new Size(90, 32),
+                Location = new Point(280, 21),
                 Cursor = Cursors.Hand
             };
             btnSalirLogin.FlatAppearance.BorderSize = 1;
-            btnSalirLogin.FlatAppearance.BorderColor = Color.FromArgb(230, 230, 230);
+            btnSalirLogin.FlatAppearance.BorderColor = Color.FromArgb(240, 240, 240);
             btnSalirLogin.Click += BtnSalirLogin_Click;
             panelSuperior.Controls.Add(btnSalirLogin);
 
@@ -88,7 +100,7 @@ namespace AVANCE_PED_GS250179_
             {
                 Text = "SALDO: $0.00",
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                Location = new Point(290, 26),
+                Location = new Point(395, 26),
                 AutoSize = true
             };
             panelSuperior.Controls.Add(lblSaldo);
@@ -107,7 +119,7 @@ namespace AVANCE_PED_GS250179_
             {
                 Text = "RECARGAR",
                 Font = new Font("Segoe UI", 9, FontStyle.Bold),
-                BackColor = Color.FromArgb(0, 180, 100),
+                BackColor = Color.FromArgb(0, 185, 113), // Color Verde Profesional de Reise
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
                 Size = new Size(110, 32),
@@ -126,28 +138,44 @@ namespace AVANCE_PED_GS250179_
 
             picTodasLasRutas = new PictureBox
             {
-                Size = new Size(340, 490),
+                Size = new Size(340, 410), // Ajustamos el alto para dejarle espacio limpio al texto abajo
                 Location = new Point(20, 10),
-                BackColor = Color.LightGray,
-                SizeMode = PictureBoxSizeMode.CenterImage,
+                BackColor = Color.FromArgb(245, 245, 245), // Un gris suave de fondo por si la imagen tiene transparencias
+                SizeMode = PictureBoxSizeMode.Zoom, // 'Zoom' mantiene la proporción de tu imagen sin deformarla
                 Cursor = Cursors.Hand
             };
+
+            // Intentamos cargar la imagen desde los recursos del proyecto de forma segura
+            try
+            {
+                // Cambia "imagen_rutas_portada" por el nombre exacto con el que guardes tu imagen en Resources
+                picTodasLasRutas.Image = Properties.Resources.icono_rutas;
+            }
+            catch
+            {
+                // Respaldo visual si aún no la has importado a Visual Studio
+                picTodasLasRutas.BackColor = Color.FromArgb(230, 230, 230);
+            }
+
             picTodasLasRutas.Click += (s, e) => MostrarDashboardTodasLasRutas();
             panelIzquierdo.Controls.Add(picTodasLasRutas);
 
             lblTodasLasRutas = new Label
             {
                 Text = "TODAS LAS RUTAS",
-                Font = new Font("Segoe UI", 18, FontStyle.Bold),
-                BackColor = Color.FromArgb(220, 255, 255, 255),
+                Font = new Font("Segoe UI", 16, FontStyle.Bold), // Un tamaño 16 queda más balanceado
+                BackColor = Color.FromArgb(245, 245, 245),
                 ForeColor = Color.Black,
-                Size = new Size(340, 60),
-                Location = new Point(0, 410),
+                Size = new Size(340, 50),
+                Location = new Point(20, 425), // Posicionado exactamente abajo de la imagen (410 + 10 + margen)
                 TextAlign = ContentAlignment.MiddleCenter,
                 Cursor = Cursors.Hand
             };
             lblTodasLasRutas.Click += (s, e) => MostrarDashboardTodasLasRutas();
-            picTodasLasRutas.Controls.Add(lblTodasLasRutas);
+            lblTodasLasRutas.Paint += (s, e) => DibujarBordeSuave(lblTodasLasRutas, e.Graphics, Color.FromArgb(230, 230, 230), 1, 8);
+
+            // Agregamos el label directamente al panel izquierdo, no a la imagen
+            panelIzquierdo.Controls.Add(lblTodasLasRutas);
 
             // ==========================================
             // 3. SECCIÓN DERECHA (Lienzo Dinámico)
@@ -159,11 +187,38 @@ namespace AVANCE_PED_GS250179_
             this.Controls.Add(panelSuperior);
         }
 
-        // VISTA A: MENÚ PRINCIPAL NORMAL
-        // VISTA A: MENÚ PRINCIPAL NORMAL
+        // Método auxiliar para consultar el Nombre real del usuario logueado en la BD
+        private string ObtenerNombreUsuarioBD()
+        {
+            SqlConnection cn = conexion.AbrirConexion();
+            try
+            {
+                string query = "SELECT Nombre FROM InfoCliente WHERE IdCliente = @Id";
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", idClienteActual);
+                    object resultado = cmd.ExecuteScalar();
+
+                    if (resultado != null && resultado != DBNull.Value)
+                    {
+                        return resultado.ToString();
+                    }
+                }
+            }
+            catch
+            {
+                return "Usuario Client";
+            }
+            finally
+            {
+                conexion.CerrarConexion(cn);
+            }
+            return "Usuario Client";
+        }
+
+        // VISTA A: MENÚ PRINCIPAL NORMAL (Columna única)
         private void MostrarMenuPrincipalCliente()
         {
-            // CORREGIDO: Volvemos a mostrar el panel izquierdo al regresar al menú principal
             if (panelIzquierdo != null)
             {
                 panelIzquierdo.Visible = true;
@@ -184,11 +239,10 @@ namespace AVANCE_PED_GS250179_
             panelDerecho.Controls.Add(lblBuscar);
 
             Panel pnlBuscarInput = new Panel { Size = new Size(420, 32), Location = new Point(90, 52), BackColor = Color.White };
-            pnlBuscarInput.Paint += (s, e) => DibujarBordeSuave(pnlBuscarInput, e.Graphics, Color.Gray, 1, 8);
-            TextBox txtBuscar = new TextBox { Font = new Font("Segoe UI", 10), BorderStyle = BorderStyle.None, Size = new Size(400, 20), Location = new Point(10, 6) };
+            pnlBuscarInput.Paint += (s, e) => DibujarBordeSuave(pnlBuscarInput, e.Graphics, Color.DarkGray, 1, 8);
+            TextBox txtBuscar = new TextBox { Font = new Font("Segoe UI", 10), BorderStyle = BorderStyle.None, Size = new Size(400, 20), Location = new Point(10, 6), };
 
-            // Filtro en tiempo real al escribir en la caja
-            txtBuscar.TextChanged += (s, e) => CargarRutasDesdeBaseDatos(panelDerecho.Controls["containerRutas"] as FlowLayoutPanel, txtBuscar.Text);
+            txtBuscar.TextChanged += (s, e) => CargarRutasDesdeBaseDatos(panelDerecho.Controls["containerRutas"] as FlowLayoutPanel, txtBuscar.Text, 540);
 
             pnlBuscarInput.Controls.Add(txtBuscar);
             panelDerecho.Controls.Add(pnlBuscarInput);
@@ -207,32 +261,89 @@ namespace AVANCE_PED_GS250179_
             containerRutas.HorizontalScroll.Visible = false;
             panelDerecho.Controls.Add(containerRutas);
 
-            CargarRutasDesdeBaseDatos(containerRutas, "");
+            CargarRutasDesdeBaseDatos(containerRutas, "", 540);
         }
 
-        // VISTA B: DASHBOARD CENTRAL
+        // VISTA B: DASHBOARD CENTRAL EN DOS COLUMNAS CON BUSCADOR
         private void MostrarDashboardTodasLasRutas()
         {
-            // CORREGIDO: Ocultamos el panel de navegación izquierdo por completo
             if (panelIzquierdo != null)
             {
-                panelIzquierdo.Visible = false;
+                panelIzquierdo.Visible = false; // Al ocultarse, panelDerecho toma todo el ancho (1004px aprox)
             }
 
             panelDerecho.Controls.Clear();
 
+            // 1. Agregamos el PictureBox para el icono/imagen del título
+            PictureBox picIconoDash = new PictureBox
+            {
+                Location = new Point(20, 15),
+                Size = new Size(35, 35),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                BackColor = Color.White
+            };
+
+            // Intenta cargar la imagen desde Resources de manera segura para evitar caídas si aún no la agregas
+            try
+            {
+                picIconoDash.Image = Properties.Resources.icono_rutas;
+            }
+            catch
+            {
+                // Si aún no pones la imagen en Resources, dejará el cuadro vacío en blanco sin crashear
+                picIconoDash.BackColor = Color.FromArgb(240, 240, 240);
+            }
+            panelDerecho.Controls.Add(picIconoDash);
+
+            // 2. Título de la sección desplazado un poco a la derecha (X=65) para dejarle espacio al icono
             Label lblTituloDash = new Label
             {
                 Text = "SISTEMA CENTRAL — TODAS LAS RUTAS DISPONIBLES",
                 Font = new Font("Segoe UI", 14, FontStyle.Bold),
                 ForeColor = Color.Black,
-                Location = new Point(20, 12),
-                Size = new Size(540, 50),
-                AutoSize = false,
+                Location = new Point(65, 12),
+                Size = new Size(915, 40),
                 TextAlign = ContentAlignment.MiddleLeft
             };
             panelDerecho.Controls.Add(lblTituloDash);
 
+            // =========================================================================
+            // Barra de Acciones con Filtrador (Alineación corregida a lo ancho)
+            // =========================================================================
+            FlowLayoutPanel barraAcciones = new FlowLayoutPanel
+            {
+                Location = new Point(20, 55),
+                Size = new Size(960, 45),
+                FlowDirection = FlowDirection.RightToLeft,
+                WrapContents = false,
+                BackColor = Color.White
+            };
+
+            // Caja contenedora de Input estilizada
+            Panel pnlBuscarInputDash = new Panel
+            {
+                Size = new Size(220, 32),
+                BackColor = Color.White,
+                Margin = new Padding(0, 3, 0, 0)
+            };
+            pnlBuscarInputDash.Paint += (s, e) => DibujarBordeSuave(pnlBuscarInputDash, e.Graphics, Color.DarkGray, 1, 6);
+
+            TextBox txtBuscarDash = new TextBox { Font = new Font("Segoe UI", 10), BorderStyle = BorderStyle.None, Size = new Size(200, 20), Location = new Point(10, 6) };
+            pnlBuscarInputDash.Controls.Add(txtBuscarDash);
+            barraAcciones.Controls.Add(pnlBuscarInputDash);
+
+            // Etiqueta Filtrar integrada
+            Label lblBuscarDash = new Label
+            {
+                Text = "FILTRAR RUTAS:",
+                Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
+                ForeColor = Color.FromArgb(60, 60, 60),
+                AutoSize = true,
+                Margin = new Padding(0, 10, 8, 0)
+            };
+            barraAcciones.Controls.Add(lblBuscarDash);
+
+            // Botón Regresar
             Button btnVolverMenuNormal = new Button
             {
                 Text = "← Volver al Menú",
@@ -240,38 +351,47 @@ namespace AVANCE_PED_GS250179_
                 BackColor = Color.FromArgb(74, 79, 84),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Size = new Size(140, 30),
-                Location = new Point(20, 68),
+                AutoSize = true,
+                MinimumSize = new Size(135, 32),
+                Margin = new Padding(0, 3, 40, 0),
                 Cursor = Cursors.Hand
             };
             btnVolverMenuNormal.FlatAppearance.BorderSize = 0;
             btnVolverMenuNormal.Paint += (s, e) => RecortarBordesControl(btnVolverMenuNormal, 6);
-            btnVolverMenuNormal.Click += (s, e) => MostrarMenuPrincipalCliente();
-            panelDerecho.Controls.Add(btnVolverMenuNormal);
+            btnVolverMenuNormal.Click += (s, e) => {
+                MostrarMenuPrincipalCliente();
+                ActualizarLabelSaldoPantalla();
+            };
+            barraAcciones.Controls.Add(btnVolverMenuNormal);
 
-            // CORREGIDO: Como ahora se oculta el panel izquierdo, ampliamos el Size de 580 a 960 de ancho 
-            // para que aproveche todo el espacio libre y el diseño se vea espectacular.
+            panelDerecho.Controls.Add(barraAcciones);
+
+            // =========================================================================
+            // Contenedor en Formato Grid Enorme (Dos Columnas Reales Limpias)
+            // =========================================================================
             FlowLayoutPanel gridRutasTotales = new FlowLayoutPanel
             {
-                Location = new Point(20, 112),
-                Size = new Size(960, 410),
+                Name = "gridRutasTotales",
+                Location = new Point(20, 110),
+                Size = new Size(975, 440), // Crecimiento estratégico para desplegar las dos columnas sin truncar
                 AutoScroll = true,
-                FlowDirection = FlowDirection.TopDown,
-                WrapContents = false,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = true, // Esencial para el salto de columna
                 BackColor = Color.White
             };
             gridRutasTotales.HorizontalScroll.Maximum = 0;
             gridRutasTotales.HorizontalScroll.Visible = false;
             panelDerecho.Controls.Add(gridRutasTotales);
 
-            CargarRutasDesdeBaseDatos(gridRutasTotales, "");
+            // Asignación de evento de filtrado en tiempo real pasándole los 455px optimizados por columna
+            txtBuscarDash.TextChanged += (s, e) => CargarRutasDesdeBaseDatos(gridRutasTotales, txtBuscarDash.Text, 455);
+
+            // Carga inicial: 2 Columnas impecables de 455px dejando margen de protección para el Scrollbar
+            CargarRutasDesdeBaseDatos(gridRutasTotales, "", 455);
         }
 
-        // VISTA B: DASHBOARD CENTRAL
-        
-
         // Método auxiliar para consultar la tabla de Rutas e insertarlas en los paneles
-        private void CargarRutasDesdeBaseDatos(FlowLayoutPanel layoutDestino, string filtroBusqueda)
+        private void CargarRutasDesdeBaseDatos(FlowLayoutPanel layoutDestino, string filtroBusqueda, int anchoTarjeta)
         {
             if (layoutDestino == null) return;
 
@@ -280,7 +400,6 @@ namespace AVANCE_PED_GS250179_
 
             try
             {
-                // CORREGIDO: Llamada con minúscula a la instancia 'rutaService' para eliminar el error CS0120
                 List<RutaDTO> rutas = rutaService.ObtenerRutas(filtroBusqueda);
 
                 if (rutas.Count == 0)
@@ -299,18 +418,16 @@ namespace AVANCE_PED_GS250179_
 
                 foreach (var r in rutas)
                 {
-                    // Concatenamos el Inicio y el Final para mostrar el trayecto completo en la tarjeta
-                    string trayectoCompleto = $"{r.Inicio} ➔ {r.Final}";
+                    string traytrayectoCompleto = $"{r.Inicio} ➔ {r.Final}";
 
-                    // CORREGIDO: Pasamos los 3 argumentos que la nueva firma requiere (Número, trayecto, costo)
-                    Panel tarjeta = GenerarTarjetaComponente(r.NumeroRuta, trayectoCompleto, $"${r.CostoDelPasaje:F2}");
+                    // Enviamos el anchoTarjeta que requiere cada layout de forma estricta
+                    Panel tarjeta = GenerarTarjetaComponente(r.NumeroRuta, traytrayectoCompleto, $"${r.CostoDelPasaje:F2}", anchoTarjeta);
 
-                    // Buscamos el botón COMPRAR para incrustarle el IdRutaBuses correcto
                     foreach (Control c in tarjeta.Controls)
                     {
                         if (c is Button && c.Text == "COMPRAR")
                         {
-                            c.Tag = r.IdRutaBuses; // Llave primaria real de tu BD
+                            c.Tag = r.IdRutaBuses; // Llave primaria de la BD
                             c.Click += BtnComprarRuta_Click;
                         }
                     }
@@ -322,51 +439,81 @@ namespace AVANCE_PED_GS250179_
             {
                 MessageBox.Show(ex.Message, "Error de Carga de Rutas", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            finally
-            {
-                layoutDestino.ResumeLayout();
-            }
+            layoutDestino.ResumeLayout();
         }
 
-        // CORREGIDO: Firma adaptada a 3 parámetros para mostrar estéticamente Número de ruta y Destinos en la tarjeta
-        private Panel GenerarTarjetaComponente(string numeroRuta, string trayecto, string precio)
+        // CONTROL RESPONSIVO CORREGIDO: Se integró PictureBox real y se movieron los textos a la derecha
+        private Panel GenerarTarjetaComponente(string numeroRuta, string trayecto, string precio, int widthDinamico)
         {
+            // Espaciado dinámico lateral
+            int margenDerecho = (widthDinamico < 500) ? 15 : 12;
+
             Panel card = new Panel
             {
-                Size = new Size(540, 105),
-                MinimumSize = new Size(540, 105),
-                MaximumSize = new Size(540, 105),
-                BackColor = Color.FromArgb(74, 79, 84),
-                Margin = new Padding(0, 0, 0, 15)
+                Size = new Size(widthDinamico, 115),
+                BackColor = Color.FromArgb(50, 55, 60),
+                Margin = new Padding(0, 0, margenDerecho, 15)
             };
-            card.SizeChanged += (s, e) => RecortarBordesControl(card, 15);
 
-            // 1. Icono del autobús
-            Label lblIconBus = new Label { Text = "🚌", Font = new Font("Segoe UI", 32), ForeColor = Color.White, Location = new Point(20, 20), AutoSize = true };
-            card.Controls.Add(lblIconBus);
+            card.SizeChanged += (s, e) => RecortarBordesControl(card, 12);
 
-            // 2. Número de Ruta (Ej: "Ruta 42")
-            Label lblNumRuta = new Label { Text = numeroRuta, Font = new Font("Segoe UI", 15, FontStyle.Bold), ForeColor = Color.FromArgb(0, 210, 120), Location = new Point(105, 18), AutoSize = true };
+            // 1. CORRECCIÓN PRINCIPAL: Se sustituye el Label con emoji por un PictureBox dinámico que lee de Resources
+            PictureBox picIconBus = new PictureBox
+            {
+                Size = new Size(50, 50),
+                Location = new Point(16, 16),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                BackColor = Color.Transparent
+            };
+
+            try
+            {
+                picIconBus.Image = Properties.Resources.icono_rutas;
+            }
+            catch
+            {
+                // Respaldo visual en caso de fallo de carga
+                picIconBus.BackColor = Color.DimGray;
+            }
+            card.Controls.Add(picIconBus);
+
+            // 2. CORRECCIÓN DE POSICIÓN: Desplazado a X=82 para que no se solape con el PictureBox de 50px y corte letras
+            Label lblNumRuta = new Label
+            {
+                Text = numeroRuta,
+                Font = new Font("Segoe UI", 14f, FontStyle.Bold),
+                ForeColor = Color.FromArgb(0, 185, 113),
+                Location = new Point(82, 16),
+                AutoSize = true
+            };
             card.Controls.Add(lblNumRuta);
 
-            // 3. Recorrido de la Ruta (Ej: "Soyapango ➔ Santa Tecla")
-            Label lblTrayecto = new Label { Text = trayecto, Font = new Font("Segoe UI", 11, FontStyle.Regular), ForeColor = Color.White, Location = new Point(106, 52), AutoSize = true };
+            // 3. CORRECCIÓN DE POSICIÓN: Desplazado a X=82 para mantener la alineación vertical limpia
+            Label lblTrayecto = new Label
+            {
+                Text = trayecto,
+                Font = new Font("Segoe UI", 9f, FontStyle.Regular),
+                ForeColor = Color.FromArgb(235, 235, 235),
+                Location = new Point(82, 44),
+                AutoSize = false,
+                Size = new Size(widthDinamico - 100, 34)
+            };
             card.Controls.Add(lblTrayecto);
 
-            // 4. Costo del pasaje (Ej: "$0.35")
-            Label lblPrecio = new Label { Text = precio, Font = new Font("Segoe UI", 14, FontStyle.Bold), ForeColor = Color.White, Location = new Point(445, 20), AutoSize = true };
+            // 4. Costo del pasaje mantiene posición estética inferior
+            Label lblPrecio = new Label { Text = precio, Font = new Font("Segoe UI", 13f, FontStyle.Bold), ForeColor = Color.White, Location = new Point(16, 80), AutoSize = true };
             card.Controls.Add(lblPrecio);
 
-            // 5. Botón de acción Compra
+            // 5. Botón de acción Compra responsivo pegado al extremo derecho
             Button btnComprar = new Button
             {
                 Text = "COMPRAR",
-                Font = new Font("Segoe UI", 8, FontStyle.Bold),
-                BackColor = Color.FromArgb(0, 180, 100),
+                Font = new Font("Segoe UI", 8f, FontStyle.Bold),
+                BackColor = Color.FromArgb(0, 185, 113),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Size = new Size(95, 28),
-                Location = new Point(420, 58),
+                Size = new Size(100, 28),
+                Location = new Point(widthDinamico - 115, 78),
                 Cursor = Cursors.Hand
             };
             btnComprar.FlatAppearance.BorderSize = 0;
@@ -376,21 +523,16 @@ namespace AVANCE_PED_GS250179_
             return card;
         }
 
-        // Manejador del botón Comprar dentro de las tarjetas de buses
-
         private void BtnComprarRuta_Click(object sender, EventArgs e)
         {
-            // 1. Identificamos qué botón originó el evento y extraemos el ID de la ruta guardado en su propiedad Tag
             Button btnSeleccionado = (Button)sender;
             int idRutaSeleccionada = Convert.ToInt32(btnSeleccionado.Tag);
 
-            // Variables locales para almacenar la información unificada del recorrido
             string numeroRuta = "";
             string inicioRecorrido = "";
             string finalRecorrido = "";
             decimal costoDelPasaje = 0.00m;
 
-            // 2. Abrimos la conexión utilizando tu clase de configuración
             Conexion con = new Conexion();
             SqlConnection cn = con.AbrirConexion();
 
@@ -402,14 +544,12 @@ namespace AVANCE_PED_GS250179_
 
             try
             {
-                // 3. Consulta SQL con INNER JOIN basada fielmente en tu script de base de datos
-                // Extrae el costo, número de ruta público, origen y destino unificando las llaves foráneas
                 string queryBuscarRuta = @"
-            SELECT r.CostoDelPasaje, i.NumeroRuta, rec.inicio, rec.Final 
-            FROM RutaBuses r
-            INNER JOIN InfoRutaBuses i ON r.IdRutaBuses = i.IdRutaBuses
-            INNER JOIN RecorridoRuta rec ON r.IdRecorridoRuta = rec.IdRecorridoRuta
-            WHERE r.IdRutaBuses = @IdRuta";
+                    SELECT r.CostoDelPasaje, i.NumeroRuta, rec.inicio, rec.Final 
+                    FROM RutaBuses r
+                    INNER JOIN InfoRutaBuses i ON r.IdRutaBuses = i.IdRutaBuses
+                    INNER JOIN RecorridoRuta rec ON r.IdRecorridoRuta = rec.IdRecorridoRuta
+                    WHERE r.IdRutaBuses = @IdRuta";
 
                 using (SqlCommand cmd = new SqlCommand(queryBuscarRuta, cn))
                 {
@@ -419,7 +559,6 @@ namespace AVANCE_PED_GS250179_
                     {
                         if (reader.Read())
                         {
-                            // Asignamos los valores recuperados de las tablas correspondientes
                             numeroRuta = reader["NumeroRuta"].ToString();
                             inicioRecorrido = reader["inicio"].ToString();
                             finalRecorrido = reader["Final"].ToString();
@@ -433,15 +572,10 @@ namespace AVANCE_PED_GS250179_
                     }
                 }
 
-                // 4. PASO CLAVE: Instanciamos el formulario de detalle pasándole los parámetros
-                // NOTA: "this.idClienteActual" representa la variable global donde guardas el ID del cliente logueado (ej. Sarai con ID = 1)
                 using (DetalleRutaForm frmDetalle = new DetalleRutaForm(this.idClienteActual, idRutaSeleccionada, numeroRuta, inicioRecorrido, finalRecorrido, costoDelPasaje))
                 {
-                    // Mostramos el formulario como ventana modal (bloquea el menú de atrás hasta que decida Comprar o Cancelar)
                     if (frmDetalle.ShowDialog() == DialogResult.OK)
                     {
-                        // Si dentro del DetalleRutaForm presionó "COMPRAR PASAJE" y la transacción fue exitosa,
-                        // el formulario devuelve DialogResult.OK, por lo que actualizamos el Label del saldo en el menú principal.
                         ActualizarLabelSaldoPantalla();
                     }
                 }
@@ -452,25 +586,21 @@ namespace AVANCE_PED_GS250179_
             }
             finally
             {
-                // Aseguramos el cierre de la conexión pase lo que pase
                 con.CerrarConexion(cn);
             }
         }
 
         private void BtnRecargar_Click(object sender, EventArgs e)
         {
-            // Le pasas el id del cliente actual (ej. objeto de sesión o campo global de tu formulario)
             using (RecargarForm frmRecarga = new RecargarForm(this.idClienteActual))
             {
                 if (frmRecarga.ShowDialog() == DialogResult.OK)
                 {
-                    // Si el pago se ejecutó con éxito, refrescas la interfaz del menú inmediatamente
                     ActualizarLabelSaldoPantalla();
                 }
             }
         }
 
-        // CONECTADO: Lee de forma exacta el saldo del cliente desde la base de datos
         private void ActualizarLabelSaldoPantalla()
         {
             SqlConnection cn = conexion.AbrirConexion();
@@ -513,7 +643,6 @@ namespace AVANCE_PED_GS250179_
             }
         }
 
-        // MÉTODOS AUXILIARES GRÁFICOS (GDI+)
         private void RecortarBordesControl(Control ctrl, int radius)
         {
             GraphicsPath path = new GraphicsPath();

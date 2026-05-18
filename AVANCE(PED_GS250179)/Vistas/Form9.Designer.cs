@@ -304,6 +304,7 @@
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form9";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form9";
             ((System.ComponentModel.ISupportInitialize)btnguardar).EndInit();
             ((System.ComponentModel.ISupportInitialize)ptojo).EndInit();

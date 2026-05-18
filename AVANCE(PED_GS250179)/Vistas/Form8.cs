@@ -63,7 +63,16 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void btnAtras_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            if (this.Owner != null)
+            {
+                this.Owner.Show(); // Volvemos a mostrar el menú principal con su rol intacto
+                this.Close();      // Cerramos esta ventana por completo para no saturar la memoria
+            }
+            else
+            {
+                // Por seguridad, si se abriera sin dueño en alguna prueba, evitamos que se quede colgado
+                this.Close();
+            }
         }
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)

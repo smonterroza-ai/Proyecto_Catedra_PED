@@ -148,6 +148,7 @@
             Controls.Add(btnRegresar);
             Controls.Add(Pizarra);
             Name = "Form10";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form10";
             Load += Form10_Load;
             Pizarra.ResumeLayout(false);

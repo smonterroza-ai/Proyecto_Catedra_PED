@@ -336,6 +336,7 @@
             Controls.Add(txtNombre);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form12";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form12";
             ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnguardar).EndInit();

@@ -25,7 +25,18 @@ namespace AVANCE_PED_GS250179_
 
         private void btnAtras_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            if (this.Owner != null)
+            {
+                this.Owner.Show(); // Volvemos a mostrar el Form2 original con su rol intacto
+                this.Close();      // Cerramos esta ventana actual por completo para liberar memoria
+            }
+            else
+            {
+                // Por si acaso lo abriste directo sin pasarle el dueño, abrimos uno por defecto
+                Form2 menu = new Form2(1);
+                menu.Show();
+                this.Hide();
+            }
         }
 
         private void Añadir_U_Click(object sender, EventArgs e)
