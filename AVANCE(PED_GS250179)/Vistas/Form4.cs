@@ -17,6 +17,7 @@ namespace AVANCE_PED_GS250179_
         private int? idRutaEditar = null; // Si es null = Añadir, si tiene número = Editar
         private string puntoInicioEditar = "";
         private string puntoFinalEditar = "";
+        private string coordenadasGPSEditar = "";
         RutaService _rutaService = new RutaService();
         string inicioRecorridoBD = "";
         string finalRecorridoBD = "";
@@ -31,12 +32,17 @@ namespace AVANCE_PED_GS250179_
             txtRuta.Text = ruta.NumeroRuta;
             txtTari.Text = ruta.CostoDelPasaje.ToString();
 
-            // Guardamos los puntos actuales por si el usuario NO abre el mapa para cambiarlos
             puntoInicioEditar = ruta.Inicio;
             puntoFinalEditar = ruta.Final;
 
-            // Traemos el recorrido largo desde la base de datos para ponerlo en el TextBox
             txtRecorrido.Text = _rutaService.ObtenerRecorridoPorIdRuta(ruta.IdRutaBuses);
+
+            
+            
+            coordenadasGPSEditar = _rutaService.ObtenerCoordenadasGPS(ruta.IdRutaBuses);
+
+            ventanaMapa.ReconstruirMapa(coordenadasGPSEditar);
+          
         }
 
         private static bool MostrarMensaje = false;
@@ -68,22 +74,17 @@ namespace AVANCE_PED_GS250179_
         Form10 ventanaMapa = new Form10();
         private void btnAMapa_Click(object sender, EventArgs e)
         {
-            
-
-
             if (ventanaMapa.ShowDialog() == DialogResult.OK)
             {
 
-                txtRecorrido.Text = ventanaMapa.RecorridoGenerado;
-                inicioRecorridoBD = ventanaMapa.PuntoInicio;
-                finalRecorridoBD = ventanaMapa.PuntoFinal;
+                txtRecorrido.Text = ventanaMapa.DatosMapa.RecorridoGenerado;
+                inicioRecorridoBD = ventanaMapa.DatosMapa.PuntoInicio;
+                finalRecorridoBD = ventanaMapa.DatosMapa.PuntoFinal;
             }
-
         }
 
         private void Confi_R_Click(object sender, EventArgs e)
         {
-            // 1. Validar que no haya campos vacíos
             if (string.IsNullOrWhiteSpace(txtRuta.Text) || string.IsNullOrWhiteSpace(txtTari.Text) || string.IsNullOrWhiteSpace(txtRecorrido.Text))
             {
                 MessageBox.Show("Por favor llena todos los campos y añade el mapa.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -93,21 +94,25 @@ namespace AVANCE_PED_GS250179_
             // Evaluar si estamos EDITANDO o AGREGANDO
             if (idRutaEditar.HasValue)
             {
-                
                 try
                 {
-                    
-                    string inicio = string.IsNullOrEmpty(inicioRecorridoBD) ? puntoInicioEditar : inicioRecorridoBD;
-                    string final = string.IsNullOrEmpty(finalRecorridoBD) ? puntoFinalEditar : finalRecorridoBD;
+                    // ---------------------------------------------------------
+                    // MODO EDICIÓN: Definimos qué datos usar (los nuevos del mapa o los viejos de la BD)
+                    // ---------------------------------------------------------
+                    string inicio = string.IsNullOrEmpty(ventanaMapa.DatosMapa.PuntoInicio) ? puntoInicioEditar : ventanaMapa.DatosMapa.PuntoInicio;
+                    string final = string.IsNullOrEmpty(ventanaMapa.DatosMapa.PuntoFinal) ? puntoFinalEditar : ventanaMapa.DatosMapa.PuntoFinal;
+
+                    // AQUÍ AGREGAMOS LA LÓGICA DE LAS COORDENADAS GPS:
+                    string coords = string.IsNullOrEmpty(ventanaMapa.DatosMapa.CoordenadasGeneradas) ? coordenadasGPSEditar : ventanaMapa.DatosMapa.CoordenadasGeneradas;
 
                     decimal tarifa = Convert.ToDecimal(txtTari.Text.Trim());
 
-                   
-                    if (_rutaService.ActualizarRuta(idRutaEditar.Value, txtRuta.Text.Trim(), tarifa, inicio, final, txtRecorrido.Text.Trim()))
+                    // AQUÍ AGREGAMOS LA VARIABLE 'coords' AL FINAL DEL LLAMADO DEL SERVICIO:
+                    if (_rutaService.ActualizarRuta(idRutaEditar.Value, txtRuta.Text.Trim(), tarifa, inicio, final, txtRecorrido.Text.Trim(), coords))
                     {
                         MessageBox.Show("¡La ruta se actualizó exitosamente en la Base de Datos!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        this.DialogResult = DialogResult.OK; 
-                        this.Close(); 
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
                     }
                 }
                 catch (Exception ex)
@@ -117,7 +122,7 @@ namespace AVANCE_PED_GS250179_
             }
             else
             {
-                
+
                 Conexion conexion = new Conexion();
                 SqlConnection cn = conexion.AbrirConexion();
 
@@ -130,14 +135,18 @@ namespace AVANCE_PED_GS250179_
                     string queryRecorrido = "INSERT INTO RecorridoRuta (IdRecorridoRuta, inicio, Final) VALUES (@id, @inicio, @final)";
                     SqlCommand cmdRecorrido = new SqlCommand(queryRecorrido, cn);
                     cmdRecorrido.Parameters.AddWithValue("@id", nuevoIdRecorrido);
-                    cmdRecorrido.Parameters.AddWithValue("@inicio", inicioRecorridoBD);
-                    cmdRecorrido.Parameters.AddWithValue("@final", finalRecorridoBD);
+                    // AQUÍ TOMAMOS INICIO Y FIN DIRECTAMENTE DEL MAPA:
+                    cmdRecorrido.Parameters.AddWithValue("@inicio", ventanaMapa.DatosMapa.PuntoInicio);
+                    cmdRecorrido.Parameters.AddWithValue("@final", ventanaMapa.DatosMapa.PuntoFinal);
                     cmdRecorrido.ExecuteNonQuery();
 
-                    string queryInfo = "INSERT INTO InfoRecorridoRuta (IdRecorridoRuta, ParadasRuta) VALUES (@id, @paradas)";
+                    // AQUÍ MODIFICAMOS EL INSERT PARA QUE GUARDE LA COLUMNA CoordenadasGPS:
+                    string queryInfo = "INSERT INTO InfoRecorridoRuta (IdRecorridoRuta, ParadasRuta, CoordenadasGPS) VALUES (@id, @paradas, @coords)";
                     SqlCommand cmdInfo = new SqlCommand(queryInfo, cn);
                     cmdInfo.Parameters.AddWithValue("@id", nuevoIdRecorrido);
                     cmdInfo.Parameters.AddWithValue("@paradas", txtRecorrido.Text);
+                    // AQUÍ MANDAMOS LAS COORDENADAS OCULTAS (O vacío si de casualidad no hay nada):
+                    cmdInfo.Parameters.AddWithValue("@coords", ventanaMapa.DatosMapa.CoordenadasGeneradas ?? "");
                     cmdInfo.ExecuteNonQuery();
 
                     string queryIdRuta = "SELECT ISNULL(MAX(IdRutaBuses), 0) + 1 FROM RutaBuses";
@@ -163,8 +172,9 @@ namespace AVANCE_PED_GS250179_
                     txtRuta.Clear();
                     txtTari.Clear();
                     txtRecorrido.Clear();
-                    inicioRecorridoBD = "";
-                    finalRecorridoBD = "";
+
+                    // Limpiamos también el objeto del mapa para que quede limpio para la próxima vez
+                    ventanaMapa.DatosMapa = new AVANCE_PED_GS250179_.Modelos.Mapa();
                 }
                 catch (Exception ex)
                 {
@@ -196,5 +206,6 @@ namespace AVANCE_PED_GS250179_
                 e.Handled = true;
             }
         }
+       
     }
 }

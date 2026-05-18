@@ -124,5 +124,6 @@ namespace AVANCE_PED_GS250179_
         {
             CargarDatosGrid(txtBuscar.Text.Trim());
         }
+
     }
 }

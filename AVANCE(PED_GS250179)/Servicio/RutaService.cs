@@ -155,39 +155,40 @@ namespace AVANCE_PED_GS250179_.Servicio
             return recorrido;
         }
 
-        public bool ActualizarRuta(int idRuta, string numeroRuta, decimal tarifa, string inicio, string final, string paradas)
+        public bool ActualizarRuta(int idRuta, string numeroRuta, decimal tarifa, string inicio, string final, string paradas, string coordenadas)
         {
             SqlConnection cn = conexion.AbrirConexion();
             SqlTransaction transaccion = cn.BeginTransaction();
             try
             {
-                
+                // 1. Obtener el IdRecorridoRuta para saber cuál modificar
                 SqlCommand cmdGetRecorrido = new SqlCommand("SELECT IdRecorridoRuta FROM RutaBuses WHERE IdRutaBuses = @id", cn, transaccion);
                 cmdGetRecorrido.Parameters.AddWithValue("@id", idRuta);
                 int idRecorrido = Convert.ToInt32(cmdGetRecorrido.ExecuteScalar());
 
-                
+                // UPDATE 1: Tabla RutaBuses (Tarifa)
                 SqlCommand cmdRuta = new SqlCommand("UPDATE RutaBuses SET CostoDelPasaje = @tarifa WHERE IdRutaBuses = @id", cn, transaccion);
                 cmdRuta.Parameters.AddWithValue("@tarifa", tarifa);
                 cmdRuta.Parameters.AddWithValue("@id", idRuta);
                 cmdRuta.ExecuteNonQuery();
 
-                
+                // UPDATE 2: Tabla InfoRutaBuses (Número de Ruta)
                 SqlCommand cmdInfoRuta = new SqlCommand("UPDATE InfoRutaBuses SET NumeroRuta = @num WHERE IdRutaBuses = @id", cn, transaccion);
                 cmdInfoRuta.Parameters.AddWithValue("@num", numeroRuta);
                 cmdInfoRuta.Parameters.AddWithValue("@id", idRuta);
                 cmdInfoRuta.ExecuteNonQuery();
 
-                
+                // UPDATE 3: Tabla RecorridoRuta (Inicio y Fin)
                 SqlCommand cmdRecorrido = new SqlCommand("UPDATE RecorridoRuta SET inicio = @ini, Final = @fin WHERE IdRecorridoRuta = @idRec", cn, transaccion);
                 cmdRecorrido.Parameters.AddWithValue("@ini", inicio);
                 cmdRecorrido.Parameters.AddWithValue("@fin", final);
                 cmdRecorrido.Parameters.AddWithValue("@idRec", idRecorrido);
                 cmdRecorrido.ExecuteNonQuery();
 
-                
-                SqlCommand cmdInfoRec = new SqlCommand("UPDATE InfoRecorridoRuta SET ParadasRuta = @paradas WHERE IdRecorridoRuta = @idRec", cn, transaccion);
+                // UPDATE 4: Tabla InfoRecorridoRuta (Paradas y COORDENADAS GPS)
+                SqlCommand cmdInfoRec = new SqlCommand("UPDATE InfoRecorridoRuta SET ParadasRuta = @paradas, CoordenadasGPS = @coords WHERE IdRecorridoRuta = @idRec", cn, transaccion);
                 cmdInfoRec.Parameters.AddWithValue("@paradas", paradas);
+                cmdInfoRec.Parameters.AddWithValue("@coords", coordenadas); // ¡AQUÍ GUARDAMOS LAS COORDENADAS!
                 cmdInfoRec.Parameters.AddWithValue("@idRec", idRecorrido);
                 cmdInfoRec.ExecuteNonQuery();
 
@@ -203,6 +204,28 @@ namespace AVANCE_PED_GS250179_.Servicio
             {
                 conexion.CerrarConexion(cn);
             }
+        }
+        public string ObtenerCoordenadasGPS(int idRuta)
+        {
+            string coordenadas = "";
+            SqlConnection cn = conexion.AbrirConexion();
+            try
+            {
+                string query = "SELECT irr.CoordenadasGPS FROM RutaBuses rb INNER JOIN InfoRecorridoRuta irr ON rb.IdRecorridoRuta = irr.IdRecorridoRuta WHERE rb.IdRutaBuses = @id";
+                SqlCommand cmd = new SqlCommand(query, cn);
+                cmd.Parameters.AddWithValue("@id", idRuta);
+                object result = cmd.ExecuteScalar();
+
+                // Si hay datos, los guardamos en la variable
+                if (result != DBNull.Value && result != null)
+                {
+                    coordenadas = result.ToString();
+                }
+            }
+            catch (Exception) { /* Ignoramos si la ruta es muy vieja y no tiene GPS */ }
+            finally { conexion.CerrarConexion(cn); }
+
+            return coordenadas;
         }
     }
 }

@@ -19,24 +19,23 @@ namespace AVANCE_PED_GS250179_.Vistas
 {
     public partial class Form10 : Form
     {
-        public string RecorridoGenerado { get; set; }
-        public string PuntoInicio { get; set; }
-        public string PuntoFinal { get; set; }
+        public Mapa DatosMapa { get; set; } = new Mapa();
 
         Point mouseActual = new Point();
         GrafoService grafoService = new GrafoService();
         GMapMarker marcadorOrigen = null;
         int var_control = 0;
-        bool modoGrabacion = false;
-        List<NodoRuta> rutaEnConstruccion = new List<NodoRuta>();
-        // Capas transparentes sobre el mapa
+
+        // Capas para el mapa
         GMapOverlay capaMarcadores = new GMapOverlay("marcadores");
         GMapOverlay capaRutas = new GMapOverlay("rutas");
         GMapMarker marcadorParaEliminar = null;
 
-
         NodoRuta NodoOrigen = null;
         NodoRuta NodoDestino = null;
+
+        public string puntoInicioEditar { get; set; } = "";
+        public string puntoFinalEditar { get; set; } = "";
         public Form10()
         {
             InitializeComponent();
@@ -84,21 +83,59 @@ namespace AVANCE_PED_GS250179_.Vistas
         }
         private NodoRuta DetectarNodo(Point puntoClic)
         {
-            int radioTolerancia = 20; // Margen de píxeles para acertar el clic en el círculo
-
+            int radioTolerancia = 20;
             foreach (var nodo in grafoService.Nodos)
             {
-                // Fórmula de distancia euclidiana entre dos puntos
                 double distancia = Math.Sqrt(Math.Pow(puntoClic.X - nodo.PosX, 2) + Math.Pow(puntoClic.Y - nodo.PosY, 2));
-
-                if (distancia <= radioTolerancia)
-                {
-                    return nodo; // Encontró el nodo sobre el que se hizo clic
-                }
+                if (distancia <= radioTolerancia) return nodo;
             }
-            return null; // Clic en espacio vacío
+            return null;
         }
 
+        public void ReconstruirMapa(string datosGPS)
+        {
+            capaMarcadores.Markers.Clear();
+            capaRutas.Routes.Clear();
+            grafoService.Nodos.Clear();
+
+            MapaService mapaSvc = new MapaService();
+            List<NodoRuta> nodosRecuperados = mapaSvc.DecodificarCoordenadasGPS(datosGPS);
+
+            if (nodosRecuperados.Count == 0) return;
+
+            GMapMarker marcadorAnterior = null;
+
+            foreach (NodoRuta nodo in nodosRecuperados)
+            {
+                PointLatLng coordenada = new PointLatLng(nodo.Latitud, nodo.Longitud);
+
+                // 1. Pintar pin rojo
+                var marcador = new GMarkerGoogle(coordenada, GMarkerGoogleType.red_pushpin);
+                marcador.ToolTipText = nodo.Valor;
+                capaMarcadores.Markers.Add(marcador);
+
+                // 2. Insertar al grafo interno
+                grafoService.AgregarVertice(nodo);
+
+                // 3. Conectar líneas visuales con el marcador anterior
+                if (marcadorAnterior != null)
+                {
+                    grafoService.AgregarArco(marcadorAnterior.ToolTipText, nodo.Valor, 1);
+                    var route = GMap.NET.MapProviders.OpenStreetMapProvider.Instance.GetRoute(marcadorAnterior.Position, coordenada, false, false, 14);
+
+                    if (route != null)
+                    {
+                        var rutaVisual = new GMapRoute(route.Points, "ruta_recuperada");
+                        rutaVisual.Stroke = new Pen(Color.Blue, 3);
+                        capaRutas.Routes.Add(rutaVisual);
+                    }
+                }
+                marcadorAnterior = marcador;
+            }
+
+            if (marcadorAnterior != null) mapaReise.Position = marcadorAnterior.Position;
+            mapaReise.Refresh();
+        }
         private void Pizarra_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -184,11 +221,7 @@ namespace AVANCE_PED_GS250179_.Vistas
             }
 
             Dictionary<NodoRuta, int> lineasEntrantes = new Dictionary<NodoRuta, int>();
-
-            foreach (var nodo in grafoService.Nodos)
-            {
-                lineasEntrantes[nodo] = 0;
-            }
+            foreach (var nodo in grafoService.Nodos) lineasEntrantes[nodo] = 0;
 
             foreach (var nodo in grafoService.Nodos)
             {
@@ -206,28 +239,28 @@ namespace AVANCE_PED_GS250179_.Vistas
                 return;
             }
 
-
             List<string> paradasOrdenadas = new List<string>();
+            List<string> listaCoordenadas = new List<string>();
 
             while (nodoActual != null)
             {
                 paradasOrdenadas.Add(nodoActual.Valor);
 
+                string lat = nodoActual.Latitud.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                string lng = nodoActual.Longitud.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                listaCoordenadas.Add($"{nodoActual.Valor}:{lat},{lng}");
+
                 if (nodoActual.ListaAdyacencia.Count > 0)
-                {
                     nodoActual = nodoActual.ListaAdyacencia[0].NodoDestino;
-                }
                 else
-                {
                     nodoActual = null;
-                }
             }
 
-
-            PuntoInicio = paradasOrdenadas.First();
-            PuntoFinal = paradasOrdenadas.Last();
-            RecorridoGenerado = string.Join(" - ", paradasOrdenadas);
-
+            // Guardado directo en las propiedades del Modelo
+            DatosMapa.PuntoInicio = paradasOrdenadas.First();
+            DatosMapa.PuntoFinal = paradasOrdenadas.Last();
+            DatosMapa.RecorridoGenerado = string.Join(" - ", paradasOrdenadas);
+            DatosMapa.CoordenadasGeneradas = string.Join("|", listaCoordenadas);
 
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -237,14 +270,10 @@ namespace AVANCE_PED_GS250179_.Vistas
         {
 
             GMap.NET.MapProviders.GMapProvider.UserAgent = "ReiseTransportSystem_Elmer";
-
-
             mapaReise.MapProvider = GMap.NET.MapProviders.OpenStreetMapProvider.Instance;
             GMap.NET.GMaps.Instance.Mode = GMap.NET.AccessMode.ServerOnly;
 
-
-            mapaReise.Position = new GMap.NET.PointLatLng(13.69294, -89.21819);
-
+            mapaReise.Position = new PointLatLng(13.69294, -89.21819);
             mapaReise.MinZoom = 5;
             mapaReise.MaxZoom = 18;
             mapaReise.Zoom = 14;
@@ -261,24 +290,19 @@ namespace AVANCE_PED_GS250179_.Vistas
             if (e.Button == MouseButtons.Right)
             {
                 marcadorParaEliminar = item;
-                // Mostramos el menú justo donde está el mouse
                 menuMarcador.Show(mapaReise, e.Location);
             }
-            // SI ES CLIC IZQUIERDO: Lógica normal de unión
             else if (e.Button == MouseButtons.Left)
             {
                 if (marcadorOrigen == null)
                 {
-                    // Primer clic: Asignamos el origen
                     marcadorOrigen = item;
                     MessageBox.Show($"Origen seleccionado: {item.ToolTipText}\nAhora haz clic en el destino.", "Ruta", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else if (marcadorOrigen != item)
                 {
-                    // Segundo clic: Dibujamos la ruta
                     grafoService.AgregarArco(marcadorOrigen.ToolTipText, item.ToolTipText, 1);
 
-                    // Trazar la ruta usando las calles (OpenStreetMap)
                     var route = GMap.NET.MapProviders.OpenStreetMapProvider.Instance.GetRoute(
                         marcadorOrigen.Position,
                         item.Position,
@@ -295,7 +319,6 @@ namespace AVANCE_PED_GS250179_.Vistas
                     }
                     else
                     {
-                        // Plan B por si falla el enrutamiento de calles (dibuja línea recta)
                         GMapRoute rutaRecta = new GMapRoute("ruta_recta");
                         rutaRecta.Points.Add(marcadorOrigen.Position);
                         rutaRecta.Points.Add(item.Position);
@@ -303,7 +326,6 @@ namespace AVANCE_PED_GS250179_.Vistas
                         capaRutas.Routes.Add(rutaRecta);
                     }
 
-                    // Aquí es donde "soltamos" el punto para no encadenar la ruta
                     marcadorOrigen = null;
                     mapaReise.Refresh();
                 }
@@ -314,10 +336,7 @@ namespace AVANCE_PED_GS250179_.Vistas
         {
             if (e.Button == MouseButtons.Left)
             {
-                // Magia de GMap: Convertimos el clic de la pantalla a coordenadas GPS exactas
                 PointLatLng coordenadas = mapaReise.FromLocalToLatLng(e.X, e.Y);
-
-                // Pedimos el nombre de la parada
                 string nombreParada = Microsoft.VisualBasic.Interaction.InputBox("Ingrese el nombre de la parada:", "Nueva Parada", "");
 
                 if (!string.IsNullOrWhiteSpace(nombreParada))
@@ -328,14 +347,11 @@ namespace AVANCE_PED_GS250179_.Vistas
                         return;
                     }
 
-                    // Creamos un PIN ROJO (Estilo Google Maps)
                     GMarkerGoogle marcador = new GMarkerGoogle(coordenadas, GMarkerGoogleType.red_pushpin);
                     marcador.ToolTipText = nombreParada.Trim();
-                    marcador.Tag = nombreParada.Trim(); // Guardamos el nombre oculto en el marcador
+                    marcador.Tag = nombreParada.Trim();
 
-                    // Lo agregamos a la capa visual
                     capaMarcadores.Markers.Add(marcador);
-
 
                     NodoRuta nuevoNodo = new NodoRuta(nombreParada.Trim(), e.X, e.Y);
                     nuevoNodo.Latitud = coordenadas.Lat;
@@ -350,31 +366,28 @@ namespace AVANCE_PED_GS250179_.Vistas
         {
             if (MessageBox.Show("¿Deseas borrar toda la ruta?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                // Limpiamos todo lo visual del mapa y el grafo
                 capaMarcadores.Markers.Clear();
                 capaRutas.Routes.Clear();
                 grafoService.Nodos.Clear();
                 marcadorOrigen = null;
                 mapaReise.Refresh();
 
-                //Limpiamos las variables internas para que no guarden memoria fantasma
-                RecorridoGenerado = "";
-                PuntoInicio = "";
-                PuntoFinal = "";
+                // Blanqueamos el modelo de datos
+                DatosMapa = new Modelos.Mapa();
 
-                
+                // Eliminamos a distancia el texto reflejado en el formulario principal
                 foreach (Form formularioAbierto in Application.OpenForms)
                 {
-                    // Busca un control que se llame exactamente "txtRecorrido"
                     Control[] cajaRecorrido = formularioAbierto.Controls.Find("txtRecorrido", true);
 
                     if (cajaRecorrido.Length > 0)
                     {
-                        cajaRecorrido[0].Text = ""; // Vacía el txt en la pantalla principal
-                        break; 
+                        cajaRecorrido[0].Text = "";
+                        break;
                     }
                 }
             }
+        
         }
 
         private void eliminarPuntoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -383,15 +396,11 @@ namespace AVANCE_PED_GS250179_.Vistas
             {
                 string nombre = marcadorParaEliminar.ToolTipText;
 
-                // 1. Eliminar del Grafo (el cerebro)
                 var nodo = grafoService.Nodos.FirstOrDefault(n => n.Valor == nombre);
                 if (nodo != null) grafoService.Nodos.Remove(nodo);
 
-                // 2. Eliminar de la Capa de Marcadores (lo visual)
                 capaMarcadores.Markers.Remove(marcadorParaEliminar);
 
-                // 3. Limpiar rutas conectadas a este punto
-                // (Para simplificar, borramos las líneas visuales para que las vuelvas a trazar)
                 capaRutas.Routes.Clear();
                 marcadorOrigen = null;
 
