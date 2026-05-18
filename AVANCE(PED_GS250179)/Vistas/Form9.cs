@@ -22,60 +22,72 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void btnguardar_Click(object sender, EventArgs e)
         {
-            // 1. Validaciones básicas (que no haya campos vacíos)
+            // 1. Validaciones básicas (agregamos txtConfirmarContrasena a la lista)
             if (string.IsNullOrWhiteSpace(txtNombre.Text) || string.IsNullOrWhiteSpace(txtDui.Text) ||
                 string.IsNullOrWhiteSpace(txtCorreo.Text) || string.IsNullOrWhiteSpace(txtTel.Text) ||
-                string.IsNullOrWhiteSpace(txtUsuario.Text) || string.IsNullOrWhiteSpace(txtPass.Text))
+                string.IsNullOrWhiteSpace(txtUsuario.Text) || string.IsNullOrWhiteSpace(txtPass.Text) ||
+                string.IsNullOrWhiteSpace(txtConfPass.Text))
             {
                 MessageBox.Show("Por favor, llena todos los campos de texto.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 2. Encriptar la contraseña usando TU clase EmpleadoService
+            // 2. ¡NUEVO! Validar que las contraseñas coincidan exactamente
+            if (txtPass.Text.Trim() != txtConfPass.Text.Trim())
+            {
+                MessageBox.Show("Las contraseñas no coinciden. Por favor, escríbelas de nuevo.", "Error de seguridad", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtPass.Clear();
+                txtConfPass.Clear();
+                txtPass.Focus();
+                return;
+            }
+
+            // 3. Encriptar la contraseña usando tu EmpleadoService
             EmpleadoService empService = new EmpleadoService();
             string contrasenaEncriptada = empService.HashearContrasena(txtPass.Text.Trim());
 
-            // 3. Preparar la conexión a la Base de Datos
+            // 4. Preparar la conexión a la Base de Datos
             Conexion conexion = new Conexion();
             SqlConnection cn = conexion.AbrirConexion();
 
             try
             {
-                // Generamos un nuevo ID para el empleado (asumiendo que no usas IDENTITY, como hicimos en las rutas)
+                // 1. Generamos el ID
                 string queryId = "SELECT ISNULL(MAX(IdEmpleado), 0) + 1 FROM Empleado";
                 SqlCommand cmdId = new SqlCommand(queryId, cn);
                 int nuevoIdEmpleado = Convert.ToInt32(cmdId.ExecuteScalar());
 
-                // INSERT 1: Tabla Empleado (Datos operativos)
-                // Nota: Asumo que por defecto al registrarlo se le asigna un IdRolEmpleado genérico (ej. 2 para motorista/usuario)
-                string queryEmpleado = @"INSERT INTO Empleado (IdEmpleado, IdRolEmpleado, Estado, FechaContratacion) 
-                                 VALUES (@id, 2, @estado, @fechaContratacion)";
+                string queryEmpleado = @"INSERT INTO Empleado (IdEmpleado, IdRolEmpleado) 
+                                 VALUES (@id, 1)";
                 SqlCommand cmdEmpleado = new SqlCommand(queryEmpleado, cn);
                 cmdEmpleado.Parameters.AddWithValue("@id", nuevoIdEmpleado);
-                cmdEmpleado.Parameters.AddWithValue("@estado", cbEstado.SelectedItem?.ToString() ?? "Activo");
-                cmdEmpleado.Parameters.AddWithValue("@fechaContratacion", dtpCon.Value.Date);
                 cmdEmpleado.ExecuteNonQuery();
 
-                // INSERT 2: Tabla InfoEmpleado (Datos personales y credenciales)
-                string queryInfo = @"INSERT INTO InfoEmpleado (IdEmpleado, Nombre, DUI, FechaNacimiento, Correo, Telefono, Usuario, Contraseña) 
-                             VALUES (@id, @nombre, @dui, @fechaNac, @correo, @telefono, @usuario, @contrasena)";
+                // 3. INSERT 2: Tabla InfoEmpleado (Aquí van todos los datos personales)
+                string queryInfo = @"INSERT INTO InfoEmpleado (IdEmpleado, Nombre, DUI, FechaNacimiento, Direccion, Telefono, FechaContratacion, Correo, Usuario, Contraseña) 
+                             VALUES (@id, @nombre, @dui, @fechaNac, @direccion, @telefono, @fechaContratacion, @correo, @usuario, @contrasena)";
                 SqlCommand cmdInfo = new SqlCommand(queryInfo, cn);
                 cmdInfo.Parameters.AddWithValue("@id", nuevoIdEmpleado);
                 cmdInfo.Parameters.AddWithValue("@nombre", txtNombre.Text.Trim());
                 cmdInfo.Parameters.AddWithValue("@dui", txtDui.Text.Trim());
                 cmdInfo.Parameters.AddWithValue("@fechaNac", dtpNa.Value.Date);
-                cmdInfo.Parameters.AddWithValue("@correo", txtCorreo.Text.Trim());
-                cmdInfo.Parameters.AddWithValue("@telefono", dtpCon.Text.Trim());
-                cmdInfo.Parameters.AddWithValue("@usuario", txtUsuario.Text.Trim());
 
-                // Pasamos la contraseña ya hasheada en Base64
+                // Como no hay Textbox de dirección en tu pantalla, mandamos un texto por defecto
+                cmdInfo.Parameters.AddWithValue("@direccion", "No especificada");
+
+                cmdInfo.Parameters.AddWithValue("@telefono", txtTel.Text.Trim());
+                cmdInfo.Parameters.AddWithValue("@fechaContratacion", dtpCon.Value.Date);
+                cmdInfo.Parameters.AddWithValue("@correo", txtCorreo.Text.Trim());
+                cmdInfo.Parameters.AddWithValue("@usuario", txtUsuario.Text.Trim());
                 cmdInfo.Parameters.AddWithValue("@contrasena", contrasenaEncriptada);
                 cmdInfo.ExecuteNonQuery();
 
-                MessageBox.Show("¡Usuario registrado exitosamente en el sistema!", "Registro Completo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("¡Administrador registrado exitosamente!\nAhora puedes iniciar sesión.", "Primer Uso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Opcional: Limpiar los campos después de guardar
-                // txtNombre.Clear(); txtDui.Clear(); txtUsuario.Clear(); txtContrasena.Clear(); ...
+                // Cerramos esta pantalla y abrimos el Login
+                this.Hide();
+                Form1 login = new Form1();
+                login.Show();
             }
             catch (Exception ex)
             {
@@ -84,6 +96,60 @@ namespace AVANCE_PED_GS250179_.Vistas
             finally
             {
                 conexion.CerrarConexion(cn);
+            }
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+        bool contraseñaVisible = false;
+
+        private void ptojo_Click(object sender, EventArgs e)
+        {
+            if (contraseñaVisible == true)
+            {
+                txtPass.PasswordChar = '*';
+
+                ptojo.Image = Properties.Resources.icons8_eye_24;
+
+                contraseñaVisible = false;
+            }
+            // Si está oculta, la mostramos
+            else
+            {
+                // Quitar la máscara ('\0' significa carácter nulo, o sea, sin máscara)
+                txtPass.PasswordChar = '\0';
+
+                // Cambiar la imagen al ojo abierto (reemplaza 'ojo_abierto' por el nombre de tu imagen)
+                ptojo.Image = Properties.Resources.icons8_ojo_cerrado_24;
+
+                // Actualizamos el estado
+                contraseñaVisible = true;
+            }
+        }
+
+        private void ptojo2_Click(object sender, EventArgs e)
+        {
+            if (contraseñaVisible == true)
+            {
+                txtConfPass.PasswordChar = '*';
+
+                ptojo2.Image = Properties.Resources.icons8_eye_24;
+
+                contraseñaVisible = false;
+            }
+            // Si está oculta, la mostramos
+            else
+            {
+                // Quitar la máscara ('\0' significa carácter nulo, o sea, sin máscara)
+                txtConfPass.PasswordChar = '\0';
+
+                // Cambiar la imagen al ojo abierto (reemplaza 'ojo_abierto' por el nombre de tu imagen)
+                ptojo2.Image = Properties.Resources.icons8_ojo_cerrado_24;
+
+                // Actualizamos el estado
+                contraseñaVisible = true;
             }
         }
     }

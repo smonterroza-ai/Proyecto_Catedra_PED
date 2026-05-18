@@ -46,9 +46,13 @@
             dtpCon = new DateTimePicker();
             label8 = new Label();
             label9 = new Label();
-            cbEstado = new ComboBox();
             btnguardar = new PictureBox();
+            txtConfPass = new TextBox();
+            ptojo = new PictureBox();
+            ptojo2 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)btnguardar).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptojo).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptojo2).BeginInit();
             SuspendLayout();
             // 
             // txtNombre
@@ -117,7 +121,7 @@
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = SystemColors.ControlLightLight;
-            label4.Location = new Point(178, 491);
+            label4.Location = new Point(172, 397);
             label4.Name = "label4";
             label4.Size = new Size(70, 23);
             label4.TabIndex = 7;
@@ -125,7 +129,7 @@
             // 
             // txtUsuario
             // 
-            txtUsuario.Location = new Point(178, 535);
+            txtUsuario.Location = new Point(172, 441);
             txtUsuario.Margin = new Padding(3, 4, 3, 4);
             txtUsuario.Name = "txtUsuario";
             txtUsuario.Size = new Size(226, 27);
@@ -173,9 +177,10 @@
             // 
             // txtPass
             // 
-            txtPass.Location = new Point(432, 535);
+            txtPass.Location = new Point(172, 545);
             txtPass.Margin = new Padding(3, 4, 3, 4);
             txtPass.Name = "txtPass";
+            txtPass.PasswordChar = '*';
             txtPass.Size = new Size(226, 27);
             txtPass.TabIndex = 12;
             // 
@@ -187,9 +192,9 @@
             label7.ForeColor = SystemColors.ControlLightLight;
             label7.Location = new Point(432, 491);
             label7.Name = "label7";
-            label7.Size = new Size(99, 23);
+            label7.Size = new Size(183, 23);
             label7.TabIndex = 13;
-            label7.Text = "Contraseña";
+            label7.Text = "Confirmar contraseña";
             // 
             // dtpCon
             // 
@@ -217,20 +222,12 @@
             label9.BackColor = Color.Transparent;
             label9.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label9.ForeColor = SystemColors.ControlLightLight;
-            label9.Location = new Point(175, 397);
+            label9.Location = new Point(172, 490);
             label9.Name = "label9";
-            label9.Size = new Size(63, 23);
+            label9.Size = new Size(99, 23);
             label9.TabIndex = 16;
-            label9.Text = "Estado";
-            // 
-            // cbEstado
-            // 
-            cbEstado.FormattingEnabled = true;
-            cbEstado.Location = new Point(178, 441);
-            cbEstado.Margin = new Padding(3, 4, 3, 4);
-            cbEstado.Name = "cbEstado";
-            cbEstado.Size = new Size(226, 28);
-            cbEstado.TabIndex = 17;
+            label9.Text = "Contraseña";
+            label9.Click += label9_Click;
             // 
             // btnguardar
             // 
@@ -244,6 +241,35 @@
             btnguardar.TabStop = false;
             btnguardar.Click += btnguardar_Click;
             // 
+            // txtConfPass
+            // 
+            txtConfPass.Location = new Point(432, 545);
+            txtConfPass.Margin = new Padding(3, 4, 3, 4);
+            txtConfPass.Name = "txtConfPass";
+            txtConfPass.PasswordChar = '*';
+            txtConfPass.Size = new Size(226, 27);
+            txtConfPass.TabIndex = 19;
+            // 
+            // ptojo
+            // 
+            ptojo.Image = Properties.Resources.icons8_eye_24;
+            ptojo.Location = new Point(367, 545);
+            ptojo.Name = "ptojo";
+            ptojo.Size = new Size(31, 27);
+            ptojo.TabIndex = 20;
+            ptojo.TabStop = false;
+            ptojo.Click += ptojo_Click;
+            // 
+            // ptojo2
+            // 
+            ptojo2.Image = Properties.Resources.icons8_eye_24;
+            ptojo2.Location = new Point(627, 545);
+            ptojo2.Name = "ptojo2";
+            ptojo2.Size = new Size(31, 27);
+            ptojo2.TabIndex = 21;
+            ptojo2.TabStop = false;
+            ptojo2.Click += ptojo2_Click;
+            // 
             // Form9
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -251,8 +277,10 @@
             BackgroundImage = Properties.Resources.fondo_primeruso;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(834, 707);
+            Controls.Add(ptojo2);
+            Controls.Add(ptojo);
+            Controls.Add(txtConfPass);
             Controls.Add(btnguardar);
-            Controls.Add(cbEstado);
             Controls.Add(label9);
             Controls.Add(dtpCon);
             Controls.Add(label8);
@@ -275,6 +303,8 @@
             Name = "Form9";
             Text = "Form9";
             ((System.ComponentModel.ISupportInitialize)btnguardar).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptojo).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptojo2).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -298,7 +328,9 @@
         private DateTimePicker dtpCon;
         private Label label8;
         private Label label9;
-        private ComboBox cbEstado;
         private PictureBox btnguardar;
+        private TextBox txtConfPass;
+        private PictureBox ptojo;
+        private PictureBox ptojo2;
     }
 }
