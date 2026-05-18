@@ -15,12 +15,7 @@ namespace AVANCE_PED_GS250179_.Vistas
 {
     public partial class Form11 : Form
     {
-        EmpleadoService service =
-            new EmpleadoService();
-
-        private int idEmpleadoEditar = 0;
-
-        private bool esEditar = false;
+        EmpleadoService service = new EmpleadoService();
 
         public Form11()
         {
@@ -30,10 +25,6 @@ namespace AVANCE_PED_GS250179_.Vistas
         public Form11(int idEmpleado)
         {
             InitializeComponent();
-
-            idEmpleadoEditar = idEmpleado;
-
-            esEditar = true;
         }
 
         private void label10_Click(object sender, EventArgs e)
@@ -45,12 +36,7 @@ namespace AVANCE_PED_GS250179_.Vistas
         {
             try
             {
-                // ============================
-                // VALIDACIONES
-                // ============================
-
-                if (
-                    txtNombre.Text.Trim() == "" ||
+                if (txtNombre.Text.Trim() == "" ||
                     txtDUI.Text.Trim() == "" ||
                     txtTelefono.Text.Trim() == "" ||
                     txtCorreo.Text.Trim() == "" ||
@@ -58,110 +44,57 @@ namespace AVANCE_PED_GS250179_.Vistas
                     txtDireccion.Text.Trim() == "" ||
                     txtContraseña.Text.Trim() == "" ||
                     txtConfirmarContraseña.Text.Trim() == "" ||
-                    cmbRol.SelectedIndex == -1
-                )
+                    cmbRol.SelectedIndex == -1)
                 {
-                    MessageBox.Show(
-                        "Complete todos los campos"
-                    );
-
+                    MessageBox.Show("Complete todos los campos");
                     return;
                 }
 
-                // ============================
-                // VALIDAR CONTRASEÑAS
-                // ============================
-
-                if (
-                    txtContraseña.Text.Trim() !=
-                    txtConfirmarContraseña.Text.Trim()
-                )
+                if (txtContraseña.Text != txtConfirmarContraseña.Text)
                 {
-                    MessageBox.Show(
-                        "Las contraseñas no coinciden"
-                    );
-
+                    MessageBox.Show("Las contraseñas no coinciden");
                     return;
                 }
 
-                // ============================
-                // OBJETO
-                // ============================
+                RolEmpleado rolSeleccionado =
+                    (RolEmpleado)cmbRol.SelectedItem;
 
-                Empleado empleado =
-                    new Empleado();
-
-                if (esEditar)
+                Empleado emp = new Empleado()
                 {
-                    empleado.IdEmpleado =
-                        idEmpleadoEditar;
-                }
+                    Nombre = txtNombre.Text.Trim(),
+                    DUI = txtDUI.Text.Trim(),
+                    FechaNacimiento = dtpNacimiento.Value,
+                    Direccion = txtDireccion.Text.Trim(),
+                    Telefono = txtTelefono.Text.Trim(),
+                    FechaContratacion = dtpContratacion.Value,
+                    Correo = txtCorreo.Text.Trim(),
+                    Usuario = txtUsuario.Text.Trim(),
 
-                empleado.Nombre =
-                    txtNombre.Text.Trim();
+                    Contraseña = service.HashearContrasena(
+                        txtContraseña.Text.Trim()
+                    ),
 
-                empleado.DUI =
-                    txtDUI.Text.Trim();
-
-                empleado.Telefono =
-                    txtTelefono.Text.Trim();
-
-                empleado.Correo =
-                    txtCorreo.Text.Trim();
-
-                empleado.Usuario =
-                    txtUsuario.Text.Trim();
-
-                empleado.Direccion =
-                    txtDireccion.Text.Trim();
-
-                empleado.Contraseña =
-                    txtContraseña.Text.Trim();
-
-                empleado.FechaNacimiento =
-                    dtpNacimiento.Value;
-
-                empleado.FechaContratacion =
-                    dtpContratacion.Value;
-
-                empleado.IdRolEmpleado =
-                    Convert.ToInt32(
-                        cmbRol.SelectedValue
-                    );
-
-                // ============================
-                // GUARDAR / EDITAR
-                // ============================
+                    IdRolEmpleado =
+                        rolSeleccionado.IdRolEmpleado
+                };
 
                 bool resultado =
-                    esEditar
-                    ? service.EditarEmpleado(
-                        empleado
-                    )
-                    : service.AgregarEmpleado(
-                        empleado
-                    );
+                    service.AgregarEmpleadoCompleto(emp);
 
                 if (resultado)
                 {
                     MessageBox.Show(
-                        esEditar
-                        ? "Empleado editado correctamente"
-                        : "Empleado agregado correctamente"
+                        "Empleado agregado correctamente"
                     );
 
-                    Form8 form =
-                        new Form8();
-
+                    Form8 form = new Form8();
                     form.Show();
 
                     this.Hide();
                 }
                 else
                 {
-                    MessageBox.Show(
-                        "Error al guardar"
-                    );
+                    MessageBox.Show("Error al guardar");
                 }
             }
             catch (Exception ex)
@@ -171,10 +104,6 @@ namespace AVANCE_PED_GS250179_.Vistas
                 );
             }
         }
-
-        // ============================
-        // CARGAR ROLES
-        // ============================
 
         private void CargarRoles()
         {
@@ -192,6 +121,9 @@ namespace AVANCE_PED_GS250179_.Vistas
 
                 actual = actual.Siguiente;
             }
+
+            cmbRol.DisplayMember = "Roles";
+            cmbRol.ValueMember = "IdRolEmpleado";
 
             cmbRol.SelectedIndex = -1;
         }
@@ -212,86 +144,6 @@ namespace AVANCE_PED_GS250179_.Vistas
         private void Form11_Load(object sender, EventArgs e)
         {
             CargarRoles();
-
-            // ============================
-            // EDITAR
-            // ============================
-
-            if (esEditar)
-            {
-                Empleado empleado =
-                    service.ObtenerEmpleadoPorId(
-                        idEmpleadoEditar
-                    );
-
-                if (empleado == null)
-                {
-                    MessageBox.Show(
-                        "No se encontró el empleado"
-                    );
-
-                    return;
-                }
-
-                // ============================
-                // TEXTBOX
-                // ============================
-
-                txtNombre.Text =
-                    empleado.Nombre;
-
-                txtDUI.Text =
-                    empleado.DUI;
-
-                txtTelefono.Text =
-                    empleado.Telefono;
-
-                txtCorreo.Text =
-                    empleado.Correo;
-
-                txtUsuario.Text =
-                    empleado.Usuario;
-
-                txtDireccion.Text =
-                    empleado.Direccion;
-
-                txtContraseña.Text = "";
-
-                txtConfirmarContraseña.Text = "";
-
-                // ============================
-                // FECHAS
-                // ============================
-
-                if (empleado.FechaNacimiento > dtpNacimiento.MinDate)
-                {
-                    dtpNacimiento.Value =
-                        empleado.FechaNacimiento;
-                }
-                else
-                {
-                    dtpNacimiento.Value =
-                        DateTime.Now;
-                }
-
-                if (empleado.FechaContratacion > dtpContratacion.MinDate)
-                {
-                    dtpContratacion.Value =
-                        empleado.FechaContratacion;
-                }
-                else
-                {
-                    dtpContratacion.Value =
-                        DateTime.Now;
-                }
-
-                // ============================
-                // COMBOBOX
-                // ============================
-
-                cmbRol.SelectedValue =
-                    empleado.IdRolEmpleado;
-            }
         }
 
         private void btnAtras_Click_1(object sender, EventArgs e)

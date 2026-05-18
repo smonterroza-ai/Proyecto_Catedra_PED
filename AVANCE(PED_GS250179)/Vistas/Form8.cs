@@ -135,8 +135,8 @@ namespace AVANCE_PED_GS250179_.Vistas
 
                 this.Hide();
 
-                Form11 form =
-                    new Form11(idEmpleado);
+                Form12 form =
+                    new Form12(idEmpleado);
 
                 form.ShowDialog();
 
