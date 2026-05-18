@@ -62,6 +62,7 @@
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(477, 27);
             txtNombre.TabIndex = 0;
+            txtNombre.KeyPress += txtNombre_KeyPress;
             // 
             // label1
             // 
@@ -94,6 +95,7 @@
             txtDui.Name = "txtDui";
             txtDui.Size = new Size(223, 27);
             txtDui.TabIndex = 2;
+            txtDui.KeyPress += txtDui_KeyPress;
             // 
             // label3
             // 
@@ -174,6 +176,7 @@
             txtTel.Name = "txtTel";
             txtTel.Size = new Size(177, 27);
             txtTel.TabIndex = 10;
+            txtTel.KeyPress += txtTel_KeyPress;
             // 
             // txtPass
             // 
