@@ -29,47 +29,54 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form11));
-            txtConfPass = new TextBox();
+            txtConfirmarContraseña = new TextBox();
             btnguardar = new PictureBox();
             label9 = new Label();
-            dtpCon = new DateTimePicker();
+            dtpContratacion = new DateTimePicker();
             label8 = new Label();
             label7 = new Label();
-            txtPass = new TextBox();
+            txtContraseña = new TextBox();
             label6 = new Label();
-            txtTel = new TextBox();
-            dtpNa = new DateTimePicker();
+            txtTelefono = new TextBox();
+            dtpNacimiento = new DateTimePicker();
             label5 = new Label();
             label4 = new Label();
             txtUsuario = new TextBox();
             label3 = new Label();
             txtCorreo = new TextBox();
             label2 = new Label();
-            txtDui = new TextBox();
+            txtDUI = new TextBox();
             label1 = new Label();
             txtNombre = new TextBox();
+            btnAtras = new PictureBox();
+            label10 = new Label();
+            cmbRol = new ComboBox();
+            label11 = new Label();
+            txtDireccion = new TextBox();
             ((System.ComponentModel.ISupportInitialize)btnguardar).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
             SuspendLayout();
             // 
-            // txtConfPass
+            // txtConfirmarContraseña
             // 
-            txtConfPass.Location = new Point(412, 551);
-            txtConfPass.Margin = new Padding(3, 4, 3, 4);
-            txtConfPass.Name = "txtConfPass";
-            txtConfPass.PasswordChar = '*';
-            txtConfPass.Size = new Size(226, 27);
-            txtConfPass.TabIndex = 38;
+            txtConfirmarContraseña.Location = new Point(500, 447);
+            txtConfirmarContraseña.Name = "txtConfirmarContraseña";
+            txtConfirmarContraseña.PasswordChar = '*';
+            txtConfirmarContraseña.Size = new Size(253, 23);
+            txtConfirmarContraseña.TabIndex = 38;
             // 
             // btnguardar
             // 
             btnguardar.Cursor = Cursors.Hand;
             btnguardar.Image = (Image)resources.GetObject("btnguardar.Image");
-            btnguardar.Location = new Point(330, 617);
+            btnguardar.Location = new Point(433, 508);
+            btnguardar.Margin = new Padding(3, 2, 3, 2);
             btnguardar.Name = "btnguardar";
-            btnguardar.Size = new Size(123, 39);
+            btnguardar.Size = new Size(108, 29);
             btnguardar.SizeMode = PictureBoxSizeMode.StretchImage;
             btnguardar.TabIndex = 37;
             btnguardar.TabStop = false;
+            btnguardar.Click += btnguardar_Click;
             // 
             // label9
             // 
@@ -77,19 +84,18 @@
             label9.BackColor = Color.Transparent;
             label9.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label9.ForeColor = SystemColors.ControlLightLight;
-            label9.Location = new Point(152, 496);
+            label9.Location = new Point(232, 407);
             label9.Name = "label9";
-            label9.Size = new Size(99, 23);
+            label9.Size = new Size(77, 17);
             label9.TabIndex = 36;
             label9.Text = "Contraseña";
             // 
-            // dtpCon
+            // dtpContratacion
             // 
-            dtpCon.Location = new Point(391, 447);
-            dtpCon.Margin = new Padding(3, 4, 3, 4);
-            dtpCon.Name = "dtpCon";
-            dtpCon.Size = new Size(246, 27);
-            dtpCon.TabIndex = 35;
+            dtpContratacion.Location = new Point(500, 369);
+            dtpContratacion.Name = "dtpContratacion";
+            dtpContratacion.Size = new Size(253, 23);
+            dtpContratacion.TabIndex = 35;
             // 
             // label8
             // 
@@ -97,9 +103,9 @@
             label8.BackColor = Color.Transparent;
             label8.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label8.ForeColor = SystemColors.ControlLightLight;
-            label8.Location = new Point(391, 403);
+            label8.Location = new Point(500, 336);
             label8.Name = "label8";
-            label8.Size = new Size(185, 23);
+            label8.Size = new Size(143, 17);
             label8.TabIndex = 34;
             label8.Text = "Fecha de contratación";
             // 
@@ -109,20 +115,19 @@
             label7.BackColor = Color.Transparent;
             label7.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label7.ForeColor = SystemColors.ControlLightLight;
-            label7.Location = new Point(412, 497);
+            label7.Location = new Point(500, 407);
             label7.Name = "label7";
-            label7.Size = new Size(183, 23);
+            label7.Size = new Size(141, 17);
             label7.TabIndex = 33;
             label7.Text = "Confirmar contraseña";
             // 
-            // txtPass
+            // txtContraseña
             // 
-            txtPass.Location = new Point(152, 551);
-            txtPass.Margin = new Padding(3, 4, 3, 4);
-            txtPass.Name = "txtPass";
-            txtPass.PasswordChar = '*';
-            txtPass.Size = new Size(226, 27);
-            txtPass.TabIndex = 32;
+            txtContraseña.Location = new Point(232, 447);
+            txtContraseña.Name = "txtContraseña";
+            txtContraseña.PasswordChar = '*';
+            txtContraseña.Size = new Size(246, 23);
+            txtContraseña.TabIndex = 32;
             // 
             // label6
             // 
@@ -130,27 +135,25 @@
             label6.BackColor = Color.Transparent;
             label6.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label6.ForeColor = SystemColors.ControlLightLight;
-            label6.Location = new Point(461, 309);
+            label6.Location = new Point(610, 196);
             label6.Name = "label6";
-            label6.Size = new Size(78, 23);
+            label6.Size = new Size(62, 17);
             label6.TabIndex = 31;
             label6.Text = "Télefono";
             // 
-            // txtTel
+            // txtTelefono
             // 
-            txtTel.Location = new Point(461, 353);
-            txtTel.Margin = new Padding(3, 4, 3, 4);
-            txtTel.Name = "txtTel";
-            txtTel.Size = new Size(177, 27);
-            txtTel.TabIndex = 30;
+            txtTelefono.Location = new Point(610, 228);
+            txtTelefono.Name = "txtTelefono";
+            txtTelefono.Size = new Size(143, 23);
+            txtTelefono.TabIndex = 30;
             // 
-            // dtpNa
+            // dtpNacimiento
             // 
-            dtpNa.Location = new Point(391, 254);
-            dtpNa.Margin = new Padding(3, 4, 3, 4);
-            dtpNa.Name = "dtpNa";
-            dtpNa.Size = new Size(246, 27);
-            dtpNa.TabIndex = 29;
+            dtpNacimiento.Location = new Point(389, 228);
+            dtpNacimiento.Name = "dtpNacimiento";
+            dtpNacimiento.Size = new Size(215, 23);
+            dtpNacimiento.TabIndex = 29;
             // 
             // label5
             // 
@@ -158,9 +161,9 @@
             label5.BackColor = Color.Transparent;
             label5.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = SystemColors.ControlLightLight;
-            label5.Location = new Point(391, 210);
+            label5.Location = new Point(389, 196);
             label5.Name = "label5";
-            label5.Size = new Size(174, 23);
+            label5.Size = new Size(135, 17);
             label5.TabIndex = 28;
             label5.Text = "Fecha de nacimiento";
             // 
@@ -170,18 +173,17 @@
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = SystemColors.ControlLightLight;
-            label4.Location = new Point(152, 403);
+            label4.Location = new Point(232, 336);
             label4.Name = "label4";
-            label4.Size = new Size(70, 23);
+            label4.Size = new Size(55, 17);
             label4.TabIndex = 27;
             label4.Text = "Usuario";
             // 
             // txtUsuario
             // 
-            txtUsuario.Location = new Point(152, 447);
-            txtUsuario.Margin = new Padding(3, 4, 3, 4);
+            txtUsuario.Location = new Point(232, 369);
             txtUsuario.Name = "txtUsuario";
-            txtUsuario.Size = new Size(226, 27);
+            txtUsuario.Size = new Size(246, 23);
             txtUsuario.TabIndex = 26;
             // 
             // label3
@@ -190,18 +192,17 @@
             label3.BackColor = Color.Transparent;
             label3.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = SystemColors.ControlLightLight;
-            label3.Location = new Point(158, 309);
+            label3.Location = new Point(237, 267);
             label3.Name = "label3";
-            label3.Size = new Size(64, 23);
+            label3.Size = new Size(49, 17);
             label3.TabIndex = 25;
             label3.Text = "Correo";
             // 
             // txtCorreo
             // 
-            txtCorreo.Location = new Point(158, 353);
-            txtCorreo.Margin = new Padding(3, 4, 3, 4);
+            txtCorreo.Location = new Point(237, 300);
             txtCorreo.Name = "txtCorreo";
-            txtCorreo.Size = new Size(295, 27);
+            txtCorreo.Size = new Size(146, 23);
             txtCorreo.TabIndex = 24;
             // 
             // label2
@@ -210,19 +211,18 @@
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = SystemColors.ControlLightLight;
-            label2.Location = new Point(161, 210);
+            label2.Location = new Point(240, 196);
             label2.Name = "label2";
-            label2.Size = new Size(40, 23);
+            label2.Size = new Size(31, 17);
             label2.TabIndex = 23;
             label2.Text = "DUI";
             // 
-            // txtDui
+            // txtDUI
             // 
-            txtDui.Location = new Point(161, 254);
-            txtDui.Margin = new Padding(3, 4, 3, 4);
-            txtDui.Name = "txtDui";
-            txtDui.Size = new Size(223, 27);
-            txtDui.TabIndex = 22;
+            txtDUI.Location = new Point(240, 228);
+            txtDUI.Name = "txtDUI";
+            txtDUI.Size = new Size(143, 23);
+            txtDUI.TabIndex = 22;
             // 
             // label1
             // 
@@ -230,74 +230,140 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = SystemColors.ControlLightLight;
-            label1.Location = new Point(161, 114);
+            label1.Location = new Point(240, 133);
             label1.Name = "label1";
-            label1.Size = new Size(76, 23);
+            label1.Size = new Size(58, 17);
             label1.TabIndex = 21;
             label1.Text = "Nombre";
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(161, 158);
-            txtNombre.Margin = new Padding(3, 4, 3, 4);
+            txtNombre.Location = new Point(240, 165);
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(477, 27);
+            txtNombre.Size = new Size(513, 23);
             txtNombre.TabIndex = 20;
+            // 
+            // btnAtras
+            // 
+            btnAtras.Cursor = Cursors.Hand;
+            btnAtras.Image = (Image)resources.GetObject("btnAtras.Image");
+            btnAtras.Location = new Point(12, 533);
+            btnAtras.Margin = new Padding(3, 2, 3, 2);
+            btnAtras.Name = "btnAtras";
+            btnAtras.Size = new Size(122, 34);
+            btnAtras.SizeMode = PictureBoxSizeMode.StretchImage;
+            btnAtras.TabIndex = 39;
+            btnAtras.TabStop = false;
+            btnAtras.Click += btnAtras_Click_1;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.BackColor = Color.Transparent;
+            label10.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label10.ForeColor = SystemColors.ControlLightLight;
+            label10.Location = new Point(610, 267);
+            label10.Name = "label10";
+            label10.Size = new Size(112, 17);
+            label10.TabIndex = 40;
+            label10.Text = "Rol de empleado";
+            label10.Click += label10_Click;
+            // 
+            // cmbRol
+            // 
+            cmbRol.FormattingEnabled = true;
+            cmbRol.Location = new Point(610, 300);
+            cmbRol.Name = "cmbRol";
+            cmbRol.Size = new Size(143, 23);
+            cmbRol.TabIndex = 41;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.BackColor = Color.Transparent;
+            label11.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label11.ForeColor = SystemColors.ControlLightLight;
+            label11.Location = new Point(389, 267);
+            label11.Name = "label11";
+            label11.Size = new Size(66, 17);
+            label11.TabIndex = 43;
+            label11.Text = "Dirección";
+            // 
+            // txtDireccion
+            // 
+            txtDireccion.Location = new Point(389, 300);
+            txtDireccion.Name = "txtDireccion";
+            txtDireccion.Size = new Size(215, 23);
+            txtDireccion.TabIndex = 42;
             // 
             // Form11
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources.fondo_primeruso;
+            BackgroundImage = Properties.Resources.fondo_agregarconductor_;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(790, 771);
-            Controls.Add(txtConfPass);
+            ClientSize = new Size(990, 580);
+            Controls.Add(label11);
+            Controls.Add(txtDireccion);
+            Controls.Add(cmbRol);
+            Controls.Add(label10);
+            Controls.Add(btnAtras);
+            Controls.Add(txtConfirmarContraseña);
             Controls.Add(btnguardar);
             Controls.Add(label9);
-            Controls.Add(dtpCon);
+            Controls.Add(dtpContratacion);
             Controls.Add(label8);
             Controls.Add(label7);
-            Controls.Add(txtPass);
+            Controls.Add(txtContraseña);
             Controls.Add(label6);
-            Controls.Add(txtTel);
-            Controls.Add(dtpNa);
+            Controls.Add(txtTelefono);
+            Controls.Add(dtpNacimiento);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(txtUsuario);
             Controls.Add(label3);
             Controls.Add(txtCorreo);
             Controls.Add(label2);
-            Controls.Add(txtDui);
+            Controls.Add(txtDUI);
             Controls.Add(label1);
             Controls.Add(txtNombre);
+            DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.None;
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Form11";
             Text = "Form11";
+            Load += Form11_Load;
             ((System.ComponentModel.ISupportInitialize)btnguardar).EndInit();
+            ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private TextBox txtConfPass;
+        private TextBox txtConfirmarContraseña;
         private PictureBox btnguardar;
         private Label label9;
-        private DateTimePicker dtpCon;
+        private DateTimePicker dtpContratacion;
         private Label label8;
         private Label label7;
-        private TextBox txtPass;
+        private TextBox txtContraseña;
         private Label label6;
-        private TextBox txtTel;
-        private DateTimePicker dtpNa;
+        private TextBox txtTelefono;
+        private DateTimePicker dtpNacimiento;
         private Label label5;
         private Label label4;
         private TextBox txtUsuario;
         private Label label3;
         private TextBox txtCorreo;
         private Label label2;
-        private TextBox txtDui;
+        private TextBox txtDUI;
         private Label label1;
         private TextBox txtNombre;
+        private PictureBox btnAtras;
+        private Label label10;
+        private ComboBox cmbRol;
+        private Label label11;
+        private TextBox txtDireccion;
     }
 }

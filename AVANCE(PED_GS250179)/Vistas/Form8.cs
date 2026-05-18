@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AVANCE_PED_GS250179_.Servicio;
+using AVANCE_PED_GS250179_.Modelos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +14,146 @@ namespace AVANCE_PED_GS250179_.Vistas
 {
     public partial class Form8 : Form
     {
+        EmpleadoService service = new EmpleadoService();
+
+        private bool esEditar = false;
+
+        private int idEmpleadoEditar = 0;
+
+        public int IdEmpleado { get; private set; }
+
         public Form8()
         {
             InitializeComponent();
+        }
+        public Form8(int idEmpleado)
+        {
+            InitializeComponent();
+
+            esEditar = true;
+
+            idEmpleadoEditar = idEmpleado;
+        }
+
+        private void Form8_Load(object sender, EventArgs e)
+        {
+            CargarTabla();
+        }
+
+        private void CargarTabla()
+        {
+            dgvEmpleados.DataSource = service.MostrarEmpleados();
+
+            dgvEmpleados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvEmpleados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvEmpleados.EnableHeadersVisualStyles = false;
+            dgvEmpleados.ColumnHeadersDefaultCellStyle.BackColor = Color.LightSlateGray;
+            dgvEmpleados.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+
+        }
+
+        private void btnAR_Click(object sender, EventArgs e)
+        {
+            Form11 form = new Form11();
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void btnAtras_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
+
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            dgvEmpleados.DataSource = service.BuscarEmpleado(txtBuscar.Text);
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (dgvEmpleados.Rows.Count > 0)
+            {
+                int id = Convert.ToInt32(
+                    dgvEmpleados.CurrentRow.Cells[0].Value
+                );
+
+                DialogResult resultado = MessageBox.Show("¿Desea eliminar este empleado?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (resultado == DialogResult.Yes)
+                {
+                    bool eliminado = service.EliminarEmpleado(id);
+
+                    if (eliminado)
+                    {
+                        MessageBox.Show("Empleado eliminado");
+                        CargarTabla();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al eliminar");
+                    }
+                }
+            }
+        }
+
+        private void btnEditarM_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgvEmpleados.Rows.Count == 0)
+                {
+                    MessageBox.Show(
+                        "No hay datos"
+                    );
+
+                    return;
+                }
+
+                if (dgvEmpleados.CurrentRow == null)
+                {
+                    MessageBox.Show(
+                        "Seleccione una fila"
+                    );
+
+                    return;
+                }
+
+                // =====================================
+                // OBTENER ID
+                // =====================================
+
+                int idEmpleado =
+                    Convert.ToInt32(
+                        dgvEmpleados.CurrentRow.Cells["idEmpleado"].Value
+                    );
+
+                // =====================================
+                // ABRIR FORM EDITAR
+                // =====================================
+
+                this.Hide();
+
+                Form11 form =
+                    new Form11(idEmpleado);
+
+                form.ShowDialog();
+
+                this.Hide();
+
+                // =====================================
+                // RECARGAR TABLA
+                // =====================================
+
+                CargarTabla();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message
+                );
+            }
         }
     }
 }

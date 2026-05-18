@@ -112,7 +112,7 @@
             label1.Name = "label1";
             label1.Size = new Size(371, 29);
             label1.TabIndex = 12;
-            label1.Text = "Gestión de unidades";
+            label1.Text = "GESTIÓN DE UNIDADES";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // txtBuscar
