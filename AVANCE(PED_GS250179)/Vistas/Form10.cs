@@ -32,7 +32,8 @@ namespace AVANCE_PED_GS250179_.Vistas
         // Capas transparentes sobre el mapa
         GMapOverlay capaMarcadores = new GMapOverlay("marcadores");
         GMapOverlay capaRutas = new GMapOverlay("rutas");
-        
+        GMapMarker marcadorParaEliminar = null;
+
 
         NodoRuta NodoOrigen = null;
         NodoRuta NodoDestino = null;
@@ -159,7 +160,7 @@ namespace AVANCE_PED_GS250179_.Vistas
                 {
                     string pesoStr = Microsoft.VisualBasic.Interaction.InputBox("Ingrese la distancia o tiempo para esta sección (Costo):", "Configurar Ruta", "1");
 
-                    
+
                     if (double.TryParse(pesoStr, out double distancia) && distancia > 0)
                     {
                         grafoService.AgregarArco(NodoOrigen.Valor, NodoDestino.Valor, distancia);
@@ -175,7 +176,7 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void btnIniciarGrabacion_Click(object sender, EventArgs e)
         {
-            
+
             if (grafoService.Nodos.Count < 2)
             {
                 MessageBox.Show("Debes crear al menos 2 paradas y unirlas con una línea.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -205,7 +206,7 @@ namespace AVANCE_PED_GS250179_.Vistas
                 return;
             }
 
-            
+
             List<string> paradasOrdenadas = new List<string>();
 
             while (nodoActual != null)
@@ -222,12 +223,12 @@ namespace AVANCE_PED_GS250179_.Vistas
                 }
             }
 
-            
+
             PuntoInicio = paradasOrdenadas.First();
             PuntoFinal = paradasOrdenadas.Last();
             RecorridoGenerado = string.Join(" - ", paradasOrdenadas);
 
-            
+
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -257,6 +258,34 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void mapaReise_OnMarkerClick(GMap.NET.WindowsForms.GMapMarker item, MouseEventArgs e)
         {
+            // SI ES CLIC DERECHO: Mostramos el menú para eliminar
+            if (e.Button == MouseButtons.Right)
+            {
+                marcadorParaEliminar = item;
+                // Mostramos el menú justo donde está el mouse
+                menuMarcador.Show(mapaReise, e.Location);
+            }
+            // SI ES CLIC IZQUIERDO: Lógica normal de unión
+            else if (e.Button == MouseButtons.Left)
+            {
+                if (marcadorOrigen == null)
+                {
+                    marcadorOrigen = item;
+                    MessageBox.Show($"Origen: {item.ToolTipText}\nAhora toca el destino.", "Ruta");
+                }
+                else if (marcadorOrigen != item)
+                {
+                    grafoService.AgregarArco(marcadorOrigen.ToolTipText, item.ToolTipText, 1);
+                    GMapRoute rutaVisual = new GMapRoute("ruta_visual");
+                    rutaVisual.Points.Add(marcadorOrigen.Position);
+                    rutaVisual.Points.Add(item.Position);
+                    rutaVisual.Stroke = new Pen(Color.Blue, 3);
+                    capaRutas.Routes.Add(rutaVisual);
+                    marcadorOrigen = null;
+                    mapaReise.Refresh();
+                }
+            }
+
             if (marcadorOrigen == null)
             {
                 marcadorOrigen = item;
@@ -308,19 +337,54 @@ namespace AVANCE_PED_GS250179_.Vistas
 
                     // Creamos un PIN ROJO (Estilo Google Maps)
                     GMarkerGoogle marcador = new GMarkerGoogle(coordenadas, GMarkerGoogleType.red_pushpin);
-                    marcador.ToolTipText = nombreParada.Trim(); 
+                    marcador.ToolTipText = nombreParada.Trim();
                     marcador.Tag = nombreParada.Trim(); // Guardamos el nombre oculto en el marcador
 
                     // Lo agregamos a la capa visual
                     capaMarcadores.Markers.Add(marcador);
 
-                    
+
                     NodoRuta nuevoNodo = new NodoRuta(nombreParada.Trim(), e.X, e.Y);
                     nuevoNodo.Latitud = coordenadas.Lat;
                     nuevoNodo.Longitud = coordenadas.Lng;
 
                     grafoService.AgregarVertice(nuevoNodo);
                 }
+            }
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("¿Deseas borrar toda la ruta?", "Confirmar", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                capaMarcadores.Markers.Clear();
+                capaRutas.Routes.Clear();
+                grafoService.Nodos.Clear();
+                marcadorOrigen = null;
+                mapaReise.Refresh();
+            }
+        }
+
+        private void eliminarPuntoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (marcadorParaEliminar != null)
+            {
+                string nombre = marcadorParaEliminar.ToolTipText;
+
+                // 1. Eliminar del Grafo (el cerebro)
+                var nodo = grafoService.Nodos.FirstOrDefault(n => n.Valor == nombre);
+                if (nodo != null) grafoService.Nodos.Remove(nodo);
+
+                // 2. Eliminar de la Capa de Marcadores (lo visual)
+                capaMarcadores.Markers.Remove(marcadorParaEliminar);
+
+                // 3. Limpiar rutas conectadas a este punto
+                // (Para simplificar, borramos las líneas visuales para que las vuelvas a trazar)
+                capaRutas.Routes.Clear();
+                marcadorOrigen = null;
+
+                mapaReise.Refresh();
+                marcadorParaEliminar = null;
             }
         }
     }

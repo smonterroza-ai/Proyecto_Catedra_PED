@@ -1,4 +1,6 @@
 ﻿using AVANCE_PED_GS250179_.Vistas;
+using System.Data.SqlClient;
+using AVANCE_PED_GS250179_.Datos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -48,20 +50,52 @@ namespace AVANCE_PED_GS250179_
             }
         }
 
+        private void CargarMetricasHoy()
+        {
+            Conexion conexion = new Conexion();
+            SqlConnection cn = conexion.AbrirConexion();
+
+            try
+            {
+                // 1. Consulta para Pasajeros de Hoy
+                string queryPasajeros = @"
+            SELECT ISNULL(SUM(cp.CantidadAComprar), 0) 
+            FROM DetalleVenta dv
+            INNER JOIN CompraPasajes cp ON dv.IdCompraPasajes = cp.IdCompraPasajes
+            WHERE CAST(dv.Hora AS DATE) = CAST(GETDATE() AS DATE) AND dv.Estado = 'Aprobado'";
+
+                SqlCommand cmdPasajeros = new SqlCommand(queryPasajeros, cn);
+                int totalPasajeros = Convert.ToInt32(cmdPasajeros.ExecuteScalar());
+
+                // Lo mostramos en la etiqueta
+                lblPasajeros.Text = totalPasajeros.ToString();
+
+                // 2. Consulta para Recaudación de Hoy
+                string queryRecaudacion = @"
+            SELECT ISNULL(SUM(cp.TotalApagar), 0) 
+            FROM DetalleVenta dv
+            INNER JOIN CompraPasajes cp ON dv.IdCompraPasajes = cp.IdCompraPasajes
+            WHERE CAST(dv.Hora AS DATE) = CAST(GETDATE() AS DATE) AND dv.Estado = 'Aprobado'";
+
+                SqlCommand cmdRecaudacion = new SqlCommand(queryRecaudacion, cn);
+                decimal totalRecaudacion = Convert.ToDecimal(cmdRecaudacion.ExecuteScalar());
+
+                // Lo mostramos en la etiqueta con formato de dinero ($0.00)
+                lblRecaudacion.Text = "$" + totalRecaudacion.ToString("0.00");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar las métricas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                conexion.CerrarConexion(cn);
+            }
+        }
+
         private void Form2_Load(object sender, EventArgs e)
         {
-            if (!MostrarMensaje)
-            {
-                DialogResult r = MessageBox.Show("En la siguiente pestaña encontrará lo que son tres áreas principales.", "Instrucciones",
-                    MessageBoxButtons.OK);
-
-                if (r == DialogResult.OK)
-                {
-                    MessageBox.Show("El botón de la esquina superior derecha es para salir del menú");
-                }
-
-                MostrarMensaje = true;
-            }
+            CargarMetricasHoy();
         }
 
         private void btnT_Click(object sender, EventArgs e)

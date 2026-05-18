@@ -43,8 +43,8 @@
             label8 = new Label();
             label9 = new Label();
             label10 = new Label();
-            label11 = new Label();
-            label13 = new Label();
+            lblPasajeros = new Label();
+            lblRecaudacion = new Label();
             panel1 = new Panel();
             panel2 = new Panel();
             ptConductor = new PictureBox();
@@ -212,31 +212,31 @@
             label10.TabIndex = 15;
             label10.Text = "RECAUDACION DE HOY";
             // 
-            // label11
+            // lblPasajeros
             // 
-            label11.AutoSize = true;
-            label11.BackColor = SystemColors.AppWorkspace;
-            label11.Font = new Font("Times New Roman", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label11.Location = new Point(466, 516);
-            label11.Name = "label11";
-            label11.Size = new Size(23, 17);
-            label11.TabIndex = 16;
-            label11.Text = "---";
+            lblPasajeros.AutoSize = true;
+            lblPasajeros.BackColor = SystemColors.AppWorkspace;
+            lblPasajeros.Font = new Font("Times New Roman", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblPasajeros.Location = new Point(466, 516);
+            lblPasajeros.Name = "lblPasajeros";
+            lblPasajeros.Size = new Size(23, 17);
+            lblPasajeros.TabIndex = 16;
+            lblPasajeros.Text = "---";
             // 
-            // label13
+            // lblRecaudacion
             // 
-            label13.AutoSize = true;
-            label13.Font = new Font("Times New Roman", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label13.Location = new Point(20, 54);
-            label13.Name = "label13";
-            label13.Size = new Size(23, 17);
-            label13.TabIndex = 18;
-            label13.Text = "---";
+            lblRecaudacion.AutoSize = true;
+            lblRecaudacion.Font = new Font("Times New Roman", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblRecaudacion.Location = new Point(20, 54);
+            lblRecaudacion.Name = "lblRecaudacion";
+            lblRecaudacion.Size = new Size(23, 17);
+            lblRecaudacion.TabIndex = 18;
+            lblRecaudacion.Text = "---";
             // 
             // panel1
             // 
             panel1.BackColor = SystemColors.AppWorkspace;
-            panel1.Controls.Add(label13);
+            panel1.Controls.Add(lblRecaudacion);
             panel1.Controls.Add(label10);
             panel1.Location = new Point(71, 462);
             panel1.Name = "panel1";
@@ -269,7 +269,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1112, 639);
             Controls.Add(ptConductor);
-            Controls.Add(label11);
+            Controls.Add(lblPasajeros);
             Controls.Add(label9);
             Controls.Add(label3);
             Controls.Add(label2);
@@ -316,8 +316,8 @@
         private Label label8;
         private Label label9;
         private Label label10;
-        private Label label11;
-        private Label label13;
+        private Label lblPasajeros;
+        private Label lblRecaudacion;
         private Panel panel1;
         private Panel panel2;
         private PictureBox ptConductor;

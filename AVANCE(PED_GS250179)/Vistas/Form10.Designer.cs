@@ -28,11 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             Pizarra = new Panel();
             mapaReise = new GMap.NET.WindowsForms.GMapControl();
             btnRegresar = new Button();
             btnGuardarRuta = new Button();
+            btnLimpiar = new Button();
+            button1 = new Button();
+            menuMarcador = new ContextMenuStrip(components);
+            eliminarPuntoToolStripMenuItem = new ToolStripMenuItem();
             Pizarra.SuspendLayout();
+            menuMarcador.SuspendLayout();
             SuspendLayout();
             // 
             // Pizarra
@@ -78,7 +84,7 @@
             // 
             // btnRegresar
             // 
-            btnRegresar.Location = new Point(825, 74);
+            btnRegresar.Location = new Point(825, 409);
             btnRegresar.Name = "btnRegresar";
             btnRegresar.Size = new Size(94, 29);
             btnRegresar.TabIndex = 1;
@@ -96,11 +102,46 @@
             btnGuardarRuta.UseVisualStyleBackColor = true;
             btnGuardarRuta.Click += btnIniciarGrabacion_Click;
             // 
+            // btnLimpiar
+            // 
+            btnLimpiar.Location = new Point(807, 63);
+            btnLimpiar.Name = "btnLimpiar";
+            btnLimpiar.Size = new Size(131, 29);
+            btnLimpiar.TabIndex = 3;
+            btnLimpiar.Text = "Limpiar";
+            btnLimpiar.UseVisualStyleBackColor = true;
+            btnLimpiar.Click += btnLimpiar_Click;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(807, 116);
+            button1.Name = "button1";
+            button1.Size = new Size(131, 29);
+            button1.TabIndex = 4;
+            button1.Text = "Eliminar";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // menuMarcador
+            // 
+            menuMarcador.ImageScalingSize = new Size(20, 20);
+            menuMarcador.Items.AddRange(new ToolStripItem[] { eliminarPuntoToolStripMenuItem });
+            menuMarcador.Name = "contextMenuStrip1";
+            menuMarcador.Size = new Size(211, 56);
+            // 
+            // eliminarPuntoToolStripMenuItem
+            // 
+            eliminarPuntoToolStripMenuItem.Name = "eliminarPuntoToolStripMenuItem";
+            eliminarPuntoToolStripMenuItem.Size = new Size(210, 24);
+            eliminarPuntoToolStripMenuItem.Text = "Eliminar Punto";
+            eliminarPuntoToolStripMenuItem.Click += eliminarPuntoToolStripMenuItem_Click;
+            // 
             // Form10
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(940, 450);
+            Controls.Add(button1);
+            Controls.Add(btnLimpiar);
             Controls.Add(btnGuardarRuta);
             Controls.Add(btnRegresar);
             Controls.Add(Pizarra);
@@ -108,6 +149,7 @@
             Text = "Form10";
             Load += Form10_Load;
             Pizarra.ResumeLayout(false);
+            menuMarcador.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -117,5 +159,9 @@
         private Button btnRegresar;
         private Button btnGuardarRuta;
         private GMap.NET.WindowsForms.GMapControl mapaReise;
+        private Button btnLimpiar;
+        private Button button1;
+        private ContextMenuStrip menuMarcador;
+        private ToolStripMenuItem eliminarPuntoToolStripMenuItem;
     }
 }
