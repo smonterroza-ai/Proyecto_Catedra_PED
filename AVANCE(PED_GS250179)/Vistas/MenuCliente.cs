@@ -409,8 +409,10 @@ namespace AVANCE_PED_GS250179_
                         Text = "No se encontraron rutas disponibles.",
                         Font = new Font("Segoe UI", 11, FontStyle.Italic),
                         ForeColor = Color.Gray,
-                        AutoSize = true,
-                        Margin = new Padding(20)
+                        AutoSize = false, // Lo cambiamos a false para controlarlo nosotros
+                        Size = new Size(layoutDestino.Width - 40, 40), 
+                        TextAlign = ContentAlignment.MiddleCenter, // Centramos el texto
+                        Margin = new Padding(20, 20, 20, 0)
                     };
                     layoutDestino.Controls.Add(lblVacio);
                     return;
