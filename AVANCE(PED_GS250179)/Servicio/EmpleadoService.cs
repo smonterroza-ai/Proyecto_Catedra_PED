@@ -1,4 +1,5 @@
 ﻿using AVANCE_PED_GS250179_.Datos;
+using AVANCE_PED_GS250179_.Estructuras;
 using AVANCE_PED_GS250179_.Modelos;
 using System;
 using System.Collections.Generic;
@@ -628,41 +629,28 @@ namespace AVANCE_PED_GS250179_.Servicio
         // ROLES
         // =========================================
 
-        public List<RolEmpleado>
-            ObtenerRoles()
+        public ListaEnlazada ObtenerRoles()
         {
-            List<RolEmpleado> lista =
-                new List<RolEmpleado>();
+            ListaEnlazada lista = new ListaEnlazada();
 
-            using (SqlConnection cn =
-                conexion.AbrirConexion())
+            using (SqlConnection cn = conexion.AbrirConexion())
             {
                 string query = @"
-                SELECT
-                    IdRolEmpleado,
-                    Roles
-                FROM RolEmpleado";
+            SELECT IdRolEmpleado, Roles
+            FROM RolEmpleado";
 
-                SqlCommand cmd =
-                    new SqlCommand(query, cn);
-
-                SqlDataReader dr =
-                    cmd.ExecuteReader();
+                SqlCommand cmd = new SqlCommand(query, cn);
+                SqlDataReader dr = cmd.ExecuteReader();
 
                 while (dr.Read())
                 {
-                    lista.Add(
-                        new RolEmpleado
-                        {
-                            IdRolEmpleado =
-                                Convert.ToInt32(
-                                    dr["IdRolEmpleado"]
-                                ),
+                    RolEmpleado r = new RolEmpleado
+                    {
+                        IdRolEmpleado = Convert.ToInt32(dr["IdRolEmpleado"]),
+                        Roles = dr["Roles"].ToString()
+                    };
 
-                            Roles =
-                                dr["Roles"].ToString()
-                        }
-                    );
+                    lista.Agregar(r);
                 }
             }
 

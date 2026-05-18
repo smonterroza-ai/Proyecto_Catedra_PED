@@ -1,4 +1,5 @@
-﻿using AVANCE_PED_GS250179_.Modelos;
+﻿using AVANCE_PED_GS250179_.Estructuras;
+using AVANCE_PED_GS250179_.Modelos;
 using AVANCE_PED_GS250179_.Servicio;
 using System;
 using System.Collections.Generic;
@@ -177,17 +178,20 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void CargarRoles()
         {
-            var lista =
-                service.ObtenerRoles();
+            cmbRol.Items.Clear();
 
-            cmbRol.DataSource =
-                lista;
+            ListaEnlazada lista = service.ObtenerRoles();
 
-            cmbRol.DisplayMember =
-                "Roles";
+            NodoLista actual = lista.Cabeza;
 
-            cmbRol.ValueMember =
-                "IdRolEmpleado";
+            while (actual != null)
+            {
+                RolEmpleado r = (RolEmpleado)actual.Datos;
+
+                cmbRol.Items.Add(r);
+
+                actual = actual.Siguiente;
+            }
 
             cmbRol.SelectedIndex = -1;
         }

@@ -11,5 +11,10 @@ namespace AVANCE_PED_GS250179_.Modelos
         public int IdRutaBuses { get; set; }
 
         public string NumeroRuta { get; set; }
+
+        public override string ToString()
+        {
+            return NumeroRuta;
+        }
     }
 }

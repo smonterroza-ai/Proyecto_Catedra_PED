@@ -11,5 +11,10 @@ namespace AVANCE_PED_GS250179_.Modelos
         public int IdRolEmpleado { get; set; }
 
         public string Roles { get; set; }
+
+        public override string ToString()
+        {
+            return Roles;
+        }
     }
 }

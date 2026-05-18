@@ -34,5 +34,10 @@ namespace AVANCE_PED_GS250179_.Modelos
 
         public string NombreRol { get; set; }
         public string Contraseña { get; internal set; }
+
+        public override string ToString()
+        {
+            return Nombre;
+        }
     }
 }

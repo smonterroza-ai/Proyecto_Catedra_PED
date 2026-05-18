@@ -1,4 +1,5 @@
 ﻿using AVANCE_PED_GS250179_.Datos;
+using AVANCE_PED_GS250179_.Estructuras;
 using AVANCE_PED_GS250179_.Modelos;
 using System;
 using System.Collections.Generic;
@@ -670,41 +671,28 @@ namespace AVANCE_PED_GS250179_.Servicio
         // =========================================
         // TIPOS VEHÍCULO
         // =========================================
-        public List<TipoVehiculo>
-            ObtenerTiposVehiculo()
+        public ListaEnlazada ObtenerTiposVehiculo()
         {
-            List<TipoVehiculo> lista =
-                new List<TipoVehiculo>();
+            ListaEnlazada lista = new ListaEnlazada();
 
-            using (SqlConnection cn =
-                conexion.AbrirConexion())
+            using (SqlConnection cn = conexion.AbrirConexion())
             {
                 string query = @"
-                SELECT
-                    IdTipoVehiculo,
-                    TipoVehiculo
-                FROM TipoVehiculo";
+            SELECT IdTipoVehiculo, TipoVehiculo
+            FROM TipoVehiculo";
 
-                SqlCommand cmd =
-                    new SqlCommand(query, cn);
-
-                SqlDataReader dr =
-                    cmd.ExecuteReader();
+                SqlCommand cmd = new SqlCommand(query, cn);
+                SqlDataReader dr = cmd.ExecuteReader();
 
                 while (dr.Read())
                 {
-                    lista.Add(
-                        new TipoVehiculo
-                        {
-                            IdTipoVehiculo =
-                                Convert.ToInt32(
-                                    dr["IdTipoVehiculo"]
-                                ),
+                    TipoVehiculo t = new TipoVehiculo
+                    {
+                        IdTipoVehiculo = Convert.ToInt32(dr["IdTipoVehiculo"]),
+                        TipoVehiculoNombre = dr["TipoVehiculo"].ToString()
+                    };
 
-                            TipoVehiculoNombre =
-                                dr["TipoVehiculo"].ToString()
-                        }
-                    );
+                    lista.Agregar(t);
                 }
             }
 
@@ -714,41 +702,28 @@ namespace AVANCE_PED_GS250179_.Servicio
         // =========================================
         // CONDUCTORES
         // =========================================
-        public List<Empleado>
-            ObtenerConductores()
+        public ListaEnlazada ObtenerConductores()
         {
-            List<Empleado> lista =
-                new List<Empleado>();
+            ListaEnlazada lista = new ListaEnlazada();
 
-            using (SqlConnection cn =
-                conexion.AbrirConexion())
+            using (SqlConnection cn = conexion.AbrirConexion())
             {
                 string query = @"
-                SELECT
-                    IdEmpleado,
-                    Nombre
-                FROM InfoEmpleado";
+            SELECT IdEmpleado, Nombre
+            FROM InfoEmpleado";
 
-                SqlCommand cmd =
-                    new SqlCommand(query, cn);
-
-                SqlDataReader dr =
-                    cmd.ExecuteReader();
+                SqlCommand cmd = new SqlCommand(query, cn);
+                SqlDataReader dr = cmd.ExecuteReader();
 
                 while (dr.Read())
                 {
-                    lista.Add(
-                        new Empleado
-                        {
-                            IdEmpleado =
-                                Convert.ToInt32(
-                                    dr["IdEmpleado"]
-                                ),
+                    Empleado e = new Empleado
+                    {
+                        IdEmpleado = Convert.ToInt32(dr["IdEmpleado"]),
+                        Nombre = dr["Nombre"].ToString()
+                    };
 
-                            Nombre =
-                                dr["Nombre"].ToString()
-                        }
-                    );
+                    lista.Agregar(e);
                 }
             }
 
@@ -758,41 +733,28 @@ namespace AVANCE_PED_GS250179_.Servicio
         // =========================================
         // RUTAS
         // =========================================
-        public List<Ruta>
-            ObtenerRutas()
+        public ListaEnlazada ObtenerRutas()
         {
-            List<Ruta> lista =
-                new List<Ruta>();
+            ListaEnlazada lista = new ListaEnlazada();
 
-            using (SqlConnection cn =
-                conexion.AbrirConexion())
+            using (SqlConnection cn = conexion.AbrirConexion())
             {
                 string query = @"
-                SELECT
-                    IdRutaBuses,
-                    NumeroRuta
-                FROM InfoRutaBuses";
+            SELECT IdRutaBuses, NumeroRuta
+            FROM InfoRutaBuses";
 
-                SqlCommand cmd =
-                    new SqlCommand(query, cn);
-
-                SqlDataReader dr =
-                    cmd.ExecuteReader();
+                SqlCommand cmd = new SqlCommand(query, cn);
+                SqlDataReader dr = cmd.ExecuteReader();
 
                 while (dr.Read())
                 {
-                    lista.Add(
-                        new Ruta
-                        {
-                            IdRutaBuses =
-                                Convert.ToInt32(
-                                    dr["IdRutaBuses"]
-                                ),
+                    Ruta r = new Ruta
+                    {
+                        IdRutaBuses = Convert.ToInt32(dr["IdRutaBuses"]),
+                        NumeroRuta = dr["NumeroRuta"].ToString()
+                    };
 
-                            NumeroRuta =
-                                dr["NumeroRuta"].ToString()
-                        }
-                    );
+                    lista.Agregar(r);
                 }
             }
 

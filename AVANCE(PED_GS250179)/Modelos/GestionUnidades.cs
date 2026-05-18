@@ -22,12 +22,10 @@ namespace AVANCE_PED_GS250179_.Modelos
 
         public string MotoristaNombre { get; set; }
 
-        public int IdEmpresa { get; set; }
-
         public int IdTipoVehiculo { get; set; }
 
         public string TipoVehiculo { get; set; }
 
-        public int IdEmpleado { get;  }
+        public int IdEmpleado { get; set; }
     }
 }

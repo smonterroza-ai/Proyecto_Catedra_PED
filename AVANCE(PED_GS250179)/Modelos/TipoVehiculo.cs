@@ -10,5 +10,10 @@ namespace AVANCE_PED_GS250179_.Modelos
     {
         public int IdTipoVehiculo { get; set; }
         public string TipoVehiculoNombre { get; set; }
+
+        public override string ToString()
+        {
+            return TipoVehiculoNombre;
+        }
     }
 }

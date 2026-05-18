@@ -1,12 +1,13 @@
-﻿using System;
+﻿using AVANCE_PED_GS250179_.Estructuras;
+using AVANCE_PED_GS250179_.Modelos;
+using AVANCE_PED_GS250179_.Servicio;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using AVANCE_PED_GS250179_.Modelos;
-using AVANCE_PED_GS250179_.Servicio;
 
 namespace AVANCE_PED_GS250179_
 {
@@ -16,6 +17,8 @@ namespace AVANCE_PED_GS250179_
 
         private int idRutaEditar = 0;
         private bool esEditar = false;
+
+        ListaEnlazada listaRutas;
 
         public Form7()
         {
@@ -43,9 +46,6 @@ namespace AVANCE_PED_GS250179_
 
             cmbEstado.SelectedIndex = -1;
 
-            // =====================================
-            // EDITAR
-            // =====================================
             if (esEditar)
             {
                 GestionUnidades unidad =
@@ -76,12 +76,24 @@ namespace AVANCE_PED_GS250179_
                 cmbEstado.Text =
                     unidad.EstadoVehiculo;
 
-                cmbTipoVehiculo.SelectedValue =
-                    unidad.IdTipoVehiculo;
+                foreach (TipoVehiculo t in cmbTipoVehiculo.Items)
+                {
+                    if (t.IdTipoVehiculo == unidad.IdTipoVehiculo)
+                    {
+                        cmbTipoVehiculo.SelectedItem = t;
+                        break;
+                    }
+                }
 
                 // RUTA
-                cmbRuta.Text =
-                    unidad.NumeroRuta;
+                foreach (Ruta r in cmbRuta.Items)
+                {
+                    if (r.IdRutaBuses == unidad.IdRutaBuses)
+                    {
+                        cmbRuta.SelectedItem = r;
+                        break;
+                    }
+                }
 
                 for (int i = 0; i < cmbConductor.Items.Count; i++)
                 {
@@ -110,13 +122,12 @@ namespace AVANCE_PED_GS250179_
         {
             try
             {
-                // VALIDACIÓN
                 if (txtPlaca.Text.Trim() == "" ||
-                    cmbRuta.Text.Trim() == "" ||
-                    cmbConductor.Text.Trim() == "" ||
-                    cmbEstado.Text.Trim() == "" ||
                     txtMarca.Text.Trim() == "" ||
                     txtModelo.Text.Trim() == "" ||
+                    cmbEstado.SelectedIndex == -1 ||
+                    cmbRuta.SelectedIndex == -1 ||
+                    cmbConductor.SelectedIndex == -1 ||
                     cmbTipoVehiculo.SelectedIndex == -1)
                 {
                     MessageBox.Show("Complete todos los campos");
@@ -125,24 +136,55 @@ namespace AVANCE_PED_GS250179_
 
                 GestionUnidades unidad = new GestionUnidades();
 
+                unidad.PlacaVehiculo = txtPlaca.Text.Trim();
+                unidad.Marca = txtMarca.Text.Trim();
+                unidad.Modelo = txtModelo.Text.Trim();
+                unidad.EstadoVehiculo = cmbEstado.Text;
+
+                Ruta ruta = cmbRuta.SelectedItem as Ruta;
+
+                if (ruta == null)
+                {
+                    MessageBox.Show("Seleccione una ruta");
+                    return;
+                }
+
+                unidad.IdRutaBuses = ruta.IdRutaBuses;
+                unidad.NumeroRuta = ruta.NumeroRuta;
+
+                Empleado emp = cmbConductor.SelectedItem as Empleado;
+
+                if (emp == null)
+                {
+                    MessageBox.Show("Seleccione un conductor");
+                    return;
+                }
+
+                unidad.IdEmpleado = emp.IdEmpleado;
+                unidad.MotoristaNombre = emp.Nombre;
+
+                TipoVehiculo tipo = cmbTipoVehiculo.SelectedItem as TipoVehiculo;
+
+                if (tipo == null)
+                {
+                    MessageBox.Show("Seleccione un tipo de vehículo");
+                    return;
+                }
+
+                unidad.IdTipoVehiculo = tipo.IdTipoVehiculo;
+                unidad.TipoVehiculo = tipo.TipoVehiculoNombre;
+
+                bool resultado;
+
                 if (esEditar)
                 {
                     unidad.IdRutaBuses = idRutaEditar;
+                    resultado = service.EditarUnidad(unidad);
                 }
-
-                unidad.PlacaVehiculo = txtPlaca.Text.Trim();
-                unidad.NumeroRuta = cmbRuta.Text.Trim();
-                unidad.MotoristaNombre = cmbConductor.Text.Trim();
-                unidad.EstadoVehiculo = cmbEstado.Text;
-                unidad.Marca = txtMarca.Text.Trim();
-                unidad.Modelo = txtModelo.Text.Trim();
-
-                unidad.IdTipoVehiculo =
-                    Convert.ToInt32(cmbTipoVehiculo.SelectedValue);
-
-                bool resultado = esEditar
-                    ? service.EditarUnidad(unidad)
-                    : service.AgregarUnidad(unidad);
+                else
+                {
+                    resultado = service.AgregarUnidad(unidad);
+                }
 
                 if (resultado)
                 {
@@ -165,48 +207,63 @@ namespace AVANCE_PED_GS250179_
 
         private void CargarTiposVehiculo()
         {
-            var lista = service.ObtenerTiposVehiculo();
+            cmbTipoVehiculo.Items.Clear();
 
-            cmbTipoVehiculo.DataSource = lista;
-            cmbTipoVehiculo.DisplayMember = "TipoVehiculoNombre";
-            cmbTipoVehiculo.ValueMember = "IdTipoVehiculo";
+            ListaEnlazada lista = service.ObtenerTiposVehiculo();
+
+            NodoLista actual = lista.Cabeza;
+
+            while (actual != null)
+            {
+                TipoVehiculo t = (TipoVehiculo)actual.Datos;
+
+                cmbTipoVehiculo.Items.Add(t);
+
+                actual = actual.Siguiente;
+            }
+
             cmbTipoVehiculo.SelectedIndex = -1;
         }
 
         private void CargarConductores()
         {
-            var lista =
-                service.ObtenerConductores();
+            cmbConductor.Items.Clear();
 
-            cmbConductor.DataSource =
-                lista;
+            ListaEnlazada lista = service.ObtenerConductores();
 
-            cmbConductor.DisplayMember =
-                "Nombre";
+            NodoLista actual = lista.Cabeza;
 
-            cmbConductor.ValueMember =
-                "IdEmpleado";
+            while (actual != null)
+            {
+                Empleado e = (Empleado)actual.Datos;
+
+                cmbConductor.Items.Add(e);
+
+                actual = actual.Siguiente;
+            }
 
             cmbConductor.SelectedIndex = -1;
         }
 
-
-        // =========================================
-        // CARGAR RUTAS
-        // =========================================
         private void CargarRutas()
         {
-            var lista =
-                service.ObtenerRutas();
+            cmbRuta.Items.Clear();
 
-            cmbRuta.DataSource =
-                lista;
+            listaRutas = service.ObtenerRutas();
 
-            cmbRuta.DisplayMember =
-                "NumeroRuta";
+            NodoLista actual = listaRutas.Cabeza;
 
-            cmbRuta.ValueMember =
-                "IdRutaBuses";
+            while (actual != null)
+            {
+                Ruta r = actual.Datos as Ruta;
+
+                if (r != null)
+                {
+                    cmbRuta.Items.Add(r);
+                }
+
+                actual = actual.Siguiente;
+            }
 
             cmbRuta.SelectedIndex = -1;
         }
