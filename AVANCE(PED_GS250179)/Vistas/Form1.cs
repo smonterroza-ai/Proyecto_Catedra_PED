@@ -111,7 +111,7 @@ namespace AVANCE_PED_GS250179_
             {
                 txtpass.PasswordChar = '*';
 
-                ptojo.Image = Properties.Resources.icons8_ojo_cerrado_24;
+                ptojo.Image = Properties.Resources.icons8_eye_24;
 
                 contraseñaVisible = false;
             }
@@ -122,7 +122,7 @@ namespace AVANCE_PED_GS250179_
                 txtpass.PasswordChar = '\0';
 
                 // Cambiar la imagen al ojo abierto (reemplaza 'ojo_abierto' por el nombre de tu imagen)
-                ptojo.Image = Properties.Resources.icons8_eye_24;
+                ptojo.Image = Properties.Resources.icons8_ojo_cerrado_24;
 
                 // Actualizamos el estado
                 contraseñaVisible = true;

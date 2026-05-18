@@ -254,7 +254,7 @@
             // ptConductor
             // 
             ptConductor.Cursor = Cursors.Hand;
-            ptConductor.Image = Properties.Resources.conductor;
+            ptConductor.Image = Properties.Resources.foto;
             ptConductor.Location = new Point(863, 158);
             ptConductor.Name = "ptConductor";
             ptConductor.Size = new Size(237, 250);
