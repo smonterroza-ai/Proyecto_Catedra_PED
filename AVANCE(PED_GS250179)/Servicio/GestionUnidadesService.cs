@@ -612,28 +612,28 @@ namespace AVANCE_PED_GS250179_.Servicio
                 if (reader.Read())
                 {
                     unidad.IdRutaBuses =
-                        reader.GetInt32(0);
+                        Convert.ToInt32(reader[0]);
 
                     unidad.NumeroRuta =
-                        reader.GetString(1);
+                        reader[1].ToString();
 
                     unidad.PlacaVehiculo =
-                        reader.GetString(2);
+                        reader[2].ToString();
 
                     unidad.Marca =
-                        reader.GetString(3);
+                        reader[3].ToString();
 
                     unidad.Modelo =
-                        reader.GetString(4);
+                        reader[4].ToString();
 
                     unidad.MotoristaNombre =
-                        reader.GetString(5);
+                        reader[5].ToString();
 
                     unidad.EstadoVehiculo =
-                        reader.GetString(6);
+                        reader[6].ToString();
 
                     unidad.IdTipoVehiculo =
-                        reader.GetInt32(7);
+                        Convert.ToInt32(reader[7]);
                 }
 
                 reader.Close();

@@ -36,33 +36,65 @@ namespace AVANCE_PED_GS250179_
             CargarRutas();
 
             cmbEstado.Items.Clear();
+
             cmbEstado.Items.Add("Activo");
             cmbEstado.Items.Add("Mantenimiento");
             cmbEstado.Items.Add("Inactivo");
 
             cmbEstado.SelectedIndex = -1;
 
+            // =====================================
+            // EDITAR
+            // =====================================
             if (esEditar)
             {
                 GestionUnidades unidad =
-                    service.ObtenerUnidadPorId(idRutaEditar);
+                    service.ObtenerUnidadPorId(
+                        idRutaEditar
+                    );
 
                 if (unidad == null)
                 {
-                    MessageBox.Show("No se encontró la unidad");
+                    MessageBox.Show(
+                        "No se encontró la unidad"
+                    );
+
                     return;
                 }
 
-                txtPlaca.Text = unidad.PlacaVehiculo;
-                cmbRuta.Text = unidad.NumeroRuta.ToString();
-                cmbConductor.Text = unidad.MotoristaNombre;
-                cmbEstado.Text = unidad.EstadoVehiculo;
-                txtMarca.Text = unidad.Marca;
-                txtModelo.Text = unidad.Modelo;
+                // TEXTBOX
+                txtPlaca.Text =
+                    unidad.PlacaVehiculo;
 
-                cmbTipoVehiculo.SelectedValue = unidad.IdTipoVehiculo;
-                cmbRuta.SelectedValue = unidad.IdRutaBuses;
-                cmbConductor.SelectedValue = unidad.IdEmpleado;
+                txtMarca.Text =
+                    unidad.Marca;
+
+                txtModelo.Text =
+                    unidad.Modelo;
+
+                // COMBOBOX
+                cmbEstado.Text =
+                    unidad.EstadoVehiculo;
+
+                cmbTipoVehiculo.SelectedValue =
+                    unidad.IdTipoVehiculo;
+
+                // RUTA
+                cmbRuta.Text =
+                    unidad.NumeroRuta;
+
+                for (int i = 0; i < cmbConductor.Items.Count; i++)
+                {
+                    Empleado emp =
+                        (Empleado)cmbConductor.Items[i];
+
+                    if (emp.Nombre ==
+                        unidad.MotoristaNombre)
+                    {
+                        cmbConductor.SelectedIndex = i;
+                        break;
+                    }
+                }
             }
         }
 

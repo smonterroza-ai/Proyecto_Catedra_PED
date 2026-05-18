@@ -38,14 +38,56 @@ namespace AVANCE_PED_GS250179_
 
         private void EditarU_Click(object sender, EventArgs e)
         {
-            if (dgvUnidades.Rows.Count > 0)
+
+            try
             {
-                int id = Convert.ToInt32(dgvUnidades.CurrentRow.Cells[0].Value);
+                if (dgvUnidades.Rows.Count == 0)
+                {
+                    MessageBox.Show(
+                        "No hay datos"
+                    );
 
-                Form7 Au = new Form7();
-                Au.Show();
+                    return;
+                }
 
-                this.Hide();
+                if (dgvUnidades.CurrentRow == null)
+                {
+                    MessageBox.Show(
+                        "Seleccione una fila"
+                    );
+
+                    return;
+                }
+
+                // =====================================
+                // OBTENER ID
+                // =====================================
+
+                int id =
+                    Convert.ToInt32(
+                        dgvUnidades.CurrentRow.Cells["Id"].Value
+                    );
+
+                // =====================================
+                // ABRIR FORM EDITAR
+                // =====================================
+
+                Form7 form =
+                    new Form7(id);
+
+                form.ShowDialog();
+
+                // =====================================
+                // RECARGAR TABLA
+                // =====================================
+
+                CargarTabla();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message
+                );
             }
         }
 
