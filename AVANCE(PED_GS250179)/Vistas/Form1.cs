@@ -1,11 +1,15 @@
 using AVANCE_PED_GS250179_.Modelos;
 using AVANCE_PED_GS250179_.Servicio;
 using System.Diagnostics.Contracts;
+using System.Data.SqlClient;
 
 namespace AVANCE_PED_GS250179_
 {
     public partial class Form1 : Form
     {
+
+        // Si usas la autenticación de Windows (Recomendado para desarrollo local):
+        private string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Reise2;Integrated Security=True;";
 
         private static bool MostrarMensaje = false;
 
@@ -22,13 +26,6 @@ namespace AVANCE_PED_GS250179_
                 DialogResult r = MessageBox.Show("Bienvenido a REISE, App donde tu seguridad y comodidad es nuestra prioridad" +
                     "\tPresiona Ok para continuar.", "BIENVENIDO/A ;)",
                     MessageBoxButtons.OK);
-
-               /* if (r == DialogResult.OK)
-                {
-                    MessageBox.Show("En esta versión beta no necesitas registrarte, presiona el botón de <Iniciar Sesión>", "AVISO",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }*/
-
                 MostrarMensaje = true;
             }
 
