@@ -1,6 +1,7 @@
 ﻿using AVANCE_PED_GS250179_.Estructuras;
 using AVANCE_PED_GS250179_.Modelos;
 using AVANCE_PED_GS250179_.Servicio;
+using AVANCE_PED_GS250179_.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -112,13 +113,96 @@ namespace AVANCE_PED_GS250179_
 
         private void btnAtras_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void Confi_U_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CargarTiposVehiculo()
+        {
+            cmbTipoVehiculo.Items.Clear();
+
+            ListaEnlazada lista = service.ObtenerTiposVehiculo();
+
+            NodoLista actual = lista.Cabeza;
+
+            while (actual != null)
+            {
+                TipoVehiculo t = (TipoVehiculo)actual.Datos;
+
+                cmbTipoVehiculo.Items.Add(t);
+
+                actual = actual.Siguiente;
+            }
+
+            cmbTipoVehiculo.SelectedIndex = -1;
+        }
+
+        private void CargarConductores()
+        {
+            cmbConductor.Items.Clear();
+
+            ListaEnlazada lista = service.ObtenerConductores();
+
+            NodoLista actual = lista.Cabeza;
+
+            while (actual != null)
+            {
+                Empleado e = (Empleado)actual.Datos;
+
+                cmbConductor.Items.Add(e);
+
+                actual = actual.Siguiente;
+            }
+
+            cmbConductor.SelectedIndex = -1;
+        }
+
+        private void CargarRutas()
+        {
+            cmbRuta.Items.Clear();
+
+            listaRutas = service.ObtenerRutas();
+
+            NodoLista actual = listaRutas.Cabeza;
+
+            while (actual != null)
+            {
+                Ruta r = actual.Datos as Ruta;
+
+                if (r != null)
+                {
+                    cmbRuta.Items.Add(r);
+                }
+
+                actual = actual.Siguiente;
+            }
+
+            cmbRuta.SelectedIndex = -1;
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtRuta_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRegresar_Click(object sender, EventArgs e)
+        {
             Form6 Uni = new Form6();
             Uni.Show();
 
             this.Hide();
         }
 
-        private void Confi_U_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             try
             {
@@ -205,78 +289,10 @@ namespace AVANCE_PED_GS250179_
             }
         }
 
-        private void CargarTiposVehiculo()
+        private void Form7_Shown(object sender, EventArgs e)
         {
-            cmbTipoVehiculo.Items.Clear();
-
-            ListaEnlazada lista = service.ObtenerTiposVehiculo();
-
-            NodoLista actual = lista.Cabeza;
-
-            while (actual != null)
-            {
-                TipoVehiculo t = (TipoVehiculo)actual.Datos;
-
-                cmbTipoVehiculo.Items.Add(t);
-
-                actual = actual.Siguiente;
-            }
-
-            cmbTipoVehiculo.SelectedIndex = -1;
+            RedondearBoton.RedondearBotones(button1, 30);
+            RedondearBoton.RedondearBotones(btnRegresar, 30);
         }
-
-        private void CargarConductores()
-        {
-            cmbConductor.Items.Clear();
-
-            ListaEnlazada lista = service.ObtenerConductores();
-
-            NodoLista actual = lista.Cabeza;
-
-            while (actual != null)
-            {
-                Empleado e = (Empleado)actual.Datos;
-
-                cmbConductor.Items.Add(e);
-
-                actual = actual.Siguiente;
-            }
-
-            cmbConductor.SelectedIndex = -1;
-        }
-
-        private void CargarRutas()
-        {
-            cmbRuta.Items.Clear();
-
-            listaRutas = service.ObtenerRutas();
-
-            NodoLista actual = listaRutas.Cabeza;
-
-            while (actual != null)
-            {
-                Ruta r = actual.Datos as Ruta;
-
-                if (r != null)
-                {
-                    cmbRuta.Items.Add(r);
-                }
-
-                actual = actual.Siguiente;
-            }
-
-            cmbRuta.SelectedIndex = -1;
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtRuta_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
-
     }
 }

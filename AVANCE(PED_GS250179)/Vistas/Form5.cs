@@ -22,9 +22,7 @@ namespace AVANCE_PED_GS250179_
 
         private void btnAtras_Click(object sender, EventArgs e)
         {
-            this.Owner.Show();
-
-            this.Close();
+            
         }
 
         private void Form5_Load(object sender, EventArgs e)
@@ -52,6 +50,13 @@ namespace AVANCE_PED_GS250179_
             {
                 MessageBox.Show(ex.Message, "Error al buscar", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnRegresar_Click(object sender, EventArgs e)
+        {
+            this.Owner.Show();
+
+            this.Close();
         }
     }
 }

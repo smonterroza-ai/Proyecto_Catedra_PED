@@ -1,8 +1,9 @@
 ﻿using AVANCE_PED_GS250179_.Datos;
 using AVANCE_PED_GS250179_.Modelos;
 using AVANCE_PED_GS250179_.Servicio;
-using GMap.NET.WindowsForms;
+using AVANCE_PED_GS250179_.Utilidades;
 using GMap.NET;
+using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using System;
 using System.Collections.Generic;
@@ -79,7 +80,7 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void btnProbar_Click(object sender, EventArgs e)
         {
-            this.Close();
+
         }
         private NodoRuta DetectarNodo(Point puntoClic)
         {
@@ -214,56 +215,6 @@ namespace AVANCE_PED_GS250179_.Vistas
         private void btnIniciarGrabacion_Click(object sender, EventArgs e)
         {
 
-            if (grafoService.Nodos.Count < 2)
-            {
-                MessageBox.Show("Debes crear al menos 2 paradas y unirlas con una línea.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            Dictionary<NodoRuta, int> lineasEntrantes = new Dictionary<NodoRuta, int>();
-            foreach (var nodo in grafoService.Nodos) lineasEntrantes[nodo] = 0;
-
-            foreach (var nodo in grafoService.Nodos)
-            {
-                foreach (var arista in nodo.ListaAdyacencia)
-                {
-                    lineasEntrantes[arista.NodoDestino]++;
-                }
-            }
-
-            NodoRuta nodoActual = grafoService.Nodos.FirstOrDefault(n => lineasEntrantes[n] == 0 && n.ListaAdyacencia.Count > 0);
-
-            if (nodoActual == null)
-            {
-                MessageBox.Show("No se pudo detectar el inicio de la ruta. Asegúrate de no haber conectado las paradas en un círculo cerrado.", "Error de Ruta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            List<string> paradasOrdenadas = new List<string>();
-            List<string> listaCoordenadas = new List<string>();
-
-            while (nodoActual != null)
-            {
-                paradasOrdenadas.Add(nodoActual.Valor);
-
-                string lat = nodoActual.Latitud.ToString(System.Globalization.CultureInfo.InvariantCulture);
-                string lng = nodoActual.Longitud.ToString(System.Globalization.CultureInfo.InvariantCulture);
-                listaCoordenadas.Add($"{nodoActual.Valor}:{lat},{lng}");
-
-                if (nodoActual.ListaAdyacencia.Count > 0)
-                    nodoActual = nodoActual.ListaAdyacencia[0].NodoDestino;
-                else
-                    nodoActual = null;
-            }
-
-            // Guardado directo en las propiedades del Modelo
-            DatosMapa.PuntoInicio = paradasOrdenadas.First();
-            DatosMapa.PuntoFinal = paradasOrdenadas.Last();
-            DatosMapa.RecorridoGenerado = string.Join(" - ", paradasOrdenadas);
-            DatosMapa.CoordenadasGeneradas = string.Join("|", listaCoordenadas);
-
-            this.DialogResult = DialogResult.OK;
-            this.Close();
         }
 
         private void Form10_Load(object sender, EventArgs e)
@@ -364,6 +315,40 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void eliminarPuntoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (marcadorParaEliminar != null)
+            {
+                string nombre = marcadorParaEliminar.ToolTipText;
+
+                var nodo = grafoService.Nodos.FirstOrDefault(n => n.Valor == nombre);
+                if (nodo != null) grafoService.Nodos.Remove(nodo);
+
+                capaMarcadores.Markers.Remove(marcadorParaEliminar);
+
+                capaRutas.Routes.Clear();
+                marcadorOrigen = null;
+
+                mapaReise.Refresh();
+                marcadorParaEliminar = null;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
             if (MessageBox.Show("¿Deseas borrar toda la ruta?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 capaMarcadores.Markers.Clear();
@@ -387,26 +372,68 @@ namespace AVANCE_PED_GS250179_.Vistas
                     }
                 }
             }
-        
         }
 
-        private void eliminarPuntoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void btnAgregar_Click(object sender, EventArgs e)
         {
-            if (marcadorParaEliminar != null)
+            if (grafoService.Nodos.Count < 2)
             {
-                string nombre = marcadorParaEliminar.ToolTipText;
-
-                var nodo = grafoService.Nodos.FirstOrDefault(n => n.Valor == nombre);
-                if (nodo != null) grafoService.Nodos.Remove(nodo);
-
-                capaMarcadores.Markers.Remove(marcadorParaEliminar);
-
-                capaRutas.Routes.Clear();
-                marcadorOrigen = null;
-
-                mapaReise.Refresh();
-                marcadorParaEliminar = null;
+                MessageBox.Show("Debes crear al menos 2 paradas y unirlas con una línea.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+
+            Dictionary<NodoRuta, int> lineasEntrantes = new Dictionary<NodoRuta, int>();
+            foreach (var nodo in grafoService.Nodos) lineasEntrantes[nodo] = 0;
+
+            foreach (var nodo in grafoService.Nodos)
+            {
+                foreach (var arista in nodo.ListaAdyacencia)
+                {
+                    lineasEntrantes[arista.NodoDestino]++;
+                }
+            }
+
+            NodoRuta nodoActual = grafoService.Nodos.FirstOrDefault(n => lineasEntrantes[n] == 0 && n.ListaAdyacencia.Count > 0);
+
+            if (nodoActual == null)
+            {
+                MessageBox.Show("No se pudo detectar el inicio de la ruta. Asegúrate de no haber conectado las paradas en un círculo cerrado.", "Error de Ruta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            List<string> paradasOrdenadas = new List<string>();
+            List<string> listaCoordenadas = new List<string>();
+
+            while (nodoActual != null)
+            {
+                paradasOrdenadas.Add(nodoActual.Valor);
+
+                string lat = nodoActual.Latitud.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                string lng = nodoActual.Longitud.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                listaCoordenadas.Add($"{nodoActual.Valor}:{lat},{lng}");
+
+                if (nodoActual.ListaAdyacencia.Count > 0)
+                    nodoActual = nodoActual.ListaAdyacencia[0].NodoDestino;
+                else
+                    nodoActual = null;
+            }
+
+            // Guardado directo en las propiedades del Modelo
+            DatosMapa.PuntoInicio = paradasOrdenadas.First();
+            DatosMapa.PuntoFinal = paradasOrdenadas.Last();
+            DatosMapa.RecorridoGenerado = string.Join(" - ", paradasOrdenadas);
+            DatosMapa.CoordenadasGeneradas = string.Join("|", listaCoordenadas);
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void Form10_Shown(object sender, EventArgs e)
+        {
+            RedondearBoton.RedondearBotones(btnAgregar, 30);
+            RedondearBoton.RedondearBotones(btnEditar, 30);
+            RedondearBoton.RedondearBotones(btnEliminar, 30);
+            RedondearBoton.RedondearBotones(button2, 30);
         }
     }
 }

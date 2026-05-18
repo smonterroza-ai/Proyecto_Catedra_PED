@@ -28,13 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form12));
             label11 = new Label();
             txtDireccion = new TextBox();
             cmbRol = new ComboBox();
             label10 = new Label();
-            btnAtras = new PictureBox();
-            btnguardar = new PictureBox();
             dtpContratacion = new DateTimePicker();
             label8 = new Label();
             label6 = new Label();
@@ -47,8 +44,8 @@
             txtDUI = new TextBox();
             label1 = new Label();
             txtNombre = new TextBox();
-            ((System.ComponentModel.ISupportInitialize)btnAtras).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)btnguardar).BeginInit();
+            btnRegresar = new Button();
+            button1 = new Button();
             SuspendLayout();
             // 
             // label11
@@ -67,16 +64,16 @@
             // 
             txtDireccion.Location = new Point(518, 392);
             txtDireccion.Name = "txtDireccion";
-            txtDireccion.Size = new Size(256, 23);
+            txtDireccion.Size = new Size(243, 23);
             txtDireccion.TabIndex = 66;
             // 
             // cmbRol
             // 
             cmbRol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbRol.FormattingEnabled = true;
-            cmbRol.Location = new Point(600, 315);
+            cmbRol.Location = new Point(590, 315);
             cmbRol.Name = "cmbRol";
-            cmbRol.Size = new Size(174, 23);
+            cmbRol.Size = new Size(171, 23);
             cmbRol.TabIndex = 65;
             // 
             // label10
@@ -90,32 +87,6 @@
             label10.Size = new Size(112, 17);
             label10.TabIndex = 64;
             label10.Text = "Rol de empleado";
-            // 
-            // btnAtras
-            // 
-            btnAtras.Cursor = Cursors.Hand;
-            btnAtras.Image = (Image)resources.GetObject("btnAtras.Image");
-            btnAtras.Location = new Point(12, 519);
-            btnAtras.Margin = new Padding(3, 2, 3, 2);
-            btnAtras.Name = "btnAtras";
-            btnAtras.Size = new Size(122, 34);
-            btnAtras.SizeMode = PictureBoxSizeMode.StretchImage;
-            btnAtras.TabIndex = 63;
-            btnAtras.TabStop = false;
-            btnAtras.Click += btnAtras_Click;
-            // 
-            // btnguardar
-            // 
-            btnguardar.Cursor = Cursors.Hand;
-            btnguardar.Image = (Image)resources.GetObject("btnguardar.Image");
-            btnguardar.Location = new Point(461, 492);
-            btnguardar.Margin = new Padding(3, 2, 3, 2);
-            btnguardar.Name = "btnguardar";
-            btnguardar.Size = new Size(108, 29);
-            btnguardar.SizeMode = PictureBoxSizeMode.StretchImage;
-            btnguardar.TabIndex = 61;
-            btnguardar.TabStop = false;
-            btnguardar.Click += btnguardar_Click;
             // 
             // dtpContratacion
             // 
@@ -153,18 +124,18 @@
             // 
             // txtTelefono
             // 
-            txtTelefono.Location = new Point(631, 243);
+            txtTelefono.Location = new Point(618, 243);
             txtTelefono.Name = "txtTelefono";
             txtTelefono.Size = new Size(143, 23);
             txtTelefono.TabIndex = 54;
             // 
             // dtpNacimiento
             // 
-            dtpNacimiento.Location = new Point(411, 243);
+            dtpNacimiento.Location = new Point(408, 243);
             dtpNacimiento.MaxDate = new DateTime(2026, 5, 18, 0, 0, 0, 0);
             dtpNacimiento.MinDate = new DateTime(1960, 1, 1, 0, 0, 0, 0);
             dtpNacimiento.Name = "dtpNacimiento";
-            dtpNacimiento.Size = new Size(215, 23);
+            dtpNacimiento.Size = new Size(205, 23);
             dtpNacimiento.TabIndex = 53;
             dtpNacimiento.Value = new DateTime(2026, 5, 18, 0, 0, 0, 0);
             // 
@@ -196,7 +167,7 @@
             // 
             txtCorreo.Location = new Point(259, 315);
             txtCorreo.Name = "txtCorreo";
-            txtCorreo.Size = new Size(335, 23);
+            txtCorreo.Size = new Size(325, 23);
             txtCorreo.TabIndex = 48;
             // 
             // label2
@@ -215,7 +186,7 @@
             // 
             txtDUI.Location = new Point(261, 243);
             txtDUI.Name = "txtDUI";
-            txtDUI.Size = new Size(143, 23);
+            txtDUI.Size = new Size(141, 23);
             txtDUI.TabIndex = 46;
             // 
             // label1
@@ -234,8 +205,42 @@
             // 
             txtNombre.Location = new Point(261, 174);
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(513, 23);
+            txtNombre.Size = new Size(500, 23);
             txtNombre.TabIndex = 44;
+            // 
+            // btnRegresar
+            // 
+            btnRegresar.BackColor = Color.DarkGray;
+            btnRegresar.FlatAppearance.BorderSize = 0;
+            btnRegresar.FlatStyle = FlatStyle.Flat;
+            btnRegresar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnRegresar.ForeColor = SystemColors.ControlLightLight;
+            btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
+            btnRegresar.Location = new Point(12, 514);
+            btnRegresar.Name = "btnRegresar";
+            btnRegresar.Size = new Size(111, 38);
+            btnRegresar.TabIndex = 69;
+            btnRegresar.Text = "  Regresar";
+            btnRegresar.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnRegresar.UseVisualStyleBackColor = false;
+            btnRegresar.Click += btnRegresar_Click;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.SteelBlue;
+            button1.FlatAppearance.BorderSize = 0;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.ForeColor = SystemColors.ControlLightLight;
+            button1.Image = Properties.Resources.marca_de_verificacion;
+            button1.Location = new Point(461, 493);
+            button1.Name = "button1";
+            button1.Size = new Size(101, 38);
+            button1.TabIndex = 68;
+            button1.Text = "  Listo";
+            button1.TextImageRelation = TextImageRelation.ImageBeforeText;
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
             // Form12
             // 
@@ -244,12 +249,12 @@
             BackgroundImage = Properties.Resources.fondo_agregarconductor_;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1020, 564);
+            Controls.Add(btnRegresar);
+            Controls.Add(button1);
             Controls.Add(label11);
             Controls.Add(txtDireccion);
             Controls.Add(cmbRol);
             Controls.Add(label10);
-            Controls.Add(btnAtras);
-            Controls.Add(btnguardar);
             Controls.Add(dtpContratacion);
             Controls.Add(label8);
             Controls.Add(label6);
@@ -269,8 +274,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form12";
             Load += Form12_Load;
-            ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
-            ((System.ComponentModel.ISupportInitialize)btnguardar).EndInit();
+            Shown += Form12_Shown;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -281,8 +285,6 @@
         private TextBox txtDireccion;
         private ComboBox cmbRol;
         private Label label10;
-        private PictureBox btnAtras;
-        private PictureBox btnguardar;
         private DateTimePicker dtpContratacion;
         private Label label8;
         private Label label6;
@@ -295,5 +297,7 @@
         private TextBox txtDUI;
         private Label label1;
         private TextBox txtNombre;
+        private Button btnRegresar;
+        private Button button1;
     }
 }

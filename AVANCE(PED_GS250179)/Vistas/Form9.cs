@@ -1,14 +1,15 @@
 ﻿using AVANCE_PED_GS250179_.Datos;
 using AVANCE_PED_GS250179_.Servicio;
+using AVANCE_PED_GS250179_.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
-using System.Text.RegularExpressions;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,6 +25,104 @@ namespace AVANCE_PED_GS250179_.Vistas
         private void btnguardar_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+        bool contraseñaVisible = false;
+
+        private void ptojo_Click(object sender, EventArgs e)
+        {
+            if (contraseñaVisible == true)
+            {
+                txtPass.PasswordChar = '*';
+
+                ptojo.Image = Properties.Resources.icons8_eye_24;
+
+                contraseñaVisible = false;
+            }
+            // Si está oculta, la mostramos
+            else
+            {
+                // Quitar la máscara ('\0' significa carácter nulo, o sea, sin máscara)
+                txtPass.PasswordChar = '\0';
+
+                // Cambiar la imagen al ojo abierto (reemplaza 'ojo_abierto' por el nombre de tu imagen)
+                ptojo.Image = Properties.Resources.icons8_ojo_cerrado_24;
+
+                // Actualizamos el estado
+                contraseñaVisible = true;
+            }
+        }
+
+        private void ptojo2_Click(object sender, EventArgs e)
+        {
+            if (contraseñaVisible == true)
+            {
+                txtConfPass.PasswordChar = '*';
+
+                ptojo2.Image = Properties.Resources.icons8_eye_24;
+
+                contraseñaVisible = false;
+            }
+            // Si está oculta, la mostramos
+            else
+            {
+                // Quitar la máscara ('\0' significa carácter nulo, o sea, sin máscara)
+                txtConfPass.PasswordChar = '\0';
+
+                // Cambiar la imagen al ojo abierto (reemplaza 'ojo_abierto' por el nombre de tu imagen)
+                ptojo2.Image = Properties.Resources.icons8_ojo_cerrado_24;
+
+                // Actualizamos el estado
+                contraseñaVisible = true;
+            }
+        }
+
+        private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true; // Ignora cualquier otro símbolo o número
+            }
+        }
+
+        private void txtDui_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+                return;
+            }
+
+            // Agregar guion automáticamente después de 8 números 
+            if (txtDui.Text.Length == 8 && e.KeyChar != (char)Keys.Back)
+            {
+                txtDui.Text += "-";
+                txtDui.SelectionStart = txtDui.Text.Length;
+            }
+        }
+
+        private void txtTel_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+                return;
+            }
+
+            // Agregar guion automáticamente después de 4 números
+            if (txtTel.Text.Length == 4 && e.KeyChar != (char)Keys.Back)
+            {
+                txtTel.Text += "-";
+                txtTel.SelectionStart = txtTel.Text.Length;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
             // 1. Validaciones básicas (que no haya campos vacíos o solo con guiones)
             if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
                 string.IsNullOrWhiteSpace(txtDui.Text) || txtDui.Text == "-" ||
@@ -127,98 +226,9 @@ namespace AVANCE_PED_GS250179_.Vistas
             }
         }
 
-        private void label9_Click(object sender, EventArgs e)
+        private void Form9_Shown(object sender, EventArgs e)
         {
-
-        }
-        bool contraseñaVisible = false;
-
-        private void ptojo_Click(object sender, EventArgs e)
-        {
-            if (contraseñaVisible == true)
-            {
-                txtPass.PasswordChar = '*';
-
-                ptojo.Image = Properties.Resources.icons8_eye_24;
-
-                contraseñaVisible = false;
-            }
-            // Si está oculta, la mostramos
-            else
-            {
-                // Quitar la máscara ('\0' significa carácter nulo, o sea, sin máscara)
-                txtPass.PasswordChar = '\0';
-
-                // Cambiar la imagen al ojo abierto (reemplaza 'ojo_abierto' por el nombre de tu imagen)
-                ptojo.Image = Properties.Resources.icons8_ojo_cerrado_24;
-
-                // Actualizamos el estado
-                contraseñaVisible = true;
-            }
-        }
-
-        private void ptojo2_Click(object sender, EventArgs e)
-        {
-            if (contraseñaVisible == true)
-            {
-                txtConfPass.PasswordChar = '*';
-
-                ptojo2.Image = Properties.Resources.icons8_eye_24;
-
-                contraseñaVisible = false;
-            }
-            // Si está oculta, la mostramos
-            else
-            {
-                // Quitar la máscara ('\0' significa carácter nulo, o sea, sin máscara)
-                txtConfPass.PasswordChar = '\0';
-
-                // Cambiar la imagen al ojo abierto (reemplaza 'ojo_abierto' por el nombre de tu imagen)
-                ptojo2.Image = Properties.Resources.icons8_ojo_cerrado_24;
-
-                // Actualizamos el estado
-                contraseñaVisible = true;
-            }
-        }
-
-        private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
-            {
-                e.Handled = true; // Ignora cualquier otro símbolo o número
-            }
-        }
-
-        private void txtDui_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
-                e.Handled = true;
-                return;
-            }
-
-            // Agregar guion automáticamente después de 8 números 
-            if (txtDui.Text.Length == 8 && e.KeyChar != (char)Keys.Back)
-            {
-                txtDui.Text += "-";
-                txtDui.SelectionStart = txtDui.Text.Length; 
-            }
-        }
-
-        private void txtTel_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
-                e.Handled = true;
-                return;
-            }
-
-            // Agregar guion automáticamente después de 4 números
-            if (txtTel.Text.Length == 4 && e.KeyChar != (char)Keys.Back)
-            {
-                txtTel.Text += "-";
-                txtTel.SelectionStart = txtTel.Text.Length;
-            }
+            RedondearBoton.RedondearBotones(button1, 30);
         }
     }
 }

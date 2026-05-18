@@ -173,6 +173,16 @@ namespace AVANCE_PED_GS250179_.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap fondo_transacciones {
+            get {
+                object obj = ResourceManager.GetObject("fondo_transacciones", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap fondo1 {
             get {
                 object obj = ResourceManager.GetObject("fondo1", resourceCulture);
@@ -226,6 +236,16 @@ namespace AVANCE_PED_GS250179_.Properties {
         internal static System.Drawing.Bitmap icons8_ojo_cerrado_24 {
             get {
                 object obj = ResourceManager.GetObject("icons8-ojo-cerrado-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap limpiar {
+            get {
+                object obj = ResourceManager.GetObject("limpiar", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
