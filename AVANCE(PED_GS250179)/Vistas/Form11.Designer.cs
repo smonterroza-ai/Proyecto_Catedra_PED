@@ -59,7 +59,7 @@
             // 
             // txtConfirmarContraseña
             // 
-            txtConfirmarContraseña.Location = new Point(500, 447);
+            txtConfirmarContraseña.Location = new Point(501, 438);
             txtConfirmarContraseña.Name = "txtConfirmarContraseña";
             txtConfirmarContraseña.PasswordChar = '*';
             txtConfirmarContraseña.Size = new Size(253, 23);
@@ -84,7 +84,7 @@
             label9.BackColor = Color.Transparent;
             label9.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label9.ForeColor = SystemColors.ControlLightLight;
-            label9.Location = new Point(232, 407);
+            label9.Location = new Point(233, 398);
             label9.Name = "label9";
             label9.Size = new Size(77, 17);
             label9.TabIndex = 36;
@@ -92,7 +92,7 @@
             // 
             // dtpContratacion
             // 
-            dtpContratacion.Location = new Point(500, 369);
+            dtpContratacion.Location = new Point(501, 360);
             dtpContratacion.Name = "dtpContratacion";
             dtpContratacion.Size = new Size(253, 23);
             dtpContratacion.TabIndex = 35;
@@ -103,7 +103,7 @@
             label8.BackColor = Color.Transparent;
             label8.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label8.ForeColor = SystemColors.ControlLightLight;
-            label8.Location = new Point(500, 336);
+            label8.Location = new Point(501, 327);
             label8.Name = "label8";
             label8.Size = new Size(143, 17);
             label8.TabIndex = 34;
@@ -115,7 +115,7 @@
             label7.BackColor = Color.Transparent;
             label7.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label7.ForeColor = SystemColors.ControlLightLight;
-            label7.Location = new Point(500, 407);
+            label7.Location = new Point(501, 398);
             label7.Name = "label7";
             label7.Size = new Size(141, 17);
             label7.TabIndex = 33;
@@ -123,7 +123,7 @@
             // 
             // txtContraseña
             // 
-            txtContraseña.Location = new Point(232, 447);
+            txtContraseña.Location = new Point(233, 438);
             txtContraseña.Name = "txtContraseña";
             txtContraseña.PasswordChar = '*';
             txtContraseña.Size = new Size(246, 23);
@@ -135,7 +135,7 @@
             label6.BackColor = Color.Transparent;
             label6.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label6.ForeColor = SystemColors.ControlLightLight;
-            label6.Location = new Point(610, 196);
+            label6.Location = new Point(611, 187);
             label6.Name = "label6";
             label6.Size = new Size(62, 17);
             label6.TabIndex = 31;
@@ -143,14 +143,14 @@
             // 
             // txtTelefono
             // 
-            txtTelefono.Location = new Point(610, 228);
+            txtTelefono.Location = new Point(611, 219);
             txtTelefono.Name = "txtTelefono";
             txtTelefono.Size = new Size(143, 23);
             txtTelefono.TabIndex = 30;
             // 
             // dtpNacimiento
             // 
-            dtpNacimiento.Location = new Point(389, 228);
+            dtpNacimiento.Location = new Point(390, 219);
             dtpNacimiento.Name = "dtpNacimiento";
             dtpNacimiento.Size = new Size(215, 23);
             dtpNacimiento.TabIndex = 29;
@@ -161,7 +161,7 @@
             label5.BackColor = Color.Transparent;
             label5.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = SystemColors.ControlLightLight;
-            label5.Location = new Point(389, 196);
+            label5.Location = new Point(390, 187);
             label5.Name = "label5";
             label5.Size = new Size(135, 17);
             label5.TabIndex = 28;
@@ -173,7 +173,7 @@
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = SystemColors.ControlLightLight;
-            label4.Location = new Point(232, 336);
+            label4.Location = new Point(233, 327);
             label4.Name = "label4";
             label4.Size = new Size(55, 17);
             label4.TabIndex = 27;
@@ -181,7 +181,7 @@
             // 
             // txtUsuario
             // 
-            txtUsuario.Location = new Point(232, 369);
+            txtUsuario.Location = new Point(233, 360);
             txtUsuario.Name = "txtUsuario";
             txtUsuario.Size = new Size(246, 23);
             txtUsuario.TabIndex = 26;
@@ -192,7 +192,7 @@
             label3.BackColor = Color.Transparent;
             label3.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = SystemColors.ControlLightLight;
-            label3.Location = new Point(237, 267);
+            label3.Location = new Point(238, 258);
             label3.Name = "label3";
             label3.Size = new Size(49, 17);
             label3.TabIndex = 25;
@@ -200,7 +200,7 @@
             // 
             // txtCorreo
             // 
-            txtCorreo.Location = new Point(237, 300);
+            txtCorreo.Location = new Point(238, 291);
             txtCorreo.Name = "txtCorreo";
             txtCorreo.Size = new Size(146, 23);
             txtCorreo.TabIndex = 24;
@@ -211,7 +211,7 @@
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = SystemColors.ControlLightLight;
-            label2.Location = new Point(240, 196);
+            label2.Location = new Point(241, 187);
             label2.Name = "label2";
             label2.Size = new Size(31, 17);
             label2.TabIndex = 23;
@@ -219,7 +219,7 @@
             // 
             // txtDUI
             // 
-            txtDUI.Location = new Point(240, 228);
+            txtDUI.Location = new Point(241, 219);
             txtDUI.Name = "txtDUI";
             txtDUI.Size = new Size(143, 23);
             txtDUI.TabIndex = 22;
@@ -230,7 +230,7 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = SystemColors.ControlLightLight;
-            label1.Location = new Point(240, 133);
+            label1.Location = new Point(241, 124);
             label1.Name = "label1";
             label1.Size = new Size(58, 17);
             label1.TabIndex = 21;
@@ -238,7 +238,7 @@
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(240, 165);
+            txtNombre.Location = new Point(241, 156);
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(513, 23);
             txtNombre.TabIndex = 20;
@@ -262,7 +262,7 @@
             label10.BackColor = Color.Transparent;
             label10.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label10.ForeColor = SystemColors.ControlLightLight;
-            label10.Location = new Point(610, 267);
+            label10.Location = new Point(611, 258);
             label10.Name = "label10";
             label10.Size = new Size(112, 17);
             label10.TabIndex = 40;
@@ -273,7 +273,7 @@
             // 
             cmbRol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbRol.FormattingEnabled = true;
-            cmbRol.Location = new Point(610, 300);
+            cmbRol.Location = new Point(611, 291);
             cmbRol.Name = "cmbRol";
             cmbRol.Size = new Size(143, 23);
             cmbRol.TabIndex = 41;
@@ -284,7 +284,7 @@
             label11.BackColor = Color.Transparent;
             label11.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label11.ForeColor = SystemColors.ControlLightLight;
-            label11.Location = new Point(389, 267);
+            label11.Location = new Point(390, 258);
             label11.Name = "label11";
             label11.Size = new Size(66, 17);
             label11.TabIndex = 43;
@@ -292,7 +292,7 @@
             // 
             // txtDireccion
             // 
-            txtDireccion.Location = new Point(389, 300);
+            txtDireccion.Location = new Point(390, 291);
             txtDireccion.Name = "txtDireccion";
             txtDireccion.Size = new Size(215, 23);
             txtDireccion.TabIndex = 42;
