@@ -276,11 +276,22 @@ namespace AVANCE_PED_GS250179_.Vistas
                 else if (marcadorOrigen != item)
                 {
                     grafoService.AgregarArco(marcadorOrigen.ToolTipText, item.ToolTipText, 1);
-                    GMapRoute rutaVisual = new GMapRoute("ruta_visual");
-                    rutaVisual.Points.Add(marcadorOrigen.Position);
-                    rutaVisual.Points.Add(item.Position);
-                    rutaVisual.Stroke = new Pen(Color.Blue, 3);
-                    capaRutas.Routes.Add(rutaVisual);
+                    var route = GMap.NET.MapProviders.OpenStreetMapProvider.Instance
+    .GetRoute(
+        marcadorOrigen.Position,
+        item.Position,
+        false,
+        false,
+        (int)mapaReise.Zoom
+    );
+
+                    if (route != null)
+                    {
+                        GMapRoute rutaVisual = new GMapRoute(route.Points, "ruta_real");
+                        rutaVisual.Stroke = new Pen(Color.Blue, 3);
+
+                        capaRutas.Routes.Add(rutaVisual);
+                    }
                     marcadorOrigen = null;
                     mapaReise.Refresh();
                 }

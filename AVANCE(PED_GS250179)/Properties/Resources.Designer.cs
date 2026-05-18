@@ -63,6 +63,16 @@ namespace AVANCE_PED_GS250179_.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap agregar__1_ {
+            get {
+                object obj = ResourceManager.GetObject("agregar (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap conductor {
             get {
                 object obj = ResourceManager.GetObject("conductor", resourceCulture);

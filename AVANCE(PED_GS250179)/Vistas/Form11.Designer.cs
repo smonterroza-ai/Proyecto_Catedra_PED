@@ -271,6 +271,7 @@
             // 
             // cmbRol
             // 
+            cmbRol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbRol.FormattingEnabled = true;
             cmbRol.Location = new Point(610, 300);
             cmbRol.Name = "cmbRol";

@@ -121,14 +121,17 @@
   <data name="fondo_buses" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fondo_buses.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="fondo(agregarconductor)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fondo(agregarconductor).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="icons8-eye-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-eye-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="conductor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\conductor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="fondo1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\fondo1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="fondo2(Agregar)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fondo2(Agregar).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="fondo_primeruso" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fondo_primeruso.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -139,13 +142,13 @@
   <data name="icons8-ojo-cerrado-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-ojo-cerrado-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="fondo2(Agregar)" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\fondo2(Agregar).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="fondo1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fondo1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="fondo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fondo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="fondo(agregarconductor)" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\fondo(agregarconductor).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="agregar (1)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\agregar (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
