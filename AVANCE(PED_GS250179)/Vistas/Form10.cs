@@ -258,7 +258,6 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void mapaReise_OnMarkerClick(GMap.NET.WindowsForms.GMapMarker item, MouseEventArgs e)
         {
-            // SI ES CLIC DERECHO: Mostramos el menú para eliminar
             if (e.Button == MouseButtons.Right)
             {
                 marcadorParaEliminar = item;
@@ -270,60 +269,43 @@ namespace AVANCE_PED_GS250179_.Vistas
             {
                 if (marcadorOrigen == null)
                 {
+                    // Primer clic: Asignamos el origen
                     marcadorOrigen = item;
-                    MessageBox.Show($"Origen: {item.ToolTipText}\nAhora toca el destino.", "Ruta");
+                    MessageBox.Show($"Origen seleccionado: {item.ToolTipText}\nAhora haz clic en el destino.", "Ruta", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else if (marcadorOrigen != item)
                 {
+                    // Segundo clic: Dibujamos la ruta
                     grafoService.AgregarArco(marcadorOrigen.ToolTipText, item.ToolTipText, 1);
-                    var route = GMap.NET.MapProviders.OpenStreetMapProvider.Instance
-    .GetRoute(
-        marcadorOrigen.Position,
-        item.Position,
-        false,
-        false,
-        (int)mapaReise.Zoom
-    );
+
+                    // Trazar la ruta usando las calles (OpenStreetMap)
+                    var route = GMap.NET.MapProviders.OpenStreetMapProvider.Instance.GetRoute(
+                        marcadorOrigen.Position,
+                        item.Position,
+                        false,
+                        false,
+                        (int)mapaReise.Zoom
+                    );
 
                     if (route != null)
                     {
                         GMapRoute rutaVisual = new GMapRoute(route.Points, "ruta_real");
                         rutaVisual.Stroke = new Pen(Color.Blue, 3);
-
                         capaRutas.Routes.Add(rutaVisual);
                     }
+                    else
+                    {
+                        // Plan B por si falla el enrutamiento de calles (dibuja línea recta)
+                        GMapRoute rutaRecta = new GMapRoute("ruta_recta");
+                        rutaRecta.Points.Add(marcadorOrigen.Position);
+                        rutaRecta.Points.Add(item.Position);
+                        rutaRecta.Stroke = new Pen(Color.Blue, 3);
+                        capaRutas.Routes.Add(rutaRecta);
+                    }
+
+                    // Aquí es donde "soltamos" el punto para no encadenar la ruta
                     marcadorOrigen = null;
                     mapaReise.Refresh();
-                }
-            }
-
-            if (marcadorOrigen == null)
-            {
-                marcadorOrigen = item;
-                MessageBox.Show($"Origen seleccionado: {item.ToolTipText}\nAhora haz clic en el destino.", "Ruta", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                // Si ya teníamos un origen y tocamos un pin diferente, creamos la ruta
-                if (marcadorOrigen != item)
-                {
-                    // 1. Guardamos la conexión en el Cerebro (GrafoService)
-                    // Le ponemos peso 1 por defecto (o puedes usar un InputBox para pedir la distancia como antes)
-                    grafoService.AgregarArco(marcadorOrigen.ToolTipText, item.ToolTipText, 1);
-
-                    // 2. Dibujamos la línea azul en el mapa real
-                    GMapRoute rutaVisual = new GMapRoute("ruta_visual");
-                    rutaVisual.Points.Add(marcadorOrigen.Position);
-                    rutaVisual.Points.Add(item.Position);
-
-                    // Estilo de la línea
-                    rutaVisual.Stroke = new Pen(Color.Blue, 3);
-
-                    // La agregamos a la capa de rutas que creamos antes
-                    capaRutas.Routes.Add(rutaVisual);
-
-                    // 3. Limpiamos el origen para que puedas seguir conectando el siguiente par de pines
-                    marcadorOrigen = null;
                 }
             }
         }
@@ -366,13 +348,32 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("¿Deseas borrar toda la ruta?", "Confirmar", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("¿Deseas borrar toda la ruta?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                // Limpiamos todo lo visual del mapa y el grafo
                 capaMarcadores.Markers.Clear();
                 capaRutas.Routes.Clear();
                 grafoService.Nodos.Clear();
                 marcadorOrigen = null;
                 mapaReise.Refresh();
+
+                //Limpiamos las variables internas para que no guarden memoria fantasma
+                RecorridoGenerado = "";
+                PuntoInicio = "";
+                PuntoFinal = "";
+
+                
+                foreach (Form formularioAbierto in Application.OpenForms)
+                {
+                    // Busca un control que se llame exactamente "txtRecorrido"
+                    Control[] cajaRecorrido = formularioAbierto.Controls.Find("txtRecorrido", true);
+
+                    if (cajaRecorrido.Length > 0)
+                    {
+                        cajaRecorrido[0].Text = ""; // Vacía el txt en la pantalla principal
+                        break; 
+                    }
+                }
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using AVANCE_PED_GS250179_.Datos; // Tu clase Conexion
+﻿using AVANCE_PED_GS250179_.Datos; 
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -78,6 +78,131 @@ namespace AVANCE_PED_GS250179_.Servicio
             }
 
             return listaRutas;
+        }
+        public bool EliminarRuta(int idRuta)
+        {
+            SqlConnection cn = conexion.AbrirConexion();
+            SqlTransaction transaccion = cn.BeginTransaction(); 
+
+            try
+            {
+                // Obtenemos el ID del recorrido asociado a esta ruta
+                SqlCommand cmdGetRecorrido = new SqlCommand("SELECT IdRecorridoRuta FROM RutaBuses WHERE IdRutaBuses = @id", cn, transaccion);
+                cmdGetRecorrido.Parameters.AddWithValue("@id", idRuta);
+                object resultado = cmdGetRecorrido.ExecuteScalar();
+
+                if (resultado == null) throw new Exception("Ruta no encontrada.");
+                int idRecorrido = Convert.ToInt32(resultado);
+
+                // Borramos en cascada 
+
+                // Borrar de InfoRutaBuses
+                SqlCommand cmdInfoRuta = new SqlCommand("DELETE FROM InfoRutaBuses WHERE IdRutaBuses = @id", cn, transaccion);
+                cmdInfoRuta.Parameters.AddWithValue("@id", idRuta);
+                cmdInfoRuta.ExecuteNonQuery();
+
+                SqlCommand cmdRuta = new SqlCommand("DELETE FROM RutaBuses WHERE IdRutaBuses = @id", cn, transaccion);
+                cmdRuta.Parameters.AddWithValue("@id", idRuta);
+                cmdRuta.ExecuteNonQuery();
+
+                SqlCommand cmdInfoRec = new SqlCommand("DELETE FROM InfoRecorridoRuta WHERE IdRecorridoRuta = @idRec", cn, transaccion);
+                cmdInfoRec.Parameters.AddWithValue("@idRec", idRecorrido);
+                cmdInfoRec.ExecuteNonQuery();
+
+                SqlCommand cmdRec = new SqlCommand("DELETE FROM RecorridoRuta WHERE IdRecorridoRuta = @idRec", cn, transaccion);
+                cmdRec.Parameters.AddWithValue("@idRec", idRecorrido);
+                cmdRec.ExecuteNonQuery();
+
+                transaccion.Commit();
+                return true;
+            }
+            catch (SqlException sqlEx)
+            {
+                transaccion.Rollback(); 
+                if (sqlEx.Number == 547)
+                    throw new Exception("No se puede eliminar esta ruta porque tiene pasajes vendidos en el sistema.");
+                else
+                    throw new Exception("Error BD: " + sqlEx.Message);
+            }
+            finally
+            {
+                conexion.CerrarConexion(cn);
+            }
+        }
+        public string ObtenerRecorridoPorIdRuta(int idRuta)
+        {
+            string recorrido = "";
+            SqlConnection cn = conexion.AbrirConexion();
+            try
+            {
+                string query = @"SELECT irr.ParadasRuta 
+                                 FROM RutaBuses rb
+                                 INNER JOIN InfoRecorridoRuta irr ON rb.IdRecorridoRuta = irr.IdRecorridoRuta
+                                 WHERE rb.IdRutaBuses = @id";
+                SqlCommand cmd = new SqlCommand(query, cn);
+                cmd.Parameters.AddWithValue("@id", idRuta);
+                object result = cmd.ExecuteScalar();
+                if (result != null) recorrido = result.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener recorrido: " + ex.Message);
+            }
+            finally
+            {
+                conexion.CerrarConexion(cn);
+            }
+            return recorrido;
+        }
+
+        public bool ActualizarRuta(int idRuta, string numeroRuta, decimal tarifa, string inicio, string final, string paradas)
+        {
+            SqlConnection cn = conexion.AbrirConexion();
+            SqlTransaction transaccion = cn.BeginTransaction();
+            try
+            {
+                
+                SqlCommand cmdGetRecorrido = new SqlCommand("SELECT IdRecorridoRuta FROM RutaBuses WHERE IdRutaBuses = @id", cn, transaccion);
+                cmdGetRecorrido.Parameters.AddWithValue("@id", idRuta);
+                int idRecorrido = Convert.ToInt32(cmdGetRecorrido.ExecuteScalar());
+
+                
+                SqlCommand cmdRuta = new SqlCommand("UPDATE RutaBuses SET CostoDelPasaje = @tarifa WHERE IdRutaBuses = @id", cn, transaccion);
+                cmdRuta.Parameters.AddWithValue("@tarifa", tarifa);
+                cmdRuta.Parameters.AddWithValue("@id", idRuta);
+                cmdRuta.ExecuteNonQuery();
+
+                
+                SqlCommand cmdInfoRuta = new SqlCommand("UPDATE InfoRutaBuses SET NumeroRuta = @num WHERE IdRutaBuses = @id", cn, transaccion);
+                cmdInfoRuta.Parameters.AddWithValue("@num", numeroRuta);
+                cmdInfoRuta.Parameters.AddWithValue("@id", idRuta);
+                cmdInfoRuta.ExecuteNonQuery();
+
+                
+                SqlCommand cmdRecorrido = new SqlCommand("UPDATE RecorridoRuta SET inicio = @ini, Final = @fin WHERE IdRecorridoRuta = @idRec", cn, transaccion);
+                cmdRecorrido.Parameters.AddWithValue("@ini", inicio);
+                cmdRecorrido.Parameters.AddWithValue("@fin", final);
+                cmdRecorrido.Parameters.AddWithValue("@idRec", idRecorrido);
+                cmdRecorrido.ExecuteNonQuery();
+
+                
+                SqlCommand cmdInfoRec = new SqlCommand("UPDATE InfoRecorridoRuta SET ParadasRuta = @paradas WHERE IdRecorridoRuta = @idRec", cn, transaccion);
+                cmdInfoRec.Parameters.AddWithValue("@paradas", paradas);
+                cmdInfoRec.Parameters.AddWithValue("@idRec", idRecorrido);
+                cmdInfoRec.ExecuteNonQuery();
+
+                transaccion.Commit();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                transaccion.Rollback();
+                throw new Exception("Error al actualizar la ruta: " + ex.Message);
+            }
+            finally
+            {
+                conexion.CerrarConexion(cn);
+            }
         }
     }
 }

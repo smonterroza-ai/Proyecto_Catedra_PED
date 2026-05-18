@@ -46,9 +46,8 @@
             Pizarra.BackColor = Color.White;
             Pizarra.Controls.Add(mapaReise);
             Pizarra.Location = new Point(3, 1);
-            Pizarra.Margin = new Padding(3, 2, 3, 2);
             Pizarra.Name = "Pizarra";
-            Pizarra.Size = new Size(701, 338);
+            Pizarra.Size = new Size(801, 451);
             Pizarra.TabIndex = 0;
             Pizarra.Paint += Pizarra_Paint;
             Pizarra.MouseDown += Pizarra_MouseDown;
@@ -64,7 +63,6 @@
             mapaReise.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             mapaReise.LevelsKeepInMemory = 5;
             mapaReise.Location = new Point(0, 0);
-            mapaReise.Margin = new Padding(3, 2, 3, 2);
             mapaReise.MarkersEnabled = true;
             mapaReise.MaxZoom = 2;
             mapaReise.MinZoom = 2;
@@ -78,7 +76,7 @@
             mapaReise.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             mapaReise.SelectedAreaFillColor = Color.FromArgb(33, 65, 105, 225);
             mapaReise.ShowTileGridLines = false;
-            mapaReise.Size = new Size(698, 335);
+            mapaReise.Size = new Size(798, 447);
             mapaReise.TabIndex = 0;
             mapaReise.Zoom = 0D;
             mapaReise.OnMarkerClick += mapaReise_OnMarkerClick;
@@ -86,10 +84,9 @@
             // 
             // btnRegresar
             // 
-            btnRegresar.Location = new Point(739, 305);
-            btnRegresar.Margin = new Padding(3, 2, 3, 2);
+            btnRegresar.Location = new Point(845, 407);
             btnRegresar.Name = "btnRegresar";
-            btnRegresar.Size = new Size(82, 22);
+            btnRegresar.Size = new Size(94, 29);
             btnRegresar.TabIndex = 1;
             btnRegresar.Text = "Regresar";
             btnRegresar.UseVisualStyleBackColor = true;
@@ -97,10 +94,9 @@
             // 
             // btnGuardarRuta
             // 
-            btnGuardarRuta.Location = new Point(706, 9);
-            btnGuardarRuta.Margin = new Padding(3, 2, 3, 2);
+            btnGuardarRuta.Location = new Point(807, 12);
             btnGuardarRuta.Name = "btnGuardarRuta";
-            btnGuardarRuta.Size = new Size(115, 22);
+            btnGuardarRuta.Size = new Size(131, 29);
             btnGuardarRuta.TabIndex = 2;
             btnGuardarRuta.Text = "Guardar ruta";
             btnGuardarRuta.UseVisualStyleBackColor = true;
@@ -108,10 +104,9 @@
             // 
             // btnLimpiar
             // 
-            btnLimpiar.Location = new Point(706, 47);
-            btnLimpiar.Margin = new Padding(3, 2, 3, 2);
+            btnLimpiar.Location = new Point(807, 63);
             btnLimpiar.Name = "btnLimpiar";
-            btnLimpiar.Size = new Size(115, 22);
+            btnLimpiar.Size = new Size(131, 29);
             btnLimpiar.TabIndex = 3;
             btnLimpiar.Text = "Limpiar";
             btnLimpiar.UseVisualStyleBackColor = true;
@@ -119,39 +114,39 @@
             // 
             // button1
             // 
-            button1.Location = new Point(706, 87);
-            button1.Margin = new Padding(3, 2, 3, 2);
+            button1.Enabled = false;
+            button1.Location = new Point(807, 116);
             button1.Name = "button1";
-            button1.Size = new Size(115, 22);
+            button1.Size = new Size(131, 29);
             button1.TabIndex = 4;
             button1.Text = "Eliminar";
             button1.UseVisualStyleBackColor = true;
+            button1.Visible = false;
             // 
             // menuMarcador
             // 
             menuMarcador.ImageScalingSize = new Size(20, 20);
             menuMarcador.Items.AddRange(new ToolStripItem[] { eliminarPuntoToolStripMenuItem });
             menuMarcador.Name = "contextMenuStrip1";
-            menuMarcador.Size = new Size(153, 26);
+            menuMarcador.Size = new Size(175, 28);
             // 
             // eliminarPuntoToolStripMenuItem
             // 
             eliminarPuntoToolStripMenuItem.Name = "eliminarPuntoToolStripMenuItem";
-            eliminarPuntoToolStripMenuItem.Size = new Size(152, 22);
+            eliminarPuntoToolStripMenuItem.Size = new Size(174, 24);
             eliminarPuntoToolStripMenuItem.Text = "Eliminar Punto";
             eliminarPuntoToolStripMenuItem.Click += eliminarPuntoToolStripMenuItem_Click;
             // 
             // Form10
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(856, 338);
+            ClientSize = new Size(978, 451);
             Controls.Add(button1);
             Controls.Add(btnLimpiar);
             Controls.Add(btnGuardarRuta);
             Controls.Add(btnRegresar);
             Controls.Add(Pizarra);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "Form10";
             Text = "Form10";
             Load += Form10_Load;

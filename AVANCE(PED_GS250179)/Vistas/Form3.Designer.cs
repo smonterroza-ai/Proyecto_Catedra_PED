@@ -135,6 +135,7 @@
             txtBuscar.PlaceholderText = "Buscar por placa";
             txtBuscar.Size = new Size(282, 29);
             txtBuscar.TabIndex = 14;
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
             // Form3
             // 
@@ -155,6 +156,7 @@
             Name = "Form3";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Rutas";
+            Load += Form3_Load;
             ((System.ComponentModel.ISupportInitialize)btnAtras).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnAR).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnEditarR).EndInit();

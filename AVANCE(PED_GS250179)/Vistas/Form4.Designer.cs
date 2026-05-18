@@ -48,10 +48,9 @@
             // 
             btnAtras.Cursor = Cursors.Hand;
             btnAtras.Image = (Image)resources.GetObject("btnAtras.Image");
-            btnAtras.Location = new Point(18, 436);
-            btnAtras.Margin = new Padding(3, 2, 3, 2);
+            btnAtras.Location = new Point(21, 581);
             btnAtras.Name = "btnAtras";
-            btnAtras.Size = new Size(122, 34);
+            btnAtras.Size = new Size(139, 45);
             btnAtras.SizeMode = PictureBoxSizeMode.StretchImage;
             btnAtras.TabIndex = 4;
             btnAtras.TabStop = false;
@@ -62,10 +61,9 @@
             txtRuta.BorderStyle = BorderStyle.None;
             txtRuta.Cursor = Cursors.IBeam;
             txtRuta.Font = new Font("Segoe UI", 12F);
-            txtRuta.Location = new Point(341, 164);
-            txtRuta.Margin = new Padding(3, 2, 3, 2);
+            txtRuta.Location = new Point(390, 219);
             txtRuta.Name = "txtRuta";
-            txtRuta.Size = new Size(49, 22);
+            txtRuta.Size = new Size(56, 27);
             txtRuta.TabIndex = 5;
             // 
             // txtTari
@@ -73,10 +71,9 @@
             txtTari.BorderStyle = BorderStyle.None;
             txtTari.Cursor = Cursors.IBeam;
             txtTari.Font = new Font("Segoe UI", 12F);
-            txtTari.Location = new Point(412, 164);
-            txtTari.Margin = new Padding(3, 2, 3, 2);
+            txtTari.Location = new Point(471, 219);
             txtTari.Name = "txtTari";
-            txtTari.Size = new Size(49, 22);
+            txtTari.Size = new Size(56, 27);
             txtTari.TabIndex = 6;
             txtTari.KeyPress += txtTari_KeyPress;
             // 
@@ -84,22 +81,21 @@
             // 
             txtRecorrido.BorderStyle = BorderStyle.None;
             txtRecorrido.Cursor = Cursors.IBeam;
+            txtRecorrido.Enabled = false;
             txtRecorrido.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtRecorrido.Location = new Point(341, 242);
-            txtRecorrido.Margin = new Padding(3, 2, 3, 2);
+            txtRecorrido.Location = new Point(390, 323);
             txtRecorrido.Multiline = true;
             txtRecorrido.Name = "txtRecorrido";
-            txtRecorrido.Size = new Size(315, 111);
+            txtRecorrido.Size = new Size(360, 148);
             txtRecorrido.TabIndex = 7;
             // 
             // btnAMapa
             // 
             btnAMapa.Cursor = Cursors.Hand;
             btnAMapa.Image = (Image)resources.GetObject("btnAMapa.Image");
-            btnAMapa.Location = new Point(546, 200);
-            btnAMapa.Margin = new Padding(3, 2, 3, 2);
+            btnAMapa.Location = new Point(624, 267);
             btnAMapa.Name = "btnAMapa";
-            btnAMapa.Size = new Size(110, 30);
+            btnAMapa.Size = new Size(126, 40);
             btnAMapa.SizeMode = PictureBoxSizeMode.StretchImage;
             btnAMapa.TabIndex = 8;
             btnAMapa.TabStop = false;
@@ -109,10 +105,9 @@
             // 
             Confi_R.Cursor = Cursors.Hand;
             Confi_R.Image = (Image)resources.GetObject("Confi_R.Image");
-            Confi_R.Location = new Point(438, 396);
-            Confi_R.Margin = new Padding(3, 2, 3, 2);
+            Confi_R.Location = new Point(501, 528);
             Confi_R.Name = "Confi_R";
-            Confi_R.Size = new Size(108, 29);
+            Confi_R.Size = new Size(123, 39);
             Confi_R.SizeMode = PictureBoxSizeMode.StretchImage;
             Confi_R.TabIndex = 9;
             Confi_R.TabStop = false;
@@ -121,9 +116,9 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(346, 132);
+            label1.Location = new Point(395, 176);
             label1.Name = "label1";
-            label1.Size = new Size(0, 15);
+            label1.Size = new Size(0, 20);
             label1.TabIndex = 0;
             // 
             // label4
@@ -132,9 +127,9 @@
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = SystemColors.ControlLightLight;
-            label4.Location = new Point(341, 137);
+            label4.Location = new Point(390, 183);
             label4.Name = "label4";
-            label4.Size = new Size(36, 17);
+            label4.Size = new Size(47, 23);
             label4.TabIndex = 18;
             label4.Text = "Ruta";
             // 
@@ -144,9 +139,9 @@
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = SystemColors.ControlLightLight;
-            label2.Location = new Point(412, 137);
+            label2.Location = new Point(471, 183);
             label2.Name = "label2";
-            label2.Size = new Size(43, 17);
+            label2.Size = new Size(56, 23);
             label2.TabIndex = 19;
             label2.Text = "Tarifa";
             label2.Click += label2_Click;
@@ -157,19 +152,19 @@
             label3.BackColor = Color.Transparent;
             label3.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = SystemColors.ControlLightLight;
-            label3.Location = new Point(341, 213);
+            label3.Location = new Point(390, 284);
             label3.Name = "label3";
-            label3.Size = new Size(67, 17);
+            label3.Size = new Size(88, 23);
             label3.TabIndex = 20;
             label3.Text = "Recorrido";
             // 
             // Form4
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.fondo2_Agregar_;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(973, 479);
+            ClientSize = new Size(1112, 639);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label4);
@@ -181,7 +176,6 @@
             Controls.Add(txtRuta);
             Controls.Add(btnAtras);
             FormBorderStyle = FormBorderStyle.None;
-            Margin = new Padding(3, 2, 3, 2);
             Name = "Form4";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form4";
