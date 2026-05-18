@@ -127,6 +127,7 @@
             BackgroundImage = Properties.Resources.fondo1;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1139, 589);
+            ControlBox = false;
             Controls.Add(txtBuscar);
             Controls.Add(dgvRutas);
             Controls.Add(label6);
@@ -134,6 +135,7 @@
             Controls.Add(btnEditarM);
             Controls.Add(btnAR);
             Controls.Add(btnAtras);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "Form8";
             Text = "Form8";
             ((System.ComponentModel.ISupportInitialize)dgvRutas).EndInit();
