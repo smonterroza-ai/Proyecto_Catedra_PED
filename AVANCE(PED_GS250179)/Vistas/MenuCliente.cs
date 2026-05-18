@@ -1,18 +1,21 @@
 ﻿using AVANCE_PED_GS250179_;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data;
+using System.Data.SqlClient; // Regresamos al SqlClient nativo del Framework
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace AVANCE_PED_GS250179_
 {
-    
     public partial class MenuCliente : Form
     {
-        // CADENA DE CONEXIÓN GLOBAL
-        private string connectionString = "Server=TU_SERVIDOR;Database=ReiseDB;Trusted_Connection=True;";
+        //CONEXIÓN CON LA BD
+        private Datos.Conexion conexionGeneral = new Datos.Conexion();
+
+        // Identificadores del usuario autenticado (Asignado por defecto temporalmente, o mediante constructor)
+        private int idClienteLogueado = 1;
 
         // Controles principales de la Interfaz
         private Panel panelSuperior;
@@ -28,6 +31,7 @@ namespace AVANCE_PED_GS250179_
 
         private Panel panelDerecho;
 
+        // Constructor estándar
         public MenuCliente()
         {
             this.Size = new Size(1024, 640);
@@ -38,7 +42,14 @@ namespace AVANCE_PED_GS250179_
 
             ConstruirEsqueletoInterfaz();
             MostrarMenuPrincipalCliente();
-            ActualizarLabelSaldoPantalla(); // Carga el saldo inicial al iniciar
+            ActualizarLabelSaldoPantalla();
+        }
+
+        // Sobrecarga opcional para recibir el ID del cliente directamente desde el Login
+        public MenuCliente(int idCliente) : this()
+        {
+            this.idClienteLogueado = idCliente;
+            ActualizarLabelSaldoPantalla();
         }
 
         private void ConstruirEsqueletoInterfaz()
@@ -75,7 +86,7 @@ namespace AVANCE_PED_GS250179_
 
             lblSaldo = new Label
             {
-                Text = "SALDO: ----",
+                Text = "SALDO: ---.--",
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 Location = new Point(290, 26),
                 AutoSize = true
@@ -105,7 +116,7 @@ namespace AVANCE_PED_GS250179_
             };
             btnRecargar.FlatAppearance.BorderSize = 0;
             btnRecargar.Paint += (s, e) => RecortarBordesControl(btnRecargar, 8);
-            btnRecargar.Click += BtnRecargar_Click; // Vinculación de recarga
+            btnRecargar.Click += BtnRecargar_Click;
             panelSuperior.Controls.Add(btnRecargar);
 
             // ==========================================
@@ -148,7 +159,7 @@ namespace AVANCE_PED_GS250179_
             this.Controls.Add(panelSuperior);
         }
 
-        // VISTA A: MENÚ PRINCIPAL NORMAL
+        // VISTA A: MENÚ PRINCIPAL CON TOP 3 RUTAS DISPONIBLES (Desde la Vista SQL)
         private void MostrarMenuPrincipalCliente()
         {
             panelDerecho.Controls.Clear();
@@ -184,11 +195,49 @@ namespace AVANCE_PED_GS250179_
             containerRutas.HorizontalScroll.Visible = false;
             panelDerecho.Controls.Add(containerRutas);
 
-            // Simulación o lectura SQL de Top 3 rutas sugeridas
-            
+            string queryTopRutas = "SELECT TOP 3 IdRutaBuses, NumeroRuta, inicioDeRuta, FinalDeRuta, CostoDelpasaje, Marca, Modelo, PlacaVehiculo FROM dbo.InfoTransportes";
+
+            try
+            {
+                using (SqlConnection connection = conexionGeneral.AbrirConexion())
+                {
+                    using (SqlCommand command = new SqlCommand(queryTopRutas, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            containerRutas.Controls.Clear();
+                            bool tieneRegistros = false;
+
+                            while (reader.Read())
+                            {
+                                tieneRegistros = true;
+                                int idRuta = Convert.ToInt32(reader["IdRutaBuses"]);
+                                string numeroRuta = reader["NumeroRuta"].ToString();
+                                string origen = reader["inicioDeRuta"].ToString();
+                                string destino = reader["FinalDeRuta"].ToString();
+                                decimal costo = Convert.ToDecimal(reader["CostoDelpasaje"]);
+                                string marca = reader["Marca"].ToString();
+                                string modelo = reader["Modelo"].ToString();
+                                string placa = reader["PlacaVehiculo"].ToString();
+
+                                containerRutas.Controls.Add(GenerarTarjetaComponente(idRuta, numeroRuta, origen, destino, costo, marca, modelo, placa));
+                            }
+
+                            if (!tieneRegistros)
+                            {
+                                MostrarMensajeInformativoPanel(containerRutas, "No se encontraron rutas disponibles en este momento.");
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                MostrarMensajeInformativoPanel(containerRutas, "Error de comunicación con el servidor central de Reise.");
+            }
         }
 
-        // VISTA B: DASHBOARD CENTRAL
+        // VISTA B: DASHBOARD CENTRAL — TODAS LAS RUTAS DISPONIBLES
         private void MostrarDashboardTodasLasRutas()
         {
             panelDerecho.Controls.Clear();
@@ -234,12 +283,98 @@ namespace AVANCE_PED_GS250179_
             gridRutasTotales.HorizontalScroll.Visible = false;
             panelDerecho.Controls.Add(gridRutasTotales);
 
-           //CONECION CON LA BD
-            
+            string queryTodasRutas = "SELECT IdRutaBuses, NumeroRuta, inicioDeRuta, FinalDeRuta, CostoDelpasaje, Marca, Modelo, PlacaVehiculo FROM dbo.InfoTransportes";
+
+            try
+            {
+                using (SqlConnection connection = conexionGeneral.AbrirConexion())
+                {
+                    using (SqlCommand command = new SqlCommand(queryTodasRutas, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            gridRutasTotales.Controls.Clear();
+                            bool tieneRegistros = false;
+
+                            while (reader.Read())
+                            {
+                                tieneRegistros = true;
+                                int idRuta = Convert.ToInt32(reader["IdRutaBuses"]);
+                                string numeroRuta = reader["NumeroRuta"].ToString();
+                                string origen = reader["inicioDeRuta"].ToString();
+                                string destino = reader["FinalDeRuta"].ToString();
+                                decimal costo = Convert.ToDecimal(reader["CostoDelpasaje"]);
+                                string marca = reader["Marca"].ToString();
+                                string modelo = reader["Modelo"].ToString();
+                                string placa = reader["PlacaVehiculo"].ToString();
+
+                                gridRutasTotales.Controls.Add(GenerarTarjetaComponente(idRuta, numeroRuta, origen, destino, costo, marca, modelo, placa));
+                            }
+
+                            if (!tieneRegistros)
+                            {
+                                MostrarMensajeInformativoPanel(gridRutasTotales, "Catálogo de rutas actualmente vacío.");
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                MostrarMensajeInformativoPanel(gridRutasTotales, "Error al conectar con la base de datos de rutas.");
+            }
         }
 
-        // FUNCIÓN GENERADORA DE TARJETAS (Arreglada línea 219 de errores)
-        private Panel GenerarTarjetaComponente(string nombreRuta, string precio)
+        // Obtiene el saldo real de la tabla InfoCliente de la Base de Datos
+        private void ActualizarLabelSaldoPantalla()
+        {
+            string querySaldo = "SELECT Saldo FROM InfoCliente WHERE IdCliente = @IdCliente";
+
+            try
+            {
+                using (SqlConnection connection = conexionGeneral.AbrirConexion())
+                {
+                    using (SqlCommand command = new SqlCommand(querySaldo, connection))
+                    {
+                        command.Parameters.AddWithValue("@IdCliente", idClienteLogueado);
+                        object resultado = command.ExecuteScalar();
+
+                        if (resultado != null && resultado != DBNull.Value)
+                        {
+                            decimal saldoActual = Convert.ToDecimal(resultado);
+                            lblSaldo.Text = $"SALDO: ${saldoActual:F2}";
+                        }
+                        else
+                        {
+                            lblSaldo.Text = "SALDO: $0.00";
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                lblSaldo.Text = "SALDO: $0.00";
+            }
+        }
+
+        // Pinta avisos visuales elegantes en los paneles cuando no hay conexión u objetos
+        private void MostrarMensajeInformativoPanel(FlowLayoutPanel panel, string mensaje)
+        {
+            panel.Controls.Clear();
+            Label lblMensaje = new Label
+            {
+                Text = mensaje,
+                Font = new Font("Segoe UI", 11, FontStyle.Italic),
+                ForeColor = Color.Gray,
+                Size = new Size(520, 80),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Margin = new Padding(10, 40, 10, 0)
+            };
+            panel.Controls.Add(lblMensaje);
+        }
+
+        // Generación dinámica de tus tarjetas grises con lógica transaccional SQL real
+        private Panel GenerarTarjetaComponente(int idRuta, string numeroRuta, string origen, string destino, decimal costo, string marca, string modelo, string placa)
         {
             Panel card = new Panel
             {
@@ -251,13 +386,35 @@ namespace AVANCE_PED_GS250179_
             };
             card.Paint += (s, e) => RecortarBordesControl(card, 15);
 
-            Label lblIconBus = new Label { Text = "🚌", Font = new Font("Segoe UI", 34), ForeColor = Color.White, Location = new Point(30, 18), AutoSize = true };
-            card.Controls.Add(lblIconBus);
-
-            Label lblNombre = new Label { Text = nombreRuta, Font = new Font("Segoe UI", 16, FontStyle.Bold), ForeColor = Color.White, Location = new Point(125, 36), AutoSize = true };
+            Label lblNombre = new Label
+            {
+                Text = $"{numeroRuta}: {origen} → {destino}",
+                Font = new Font("Segoe UI", 10.5f, FontStyle.Bold),
+                ForeColor = Color.White,
+                Location = new Point(20, 18),
+                Size = new Size(400, 45),
+                UseMnemonic = false
+            };
             card.Controls.Add(lblNombre);
 
-            Label lblPrecio = new Label { Text = precio, Font = new Font("Segoe UI", 14, FontStyle.Bold), ForeColor = Color.White, Location = new Point(445, 22), AutoSize = true };
+            Label lblBusDetalle = new Label
+            {
+                Text = $"Unidad: {marca} {modelo} [{placa}]",
+                Font = new Font("Segoe UI", 8.5f, FontStyle.Italic),
+                ForeColor = Color.FromArgb(200, 200, 200),
+                Location = new Point(20, 68),
+                Size = new Size(380, 20)
+            };
+            card.Controls.Add(lblBusDetalle);
+
+            Label lblPrecio = new Label
+            {
+                Text = $"${costo:F2}",
+                Font = new Font("Segoe UI", 13, FontStyle.Bold),
+                ForeColor = Color.White,
+                Location = new Point(445, 20),
+                AutoSize = true
+            };
             card.Controls.Add(lblPrecio);
 
             Button btnComprar = new Button
@@ -268,17 +425,120 @@ namespace AVANCE_PED_GS250179_
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
                 Size = new Size(95, 28),
-                Location = new Point(420, 58),
+                Location = new Point(425, 55),
                 Cursor = Cursors.Hand
             };
             btnComprar.FlatAppearance.BorderSize = 0;
             btnComprar.Paint += (s, e) => RecortarBordesControl(btnComprar, 6);
-            card.Controls.Add(btnComprar);
 
+            // EVENTO CLICK: Procesamiento transaccional SQL
+            btnComprar.Click += (s, e) =>
+            {
+                string mensaje = $"¿Deseas comprar 1 pasaje para la {numeroRuta}?\n\n" +
+                                 $"De: {origen}\nA: {destino}\n\n" +
+                                 $"Costo: ${costo:F2}\nVehículo: {marca} {modelo} ({placa})";
+
+                DialogResult resultadoConfirmacion = MessageBox.Show(mensaje, "Confirmar Compra", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (resultadoConfirmacion == DialogResult.Yes)
+                {
+                    try
+                    {
+                        using (SqlConnection connection = conexionGeneral.AbrirConexion())
+                        {
+                            // 1. Validar fondos del cliente antes de operar
+                            string sqlCheckSaldo = "SELECT Saldo FROM InfoCliente WHERE IdCliente = @IdCliente";
+                            decimal saldoDisponible = 0;
+
+                            using (SqlCommand cmdCheck = new SqlCommand(sqlCheckSaldo, connection))
+                            {
+                                cmdCheck.Parameters.AddWithValue("@IdCliente", idClienteLogueado);
+                                object resSaldo = cmdCheck.ExecuteScalar();
+                                saldoDisponible = resSaldo != null ? Convert.ToDecimal(resSaldo) : 0;
+                            }
+
+                            if (saldoDisponible < costo)
+                            {
+                                MessageBox.Show("Saldo insuficiente para completar la compra. Por favor, recargue su cuenta.", "Reise - Fondos Insuficientes", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+
+                            // 2. Transacción de compra de pasaje atómica
+                            using (SqlTransaction transaction = connection.BeginTransaction())
+                            {
+                                try
+                                {
+                                    // A. Descontar saldo del cliente
+                                    string sqlDebitar = "UPDATE InfoCliente SET Saldo = Saldo - @Costo WHERE IdCliente = @IdCliente";
+                                    using (SqlCommand cmdDebitar = new SqlCommand(sqlDebitar, connection, transaction))
+                                    {
+                                        cmdDebitar.Parameters.AddWithValue("@Costo", costo);
+                                        cmdDebitar.Parameters.AddWithValue("@IdCliente", idClienteLogueado);
+                                        cmdDebitar.ExecuteNonQuery();
+                                    }
+
+                                    // B. Obtener IdCompraPasajes correlativo
+                                    string sqlGetIdCompra = "SELECT ISNULL(MAX(IdCompraPasajes), 0) + 1 FROM CompraPasajes";
+                                    int nuevoIdCompra = 0;
+                                    using (SqlCommand cmdId = new SqlCommand(sqlGetIdCompra, connection, transaction))
+                                    {
+                                        nuevoIdCompra = Convert.ToInt32(cmdId.ExecuteScalar());
+                                    }
+
+                                    // C. Insertar registro en CompraPasajes
+                                    string sqlCompra = "INSERT INTO CompraPasajes (IdCompraPasajes, IdRutaBuses, CantidadAcomprar, TotalApagar) VALUES (@IdCompra, @IdRuta, 1, @Total)";
+                                    using (SqlCommand cmdCompra = new SqlCommand(sqlCompra, connection, transaction))
+                                    {
+                                        cmdCompra.Parameters.AddWithValue("@IdCompra", nuevoIdCompra);
+                                        cmdCompra.Parameters.AddWithValue("@IdRuta", idRuta);
+                                        cmdCompra.Parameters.AddWithValue("@Total", costo);
+                                        cmdCompra.ExecuteNonQuery();
+                                    }
+
+                                    // D. Obtener IdDetalleVenta correlativo
+                                    string sqlGetIdVenta = "SELECT ISNULL(MAX(IdDetalleVenta), 0) + 1 FROM DetalleVenta";
+                                    int nuevoIdVenta = 0;
+                                    using (SqlCommand cmdIdV = new SqlCommand(sqlGetIdVenta, connection, transaction))
+                                    {
+                                        nuevoIdVenta = Convert.ToInt32(cmdIdV.ExecuteScalar());
+                                    }
+
+                                    // E. Registrar en DetalleVenta (El trigger 'obtenerfecha' manejará el tiempo en la BD)
+                                    string sqlDetalle = "INSERT INTO DetalleVenta (IdDetalleVenta, IdCompraPasajes, IdCliente, IdMetodosDePago, Estado) VALUES (@IdVenta, @IdCompra, @IdCliente, 1, 'Completado')";
+                                    using (SqlCommand cmdDetalle = new SqlCommand(sqlDetalle, connection, transaction))
+                                    {
+                                        cmdDetalle.Parameters.AddWithValue("@IdVenta", nuevoIdVenta);
+                                        cmdDetalle.Parameters.AddWithValue("@IdCompra", nuevoIdCompra);
+                                        cmdDetalle.Parameters.AddWithValue("@IdCliente", idClienteLogueado);
+                                        cmdDetalle.ExecuteNonQuery();
+                                    }
+
+                                    // Confirmamos todos los cambios juntos
+                                    transaction.Commit();
+                                    MessageBox.Show("¡Pasaje adquirido con éxito! Buen viaje.", "Reise", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                    // Actualizar el saldo inmediatamente reflejado en el Navbar
+                                    ActualizarLabelSaldoPantalla();
+                                }
+                                catch (Exception ex)
+                                {
+                                    transaction.Rollback();
+                                    MessageBox.Show("Error interno al procesar la compra: " + ex.Message, "Error de Transacción", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("No se pudo conectar a la central de Reise: " + ex.Message, "Error de Red/SQL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            };
+
+            card.Controls.Add(btnComprar);
             return card;
         }
 
-        // MANEJADORES DE EVENTOS
         private void BtnRecargar_Click(object sender, EventArgs e)
         {
             using (RecargarForm pantallaRecarga = new RecargarForm())
@@ -290,22 +550,16 @@ namespace AVANCE_PED_GS250179_
             }
         }
 
-        private void ActualizarLabelSaldoPantalla()
-        {
-            
-        }
-
         private void BtnSalirLogin_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("¿Desea cerrar sesión?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                LoginForm login = new LoginForm();
+                Form1 login = new Form1();
                 login.Show();
-                this.Close();
+                this.Hide();
             }
         }
 
-        // MÉTODOS AUXILIARES GRÁFICOS (GDI+) - Solución a Errores CS0103
         private void RecortarBordesControl(Control ctrl, int radius)
         {
             GraphicsPath path = new GraphicsPath();
