@@ -1,7 +1,5 @@
 ﻿using AVANCE_PED_GS250179_.Vistas;
 using System.Data.SqlClient;
-using AVANCE_PED_GS250179_.Vistas;
-using System.Data.SqlClient;
 using AVANCE_PED_GS250179_.Datos;
 using System;
 using System.Collections.Generic;
@@ -24,7 +22,6 @@ namespace AVANCE_PED_GS250179_
             InitializeComponent();
             this.rolUsuarioActual = idRol;
 
-            // Bloqueo estricto: por defecto se oculta todo. Solo el Admin (1) puede verlo.
             if (idRol != 1)
             {
                 btnT.Visible = false;
@@ -36,7 +33,6 @@ namespace AVANCE_PED_GS250179_
         {
             CargarMetricasHoy();
 
-            // Si no es administrador, se activa el entorno de empleado y el monitor de grafos
             if (rolUsuarioActual != 1)
             {
                 CentrarBotonesEmpleado();
@@ -123,9 +119,39 @@ namespace AVANCE_PED_GS250179_
             btnAbrirValidador.Cursor = Cursors.Hand;
 
             btnAbrirValidador.Click += (s, e) => {
-                int idRutaDelConductor = 1;
+                int idRutaDelConductor = 0;
 
-                ValidarQrForm pantallaGrafo = new ValidarQrForm(idRutaDelConductor);
+                // 🔍 Buscamos la ruta real en SQL para no dejar el valor estático en 1
+                Conexion con = new Conexion();
+                SqlConnection cn = con.AbrirConexion();
+                if (cn != null)
+                {
+                    try
+                    {
+                        // Buscamos la ruta vinculada al rol o usuario actual
+                        string queryRuta = "SELECT TOP 1 IdRuta FROM Conductores WHERE IdRol = @Rol";
+                        using (SqlCommand cmd = new SqlCommand(queryRuta, cn))
+                        {
+                            cmd.Parameters.AddWithValue("@Rol", this.rolUsuarioActual);
+                            object resultado = cmd.ExecuteScalar();
+                            if (resultado != null && resultado != DBNull.Value)
+                            {
+                                idRutaDelConductor = Convert.ToInt32(resultado);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        idRutaDelConductor = 1; // Respaldo por si falla la estructura de pruebas
+                    }
+                    finally
+                    {
+                        con.CerrarConexion(cn);
+                    }
+                }
+
+                ValidarQrForm pantallaGrafo = new ValidarQrForm();
+                pantallaGrafo.IdRutaFiltrada = idRutaDelConductor;
                 pantallaGrafo.Owner = this;
                 pantallaGrafo.Show();
                 this.Hide();

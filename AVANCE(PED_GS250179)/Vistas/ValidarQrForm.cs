@@ -1,8 +1,8 @@
 ﻿using AVANCE_PED_GS250179_.Estructuras;
-using AVANCE_PED_GS250179_.Datos; // 🌟 Espacio de nombres de tu clase Conexion
+using AVANCE_PED_GS250179_.Datos;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient; // 🌟 Requerido para transacciones ADO.NET
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -14,6 +14,8 @@ namespace AVANCE_PED_GS250179_.Vistas
         private Button btnDesencolar;
         private Button btnRegresar;
         private Panel pnlLienzoGrafo;
+
+        public int IdRutaFiltrada { get; set; } = 0;
 
         public ValidarQrForm()
         {
@@ -36,17 +38,17 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void InicializarComponentesEstilizados()
         {
-            Label lblLeyendaNodoRojo = new Label { Text = "🟥 Frente (FIFO) = Siguiente QR a Desencolar", Font = new Font("Segoe UI", 10, FontStyle.Bold), ForeColor = Color.FromArgb(231, 76, 60), Location = new Point(40, 30), AutoSize = true };
+            Label lblLeyendaNodoRojo = new Label { Text = "Frente (FIFO) = Siguiente QR a Desencolar", Font = new Font("Segoe UI", 10, FontStyle.Bold), ForeColor = Color.FromArgb(231, 76, 60), Location = new Point(40, 30), AutoSize = true };
             this.Controls.Add(lblLeyendaNodoRojo);
 
-            Label lblLeyendaNodoAzul = new Label { Text = "🟦 Punteros Encolados en Memoria Dinámica", Font = new Font("Segoe UI", 10, FontStyle.Bold), ForeColor = Color.FromArgb(52, 152, 219), Location = new Point(40, 55), AutoSize = true };
+            Label lblLeyendaNodoAzul = new Label { Text = "Punteros Encolados en Memoria Dinámica", Font = new Font("Segoe UI", 10, FontStyle.Bold), ForeColor = Color.FromArgb(52, 152, 219), Location = new Point(40, 55), AutoSize = true };
             this.Controls.Add(lblLeyendaNodoAzul);
 
             pnlLienzoGrafo = new Panel { Location = new Point(40, 100), Size = new Size(640, 240), BackColor = Color.FromArgb(43, 43, 43) };
             pnlLienzoGrafo.Paint += PnlLienzoGrafo_Paint;
             this.Controls.Add(pnlLienzoGrafo);
 
-            btnDesencolar = new Button { Text = "⚡ DESENCOLAR NODO EN MEMORIA", Font = new Font("Segoe UI", 10, FontStyle.Bold), BackColor = Color.FromArgb(230, 126, 34), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Size = new Size(270, 45), Location = new Point(40, 375), Cursor = Cursors.Hand };
+            btnDesencolar = new Button { Text = "DESENCOLAR NODO EN MEMORIA", Font = new Font("Segoe UI", 10, FontStyle.Bold), BackColor = Color.FromArgb(230, 126, 34), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Size = new Size(270, 45), Location = new Point(40, 375), Cursor = Cursors.Hand };
             btnDesencolar.FlatAppearance.BorderSize = 0;
             btnDesencolar.Click += BtnDesencolar_Click;
             this.Controls.Add(btnDesencolar);
@@ -78,16 +80,18 @@ namespace AVANCE_PED_GS250179_.Vistas
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            List<NodoCompra> nodosNativos = ColaCompraManual.InstanciaCompartida.ObenerListaParaDibujar();
-            int totalNodos = nodosNativos.Count;
+            // Recupere la lista completa directamente de la memoria RAM
+            List<NodoCompra> nodosFiltrados = ColaCompraManual.InstanciaCompartida.ObenerListaParaDibujar();
+            int totalNodos = nodosFiltrados.Count;
 
             if (totalNodos == 0)
             {
                 using (Font fuenteVacia = new Font("Segoe UI", 12, FontStyle.Italic))
                 {
                     StringFormat formato = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
-                    g.DrawString("📭 Cola nativa vacía. No hay nodos 'NodoCompra' en memoria.",
-                        fuenteVacia, Brushes.Gray, new RectangleF(0, 0, pnlLienzoGrafo.Width, pnlLienzoGrafo.Height), formato);
+                    string mensajeVacio = "Cola vacía. No hay nodos en memoria.";
+
+                    g.DrawString(mensajeVacio, fuenteVacia, Brushes.Gray, new RectangleF(0, 0, pnlLienzoGrafo.Width, pnlLienzoGrafo.Height), formato);
                 }
                 return;
             }
@@ -132,13 +136,12 @@ namespace AVANCE_PED_GS250179_.Vistas
                 using (Font fuenteInterna = new Font("Segoe UI", 9, FontStyle.Bold))
                 {
                     StringFormat formatoCentro = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
-                    g.DrawString(nodosNativos[i].NombreRuta, fuenteInterna, Brushes.White, p, formatoCentro);
+                    g.DrawString(nodosFiltrados[i].NombreRuta, fuenteInterna, Brushes.White, p, formatoCentro);
                 }
 
-                // 🌟 VISUALIZACIÓN: Renderiza el ID de Ticket numérico de SQL directo sobre el lienzo
                 using (Font fuenteMeta = new Font("Segoe UI", 8, FontStyle.Regular))
                 {
-                    string metadata = $"Ticket: #{nodosNativos[i].IdDetalleVenta}\nIdRuta: {nodosNativos[i].IdRuta}\nVal: ${nodosNativos[i].Precio:F2}";
+                    string metadata = $"Ticket: #{nodosFiltrados[i].IdDetalleVenta}\nIdRuta: {nodosFiltrados[i].IdRuta}\nVal: {nodosFiltrados[i].Precio:F2}";
                     g.DrawString(metadata, fuenteMeta, Brushes.DarkGray, new PointF(p.X, p.Y + radioVertice + 8), new StringFormat { Alignment = StringAlignment.Center });
                 }
             }
@@ -152,14 +155,11 @@ namespace AVANCE_PED_GS250179_.Vistas
                 return;
             }
 
-            // 1. Extraemos el nodo mediante punteros FIFO de la RAM
+            // Desencolado FIFO directo y puro de la cabeza de la estructura
             NodoCompra nodoProcesado = ColaCompraManual.InstanciaCompartida.Desencolar();
 
             if (nodoProcesado != null)
             {
-                // =========================================================================
-                // 🌟 EJECUCIÓN PERSISTENTE: Actualiza el estado a 'Aprobado' en SQL Server
-                // =========================================================================
                 Conexion con = new Conexion();
                 SqlConnection cn = con.AbrirConexion();
 
@@ -181,9 +181,9 @@ namespace AVANCE_PED_GS250179_.Vistas
                             {
                                 MessageBox.Show($"¡Pasaje procesado y validado en Base de Datos!\n\n" +
                                                 $"• Ruta: {nodoProcesado.NombreRuta}\n" +
-                                                $"• Precio: ${nodoProcesado.Precio:F2}\n" +
+                                                $"• Precio: {nodoProcesado.Precio:F2}\n" +
                                                 $"• ID Ticket SQL: #{nodoProcesado.IdDetalleVenta}\n\n" +
-                                                $"Estado transaccional: APROBADO ✅",
+                                                $"Estado transaccional: APROBADO",
                                                 "Validación Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                             else
@@ -204,7 +204,7 @@ namespace AVANCE_PED_GS250179_.Vistas
                 }
             }
 
-            pnlLienzoGrafo.Invalidate(); // Repintar la interfaz gráfica
+            pnlLienzoGrafo.Invalidate();
         }
     }
 }
