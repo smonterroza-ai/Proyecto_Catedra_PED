@@ -34,7 +34,6 @@
             menuMarcador = new ContextMenuStrip(components);
             eliminarPuntoToolStripMenuItem = new ToolStripMenuItem();
             button2 = new Button();
-            btnEliminar = new Button();
             btnEditar = new Button();
             btnAgregar = new Button();
             Pizarra.SuspendLayout();
@@ -46,9 +45,8 @@
             Pizarra.BackColor = Color.White;
             Pizarra.Controls.Add(mapaReise);
             Pizarra.Location = new Point(3, 1);
-            Pizarra.Margin = new Padding(3, 2, 3, 2);
             Pizarra.Name = "Pizarra";
-            Pizarra.Size = new Size(701, 338);
+            Pizarra.Size = new Size(801, 451);
             Pizarra.TabIndex = 0;
             Pizarra.Paint += Pizarra_Paint;
             Pizarra.MouseDown += Pizarra_MouseDown;
@@ -64,7 +62,6 @@
             mapaReise.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             mapaReise.LevelsKeepInMemory = 5;
             mapaReise.Location = new Point(0, 0);
-            mapaReise.Margin = new Padding(3, 2, 3, 2);
             mapaReise.MarkersEnabled = true;
             mapaReise.MaxZoom = 2;
             mapaReise.MinZoom = 2;
@@ -78,7 +75,7 @@
             mapaReise.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             mapaReise.SelectedAreaFillColor = Color.FromArgb(33, 65, 105, 225);
             mapaReise.ShowTileGridLines = false;
-            mapaReise.Size = new Size(698, 335);
+            mapaReise.Size = new Size(798, 447);
             mapaReise.TabIndex = 0;
             mapaReise.Zoom = 0D;
             mapaReise.OnMarkerClick += mapaReise_OnMarkerClick;
@@ -89,12 +86,12 @@
             menuMarcador.ImageScalingSize = new Size(20, 20);
             menuMarcador.Items.AddRange(new ToolStripItem[] { eliminarPuntoToolStripMenuItem });
             menuMarcador.Name = "contextMenuStrip1";
-            menuMarcador.Size = new Size(153, 26);
+            menuMarcador.Size = new Size(175, 28);
             // 
             // eliminarPuntoToolStripMenuItem
             // 
             eliminarPuntoToolStripMenuItem.Name = "eliminarPuntoToolStripMenuItem";
-            eliminarPuntoToolStripMenuItem.Size = new Size(152, 22);
+            eliminarPuntoToolStripMenuItem.Size = new Size(174, 24);
             eliminarPuntoToolStripMenuItem.Text = "Eliminar Punto";
             eliminarPuntoToolStripMenuItem.Click += eliminarPuntoToolStripMenuItem_Click;
             // 
@@ -106,31 +103,15 @@
             button2.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button2.ForeColor = SystemColors.ControlLightLight;
             button2.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
-            button2.Location = new Point(734, 288);
+            button2.Location = new Point(839, 384);
+            button2.Margin = new Padding(3, 4, 3, 4);
             button2.Name = "button2";
-            button2.Size = new Size(111, 38);
+            button2.Size = new Size(127, 51);
             button2.TabIndex = 26;
             button2.Text = "  Regresar";
             button2.TextImageRelation = TextImageRelation.ImageBeforeText;
             button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
-            // 
-            // btnEliminar
-            // 
-            btnEliminar.BackColor = Color.IndianRed;
-            btnEliminar.BackgroundImageLayout = ImageLayout.None;
-            btnEliminar.FlatAppearance.BorderSize = 0;
-            btnEliminar.FlatStyle = FlatStyle.Flat;
-            btnEliminar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnEliminar.ForeColor = SystemColors.ControlLightLight;
-            btnEliminar.Image = Properties.Resources.eliminar;
-            btnEliminar.Location = new Point(733, 100);
-            btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(111, 38);
-            btnEliminar.TabIndex = 27;
-            btnEliminar.Text = "  Eliminar";
-            btnEliminar.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnEliminar.UseVisualStyleBackColor = false;
             // 
             // btnEditar
             // 
@@ -141,9 +122,10 @@
             btnEditar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEditar.ForeColor = SystemColors.ControlLightLight;
             btnEditar.Image = Properties.Resources.limpiar;
-            btnEditar.Location = new Point(734, 56);
+            btnEditar.Location = new Point(839, 75);
+            btnEditar.Margin = new Padding(3, 4, 3, 4);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(110, 38);
+            btnEditar.Size = new Size(126, 51);
             btnEditar.TabIndex = 28;
             btnEditar.Text = "  Limpiar";
             btnEditar.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -158,9 +140,10 @@
             btnAgregar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAgregar.ForeColor = SystemColors.ControlLightLight;
             btnAgregar.Image = Properties.Resources.boton_agregar;
-            btnAgregar.Location = new Point(734, 12);
+            btnAgregar.Location = new Point(839, 16);
+            btnAgregar.Margin = new Padding(3, 4, 3, 4);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(110, 38);
+            btnAgregar.Size = new Size(126, 51);
             btnAgregar.TabIndex = 29;
             btnAgregar.Text = "  Agregar";
             btnAgregar.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -169,15 +152,13 @@
             // 
             // Form10
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(869, 338);
+            ClientSize = new Size(993, 451);
             Controls.Add(btnAgregar);
             Controls.Add(btnEditar);
-            Controls.Add(btnEliminar);
             Controls.Add(button2);
             Controls.Add(Pizarra);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "Form10";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form10";
@@ -195,7 +176,6 @@
         private ContextMenuStrip menuMarcador;
         private ToolStripMenuItem eliminarPuntoToolStripMenuItem;
         private Button button2;
-        private Button btnEliminar;
         private Button btnEditar;
         private Button btnAgregar;
     }

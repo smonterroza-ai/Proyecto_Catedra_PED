@@ -432,7 +432,6 @@ namespace AVANCE_PED_GS250179_.Vistas
         {
             RedondearBoton.RedondearBotones(btnAgregar, 30);
             RedondearBoton.RedondearBotones(btnEditar, 30);
-            RedondearBoton.RedondearBotones(btnEliminar, 30);
             RedondearBoton.RedondearBotones(button2, 30);
         }
     }

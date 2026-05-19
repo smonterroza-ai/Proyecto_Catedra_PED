@@ -142,6 +142,10 @@ namespace AVANCE_PED_GS250179_
                     {
                         MessageBox.Show("¡La ruta se actualizó exitosamente en la Base de Datos!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         this.DialogResult = DialogResult.OK;
+                        Form3 Rutas = new Form3();
+                        Rutas.Show();
+
+                        this.Hide();
                         this.Close();
                     }
                 }
