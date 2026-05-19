@@ -43,13 +43,14 @@
             btnRegresar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnRegresar.ForeColor = SystemColors.ControlLightLight;
             btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
-            btnRegresar.Location = new Point(324, 425);
+            btnRegresar.Location = new Point(324, 420);
             btnRegresar.Name = "btnRegresar";
             btnRegresar.Size = new Size(111, 38);
             btnRegresar.TabIndex = 34;
             btnRegresar.Text = "  Regresar";
             btnRegresar.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnRegresar.UseVisualStyleBackColor = false;
+            btnRegresar.Click += btnRegresar_Click;
             // 
             // txtBuscar
             // 
@@ -60,6 +61,7 @@
             txtBuscar.PlaceholderText = "Buscar por nombre";
             txtBuscar.Size = new Size(214, 25);
             txtBuscar.TabIndex = 33;
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
             // dgvClientes
             // 
@@ -96,6 +98,7 @@
             Controls.Add(dgvClientes);
             Controls.Add(label6);
             DoubleBuffered = true;
+            FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(3, 2, 3, 2);
             Name = "Form13";
             Text = "Form13";

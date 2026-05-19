@@ -24,5 +24,29 @@ namespace AVANCE_PED_GS250179_.Vistas
         {
             dgvClientes.DataSource = service.MostrarClientes();
         }
+
+        private void btnRegresar_Click(object sender, EventArgs e)
+        {
+            var menuPrincipal = Application.OpenForms.OfType<Form2>().FirstOrDefault();
+
+            if (menuPrincipal != null)
+            {
+                menuPrincipal.Show(); // Lo volvemos a mostrar
+            }
+            else if (this.Owner != null)
+            {
+                this.Owner.Show(); // Plan B, por si acaso sí tiene Owner
+            }
+
+            this.Close();
+        }
+
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            dgvClientes.DataSource =
+        service.BuscarClientes(
+            txtBuscar.Text.Trim()
+        );
+        }
     }
 }
