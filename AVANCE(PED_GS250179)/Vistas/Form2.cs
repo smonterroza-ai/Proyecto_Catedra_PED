@@ -27,8 +27,6 @@ namespace AVANCE_PED_GS250179_
             {
                 btnT.Visible = false;
                 ptConductor.Visible = false;
-                btnR.Visible = false;
-                btnU.Visible = false;
             }
         }
 
