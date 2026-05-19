@@ -30,9 +30,9 @@
         {
             btnRegresar = new Button();
             txtBuscar = new TextBox();
-            dgvTransaccion = new DataGridView();
+            dgvClientes = new DataGridView();
             label6 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dgvTransaccion).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
             SuspendLayout();
             // 
             // btnRegresar
@@ -43,10 +43,9 @@
             btnRegresar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnRegresar.ForeColor = SystemColors.ControlLightLight;
             btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
-            btnRegresar.Location = new Point(370, 567);
-            btnRegresar.Margin = new Padding(3, 4, 3, 4);
+            btnRegresar.Location = new Point(324, 425);
             btnRegresar.Name = "btnRegresar";
-            btnRegresar.Size = new Size(127, 51);
+            btnRegresar.Size = new Size(111, 38);
             btnRegresar.TabIndex = 34;
             btnRegresar.Text = "  Regresar";
             btnRegresar.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -56,21 +55,21 @@
             // 
             txtBuscar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txtBuscar.ForeColor = SystemColors.WindowText;
-            txtBuscar.Location = new Point(750, 36);
-            txtBuscar.Margin = new Padding(3, 4, 3, 4);
+            txtBuscar.Location = new Point(656, 27);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.PlaceholderText = "Buscar por transacción";
-            txtBuscar.Size = new Size(244, 29);
+            txtBuscar.PlaceholderText = "Buscar por nombre";
+            txtBuscar.Size = new Size(214, 25);
             txtBuscar.TabIndex = 33;
             // 
-            // dgvTransaccion
+            // dgvClientes
             // 
-            dgvTransaccion.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvTransaccion.Location = new Point(370, 92);
-            dgvTransaccion.Name = "dgvTransaccion";
-            dgvTransaccion.RowHeadersWidth = 51;
-            dgvTransaccion.Size = new Size(625, 449);
-            dgvTransaccion.TabIndex = 32;
+            dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvClientes.Location = new Point(324, 69);
+            dgvClientes.Margin = new Padding(3, 2, 3, 2);
+            dgvClientes.Name = "dgvClientes";
+            dgvClientes.RowHeadersWidth = 51;
+            dgvClientes.Size = new Size(547, 337);
+            dgvClientes.TabIndex = 32;
             // 
             // label6
             // 
@@ -78,28 +77,30 @@
             label6.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label6.ForeColor = Color.White;
             label6.ImageAlign = ContentAlignment.BottomCenter;
-            label6.Location = new Point(370, 29);
+            label6.Location = new Point(324, 22);
             label6.Name = "label6";
-            label6.Size = new Size(337, 37);
+            label6.Size = new Size(295, 28);
             label6.TabIndex = 31;
-            label6.Text = "MONITOR DE TRANSACCIONES";
+            label6.Text = "MONITOR DE CLIENTES";
             label6.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // Form13
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.fondo_transacciones;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1007, 627);
+            ClientSize = new Size(881, 470);
             Controls.Add(btnRegresar);
             Controls.Add(txtBuscar);
-            Controls.Add(dgvTransaccion);
+            Controls.Add(dgvClientes);
             Controls.Add(label6);
             DoubleBuffered = true;
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Form13";
             Text = "Form13";
-            ((System.ComponentModel.ISupportInitialize)dgvTransaccion).EndInit();
+            Load += Form13_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvClientes).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -108,7 +109,7 @@
 
         private Button btnRegresar;
         private TextBox txtBuscar;
-        private DataGridView dgvTransaccion;
+        private DataGridView dgvClientes;
         private Label label6;
     }
 }

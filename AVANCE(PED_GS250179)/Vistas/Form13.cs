@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AVANCE_PED_GS250179_.Servicio;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,16 @@ namespace AVANCE_PED_GS250179_.Vistas
 {
     public partial class Form13 : Form
     {
+        ClienteService service = new ClienteService();
+
         public Form13()
         {
             InitializeComponent();
+        }
+
+        private void Form13_Load(object sender, EventArgs e)
+        {
+            dgvClientes.DataSource = service.MostrarClientes();
         }
     }
 }

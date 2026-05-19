@@ -1,6 +1,7 @@
 ﻿using AVANCE_PED_GS250179_.Datos;
 using AVANCE_PED_GS250179_.Modelos;
 using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
@@ -71,6 +72,32 @@ namespace AVANCE_PED_GS250179_.Servicio
             }
 
             return cliente;
+        }
+
+        public DataTable MostrarClientes()
+        {
+            DataTable tabla = new DataTable();
+
+            using (SqlConnection cn = conexion.AbrirConexion())
+            {
+                string query = @"
+                SELECT
+                    c.IdCliente,
+                    ic.Nombre,
+                    ic.Apellido,
+                    ic.Correo,
+                    ic.Saldo
+                FROM Cliente c
+                INNER JOIN InfoCliente ic
+                    ON c.IdCliente = ic.IdCliente";
+
+                SqlDataAdapter da =
+                    new SqlDataAdapter(query, cn);
+
+                da.Fill(tabla);
+            }
+
+            return tabla;
         }
     }
 }
