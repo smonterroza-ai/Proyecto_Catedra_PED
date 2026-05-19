@@ -1,5 +1,7 @@
 ﻿using AVANCE_PED_GS250179_.Vistas;
 using System.Data.SqlClient;
+using AVANCE_PED_GS250179_.Vistas;
+using System.Data.SqlClient;
 using AVANCE_PED_GS250179_.Datos;
 using System;
 using System.Collections.Generic;
@@ -22,8 +24,8 @@ namespace AVANCE_PED_GS250179_
             InitializeComponent();
             this.rolUsuarioActual = idRol;
 
-            // Si es empleado, ocultamos las opciones de Transacciones y Conductores
-            if (idRol == 2)
+            // Bloqueo estricto: por defecto se oculta todo. Solo el Admin (1) puede verlo.
+            if (idRol != 1)
             {
                 btnT.Visible = false;
                 ptConductor.Visible = false;
@@ -34,8 +36,8 @@ namespace AVANCE_PED_GS250179_
         {
             CargarMetricasHoy();
 
-            // 📌 SOLO PARA EMPLEADO: Reorganizamos la interfaz
-            if (rolUsuarioActual == 2)
+            // Si no es administrador, se activa el entorno de empleado y el monitor de grafos
+            if (rolUsuarioActual != 1)
             {
                 CentrarBotonesEmpleado();
 
@@ -74,7 +76,7 @@ namespace AVANCE_PED_GS250179_
                 using (SqlCommand cmdRecaudacion = new SqlCommand(queryRecaudacion, cn))
                 {
                     decimal totalRecaudacion = Convert.ToDecimal(cmdRecaudacion.ExecuteScalar());
-                    lblRecaudacion.Text = "$" + totalRecaudacion.ToString("0.00");
+                    lblRecaudacion.Text = totalRecaudacion.ToString("0.00");
                 }
             }
             catch (Exception ex)
@@ -89,22 +91,15 @@ namespace AVANCE_PED_GS250179_
 
         private void CentrarBotonesEmpleado()
         {
-            // 📌 TRIPLE FILTRO DE SEGURIDAD: Esto solo se ejecuta si es Empleado (idRol == 2)
-            if (rolUsuarioActual == 2)
+            if (rolUsuarioActual != 1)
             {
                 int centroFormulario = this.ClientSize.Width / 2;
-                int espacioEntreBotones = 45; // Separación ideal para que se vea limpio y ordenado
+                int espacioEntreBotones = 45;
 
-                // 1. El botón central (Cliente) se posiciona exactamente en el medio del Form
                 ptCliente.Left = centroFormulario - (ptCliente.Width / 2);
-
-                // 2. El botón izquierdo (Rutas) se alinea hacia atrás tomando como base a Cliente
                 btnR.Left = ptCliente.Left - btnR.Width - espacioEntreBotones;
-
-                // 3. El botón derecho (Unidades) se alinea hacia adelante tomando como base a Cliente
                 btnU.Left = ptCliente.Right + espacioEntreBotones;
 
-                // 4. Sincronizamos la altura (Y) de los tres botones para mantener una línea horizontal perfecta
                 int alturaUnificada = ptCliente.Top;
                 btnR.Top = alturaUnificada;
                 btnU.Top = alturaUnificada;
@@ -114,7 +109,7 @@ namespace AVANCE_PED_GS250179_
         private void CrearBotonEnlaceValidador()
         {
             btnAbrirValidador = new Button();
-            btnAbrirValidador.Text = "📊 MONITOR DE GRAFOS";
+            btnAbrirValidador.Text = "MONITOR DE GRAFOS";
             btnAbrirValidador.Size = new Size(220, 45);
 
             btnAbrirValidador.Left = this.ClientSize.Width - btnAbrirValidador.Width - 25;
@@ -128,7 +123,9 @@ namespace AVANCE_PED_GS250179_
             btnAbrirValidador.Cursor = Cursors.Hand;
 
             btnAbrirValidador.Click += (s, e) => {
-                ValidarQrForm pantallaGrafo = new ValidarQrForm();
+                int idRutaDelConductor = 1;
+
+                ValidarQrForm pantallaGrafo = new ValidarQrForm(idRutaDelConductor);
                 pantallaGrafo.Owner = this;
                 pantallaGrafo.Show();
                 this.Hide();
@@ -137,8 +134,6 @@ namespace AVANCE_PED_GS250179_
             this.Controls.Add(btnAbrirValidador);
             btnAbrirValidador.BringToFront();
         }
-
-        // --- Eventos de Navegación del Menú ---
 
         private void btnR_Click(object sender, EventArgs e)
         {
@@ -170,8 +165,7 @@ namespace AVANCE_PED_GS250179_
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
-            DialogResult respuesta = MessageBox.Show("¿Está seguro de cerrar sesión?", "CERRAR SESIÓN", MessageBoxButtons.YesNo,
-                 MessageBoxIcon.Question);
+            DialogResult respuesta = MessageBox.Show("¿Está seguro de cerrar sesión?", "CERRAR SESIÓN", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (respuesta == DialogResult.Yes)
             {
