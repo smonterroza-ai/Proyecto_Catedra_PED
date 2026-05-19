@@ -181,9 +181,6 @@ namespace AVANCE_PED_GS250179_.Vistas
 
             try
             {
-                // =====================================
-                // INSERT 1: INFOEMPLEADO (PRIMERO)
-                // =====================================
                 string queryInfo = @"
         INSERT INTO InfoEmpleado 
         (Nombre, DUI, FechaNacimiento, Direccion, Telefono, FechaContratacion, Correo, Usuario, Contraseña)
@@ -206,9 +203,6 @@ namespace AVANCE_PED_GS250179_.Vistas
 
                 int nuevoIdEmpleado = Convert.ToInt32(cmdInfo.ExecuteScalar());
 
-                // =====================================
-                // INSERT 2: EMPLEADO (SEGUNDO)
-                // =====================================
                 string queryEmpleado = @"
         INSERT INTO Empleado (IdEmpleado, IdRolEmpleado) 
         VALUES (@id, 1)";

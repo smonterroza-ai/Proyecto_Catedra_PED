@@ -52,6 +52,10 @@
             txtDireccion = new TextBox();
             button1 = new Button();
             btnRegresar = new Button();
+            ptojo2 = new PictureBox();
+            ptojo = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)ptojo2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptojo).BeginInit();
             SuspendLayout();
             // 
             // txtConfirmarContraseña
@@ -204,9 +208,11 @@
             // txtDUI
             // 
             txtDUI.Location = new Point(241, 219);
+            txtDUI.MaxLength = 9;
             txtDUI.Name = "txtDUI";
             txtDUI.Size = new Size(143, 23);
             txtDUI.TabIndex = 22;
+            txtDUI.KeyPress += txtDUI_KeyPress;
             // 
             // label1
             // 
@@ -226,6 +232,7 @@
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(513, 23);
             txtNombre.TabIndex = 20;
+            txtNombre.KeyPress += txtNombre_KeyPress;
             // 
             // label10
             // 
@@ -302,6 +309,28 @@
             btnRegresar.UseVisualStyleBackColor = false;
             btnRegresar.Click += btnRegresar_Click;
             // 
+            // ptojo2
+            // 
+            ptojo2.Image = Properties.Resources.icons8_eye_24;
+            ptojo2.Location = new Point(729, 438);
+            ptojo2.Margin = new Padding(3, 2, 3, 2);
+            ptojo2.Name = "ptojo2";
+            ptojo2.Size = new Size(25, 23);
+            ptojo2.TabIndex = 47;
+            ptojo2.TabStop = false;
+            ptojo2.Click += ptojo2_Click;
+            // 
+            // ptojo
+            // 
+            ptojo.Image = Properties.Resources.icons8_eye_24;
+            ptojo.Location = new Point(451, 438);
+            ptojo.Margin = new Padding(3, 2, 3, 2);
+            ptojo.Name = "ptojo";
+            ptojo.Size = new Size(28, 23);
+            ptojo.TabIndex = 46;
+            ptojo.TabStop = false;
+            ptojo.Click += ptojo_Click;
+            // 
             // Form11
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -309,6 +338,8 @@
             BackgroundImage = Properties.Resources.fondo_agregarconductor_;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(990, 580);
+            Controls.Add(ptojo2);
+            Controls.Add(ptojo);
             Controls.Add(btnRegresar);
             Controls.Add(button1);
             Controls.Add(label11);
@@ -340,6 +371,8 @@
             Text = "Form11";
             Load += Form11_Load;
             Shown += Form11_Shown;
+            ((System.ComponentModel.ISupportInitialize)ptojo2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptojo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -370,5 +403,7 @@
         private TextBox txtDireccion;
         private Button button1;
         private Button btnRegresar;
+        private PictureBox ptojo2;
+        private PictureBox ptojo;
     }
 }
