@@ -60,11 +60,7 @@ namespace AVANCE_PED_GS250179_
 
         private void Form4_Load(object sender, EventArgs e)
         {
-            if (!MostrarMensaje)
-                MessageBox.Show("En esta area, se agregarán lo que son los datos de la nueva ruta que se desea añadir."
-                , "Información", MessageBoxButtons.OK);
-
-            MostrarMensaje = true;
+            
         }
 
         Form10 ventanaMapa = new Form10();
