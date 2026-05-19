@@ -14,7 +14,6 @@ namespace AVANCE_PED_GS250179_.Datos
     {
         public static string cadenaConexion = "Server=(localdb)\\MSSQLLocalDB;Database=Reise2;Trusted_Connection=True;";
        
-
         public SqlConnection AbrirConexion()
         {
             SqlConnection cn = new SqlConnection(cadenaConexion);

@@ -1,4 +1,5 @@
 ﻿using AVANCE_PED_GS250179_.Servicio;
+using AVANCE_PED_GS250179_.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,7 +23,7 @@ namespace AVANCE_PED_GS250179_
 
         private void btnAtras_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void Form5_Load(object sender, EventArgs e)
@@ -57,6 +58,11 @@ namespace AVANCE_PED_GS250179_
             this.Owner.Show();
 
             this.Close();
+        }
+
+        private void Form5_Shown(object sender, EventArgs e)
+        {
+            RedondearBoton.RedondearBotones(btnRegresar, 30);
         }
     }
 }
