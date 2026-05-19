@@ -294,5 +294,15 @@ namespace AVANCE_PED_GS250179_
             RedondearBoton.RedondearBotones(button1, 30);
             RedondearBoton.RedondearBotones(btnRegresar, 30);
         }
+
+        private void txtPlaca_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Agregar guion automáticamente después de 4 números
+            if (txtPlaca.Text.Length == 4 && e.KeyChar != (char)Keys.Back)
+            {
+                txtPlaca.Text += "-";
+                txtPlaca.SelectionStart = txtPlaca.Text.Length;
+            }
+        }
     }
 }

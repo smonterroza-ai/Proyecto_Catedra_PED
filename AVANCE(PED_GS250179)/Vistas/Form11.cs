@@ -245,5 +245,21 @@ namespace AVANCE_PED_GS250179_.Vistas
                 txtDUI.SelectionStart = txtDUI.Text.Length;
             }
         }
+
+        private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+                return;
+            }
+
+            // Agregar guion automáticamente después de 4 números
+            if (txtTelefono.Text.Length == 4 && e.KeyChar != (char)Keys.Back)
+            {
+                txtTelefono.Text += "-";
+                txtTelefono.SelectionStart = txtTelefono.Text.Length;
+            }
+        }
     }
 }

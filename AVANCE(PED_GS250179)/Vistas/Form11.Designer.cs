@@ -132,9 +132,11 @@
             // txtTelefono
             // 
             txtTelefono.Location = new Point(611, 219);
+            txtTelefono.MaxLength = 9;
             txtTelefono.Name = "txtTelefono";
             txtTelefono.Size = new Size(143, 23);
             txtTelefono.TabIndex = 30;
+            txtTelefono.KeyPress += txtTelefono_KeyPress;
             // 
             // dtpNacimiento
             // 
@@ -208,7 +210,7 @@
             // txtDUI
             // 
             txtDUI.Location = new Point(241, 219);
-            txtDUI.MaxLength = 9;
+            txtDUI.MaxLength = 10;
             txtDUI.Name = "txtDUI";
             txtDUI.Size = new Size(143, 23);
             txtDUI.TabIndex = 22;
