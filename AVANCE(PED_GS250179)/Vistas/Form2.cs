@@ -165,5 +165,13 @@ namespace AVANCE_PED_GS250179_
                 this.Close();
             }
         }
+
+        private void ptCliente_Click(object sender, EventArgs e)
+        {
+            Form13 cliente = new Form13();
+            cliente.Show(this);
+            
+            this.Hide();
+        }
     }
 }
