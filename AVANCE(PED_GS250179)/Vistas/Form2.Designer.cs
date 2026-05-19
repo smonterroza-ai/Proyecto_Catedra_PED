@@ -48,12 +48,14 @@
             panel1 = new Panel();
             panel2 = new Panel();
             ptConductor = new PictureBox();
+            ptCliente = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)btnR).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnT).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnU).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnSalir).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ptConductor).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptCliente).BeginInit();
             SuspendLayout();
             // 
             // btnR
@@ -62,7 +64,7 @@
             btnR.Image = (Image)resources.GetObject("btnR.Image");
             btnR.Location = new Point(12, 158);
             btnR.Name = "btnR";
-            btnR.Size = new Size(237, 250);
+            btnR.Size = new Size(198, 250);
             btnR.SizeMode = PictureBoxSizeMode.StretchImage;
             btnR.TabIndex = 2;
             btnR.TabStop = false;
@@ -72,9 +74,9 @@
             // 
             btnT.Cursor = Cursors.Hand;
             btnT.Image = (Image)resources.GetObject("btnT.Image");
-            btnT.Location = new Point(301, 158);
+            btnT.Location = new Point(236, 158);
             btnT.Name = "btnT";
-            btnT.Size = new Size(237, 250);
+            btnT.Size = new Size(205, 250);
             btnT.SizeMode = PictureBoxSizeMode.StretchImage;
             btnT.TabIndex = 3;
             btnT.TabStop = false;
@@ -84,9 +86,9 @@
             // 
             btnU.Cursor = Cursors.Hand;
             btnU.Image = (Image)resources.GetObject("btnU.Image");
-            btnU.Location = new Point(586, 158);
+            btnU.Location = new Point(705, 158);
             btnU.Name = "btnU";
-            btnU.Size = new Size(237, 250);
+            btnU.Size = new Size(185, 250);
             btnU.SizeMode = PictureBoxSizeMode.StretchImage;
             btnU.TabIndex = 4;
             btnU.TabStop = false;
@@ -255,19 +257,32 @@
             // 
             ptConductor.Cursor = Cursors.Hand;
             ptConductor.Image = Properties.Resources.foto;
-            ptConductor.Location = new Point(863, 158);
+            ptConductor.Location = new Point(923, 158);
             ptConductor.Name = "ptConductor";
-            ptConductor.Size = new Size(237, 250);
+            ptConductor.Size = new Size(177, 250);
             ptConductor.SizeMode = PictureBoxSizeMode.StretchImage;
             ptConductor.TabIndex = 21;
             ptConductor.TabStop = false;
             ptConductor.Click += ptConductor_Click;
+            // 
+            // ptCliente
+            // 
+            ptCliente.Cursor = Cursors.Hand;
+            ptCliente.Image = Properties.Resources.Cliente;
+            ptCliente.Location = new Point(474, 158);
+            ptCliente.Name = "ptCliente";
+            ptCliente.Size = new Size(205, 250);
+            ptCliente.SizeMode = PictureBoxSizeMode.StretchImage;
+            ptCliente.TabIndex = 22;
+            ptCliente.TabStop = false;
+            ptCliente.Click += ptCliente_Click;
             // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1112, 639);
+            Controls.Add(ptCliente);
             Controls.Add(ptConductor);
             Controls.Add(lblPasajeros);
             Controls.Add(label9);
@@ -297,6 +312,7 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)ptConductor).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptCliente).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -321,5 +337,6 @@
         private Panel panel1;
         private Panel panel2;
         private PictureBox ptConductor;
+        private PictureBox ptCliente;
     }
 }
