@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -13,10 +14,15 @@ namespace AVANCE_PED_GS250179_
     public partial class Form3 : Form
     {
         RutaService rutaService = new RutaService();
-        public Form3()
+        private int _idRol;
+
+        // Recibe el rol desde Form2 de manera obligatoria al navegar
+        public Form3(int idRol = 1)
         {
             InitializeComponent();
+            _idRol = idRol;
         }
+
         private void CargarDatosGrid(string filtro = "")
         {
             try
@@ -36,29 +42,17 @@ namespace AVANCE_PED_GS250179_
             }
         }
 
-        private void btnAtras_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnAR_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnEditarR_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnEliminarRuta_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Form3_Load(object sender, EventArgs e)
         {
             CargarDatosGrid();
+
+            // Ocultación inmediata antes de pintar la interfaz
+            if (_idRol == 2)
+            {
+                btnAgregar.Visible = false;
+                btnEditar.Visible = false;
+                btnEliminar.Visible = false;
+            }
         }
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
@@ -68,30 +62,31 @@ namespace AVANCE_PED_GS250179_
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
+            // Protección por código
+            if (_idRol == 2) return;
+
             Form4 añadir = new Form4();
             añadir.Show();
-
             this.Hide();
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
+            // Protección por código
+            if (_idRol == 2) return;
+
             if (dgvRutas.SelectedRows.Count > 0)
             {
-
                 RutaDTO rutaSeleccionada = (RutaDTO)dgvRutas.SelectedRows[0].DataBoundItem;
-
 
                 Form4 frmRuta = new Form4();
                 frmRuta.Owner = this;
                 this.Hide();
 
-
                 frmRuta.ConfigurarModoEditar(rutaSeleccionada);
 
                 if (frmRuta.ShowDialog() == DialogResult.OK)
                 {
-
                     CargarDatosGrid(txtBuscar.Text.Trim());
                 }
             }
@@ -103,9 +98,11 @@ namespace AVANCE_PED_GS250179_
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
+            // Protección por código
+            if (_idRol == 2) return;
+
             if (dgvRutas.SelectedRows.Count > 0)
             {
-                // Extraemos el ID y el Nombre de la ruta seleccionada usando los nombres de las propiedades de tu DTO
                 int idSeleccionado = Convert.ToInt32(dgvRutas.SelectedRows[0].Cells["IdRutaBuses"].Value);
                 string nombreRuta = dgvRutas.SelectedRows[0].Cells["NumeroRuta"].Value.ToString();
 
@@ -116,7 +113,7 @@ namespace AVANCE_PED_GS250179_
                         if (rutaService.EliminarRuta(idSeleccionado))
                         {
                             MessageBox.Show("Ruta eliminada con éxito.", "Eliminado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            CargarDatosGrid(txtBuscar.Text.Trim()); // Refrescamos la tabla
+                            CargarDatosGrid(txtBuscar.Text.Trim());
                         }
                     }
                     catch (Exception ex)
@@ -137,11 +134,11 @@ namespace AVANCE_PED_GS250179_
 
             if (menuPrincipal != null)
             {
-                menuPrincipal.Show(); // Lo volvemos a mostrar
+                menuPrincipal.Show();
             }
             else if (this.Owner != null)
             {
-                this.Owner.Show(); // Plan B, por si acaso sí tiene Owner
+                this.Owner.Show();
             }
 
             this.Close();
@@ -149,10 +146,17 @@ namespace AVANCE_PED_GS250179_
 
         private void Form3_Shown(object sender, EventArgs e)
         {
-            RedondearBoton.RedondearBotones(btnAgregar, 30);
-            RedondearBoton.RedondearBotones(btnEditar, 30);
-            RedondearBoton.RedondearBotones(btnEliminar, 30);
+            // Evitamos aplicar GDI+ a elementos invisibles para que no fuercen su reaparición
+            if (btnAgregar.Visible) RedondearBoton.RedondearBotones(btnAgregar, 30);
+            if (btnEditar.Visible) RedondearBoton.RedondearBotones(btnEditar, 30);
+            if (btnEliminar.Visible) RedondearBoton.RedondearBotones(btnEliminar, 30);
             RedondearBoton.RedondearBotones(btnRegresar, 30);
         }
+
+        // Métodos requeridos por el diseñador de VS
+        private void btnAtras_Click(object sender, EventArgs e) { }
+        private void btnAR_Click(object sender, EventArgs e) { }
+        private void btnEditarR_Click(object sender, EventArgs e) { }
+        private void btnEliminarRuta_Click(object sender, EventArgs e) { }
     }
 }

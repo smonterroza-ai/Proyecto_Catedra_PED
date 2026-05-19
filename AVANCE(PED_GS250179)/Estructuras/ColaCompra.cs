@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AVANCE_PED_GS250179_.Estructuras
 {
@@ -11,22 +8,27 @@ namespace AVANCE_PED_GS250179_.Estructuras
         public int IdRuta { get; set; }
         public decimal Precio { get; set; }
         public string NombreRuta { get; set; }
+        // 🌟 CLAVE: Propiedad para enlazar la RAM con la fila exacta en la tabla DetalleVenta
+        public int IdDetalleVenta { get; set; }
         public NodoCompra Siguiente { get; set; }
 
-        public NodoCompra(int id, decimal precio, string nombre)
+        public NodoCompra(int id, decimal precio, string nombre, int idDetalleVenta)
         {
             this.IdRuta = id;
             this.Precio = precio;
             this.NombreRuta = nombre;
+            this.IdDetalleVenta = idDetalleVenta;
             this.Siguiente = null;
         }
     }
 
-    //Cola
     public class ColaCompraManual
     {
         private NodoCompra frente;
         private NodoCompra final;
+
+        // Instancia única global en memoria
+        public static ColaCompraManual InstanciaCompartida { get; } = new ColaCompraManual();
 
         public ColaCompraManual()
         {
@@ -34,10 +36,10 @@ namespace AVANCE_PED_GS250179_.Estructuras
             final = null;
         }
 
-        // Encolar
-        public void Encolar(int id, decimal precio, string nombre)
+        // Encolar de forma manual (FIFO) - Actualizado con el Id relacional
+        public void Encolar(int id, decimal precio, string nombre, int idDetalleVenta)
         {
-            NodoCompra nuevo = new NodoCompra(id, precio, nombre);
+            NodoCompra nuevo = new NodoCompra(id, precio, nombre, idDetalleVenta);
             if (final == null)
             {
                 frente = nuevo;
@@ -50,7 +52,7 @@ namespace AVANCE_PED_GS250179_.Estructuras
             }
         }
 
-        // Desencolar
+        // Desencolar (Remover el frente)
         public NodoCompra Desencolar()
         {
             if (frente == null) return null;
@@ -64,5 +66,18 @@ namespace AVANCE_PED_GS250179_.Estructuras
         }
 
         public bool EstaVacia() => frente == null;
+
+        // Recorre los punteros para el GDI+ sin destruir la cola real
+        public List<NodoCompra> ObenerListaParaDibujar()
+        {
+            List<NodoCompra> lista = new List<NodoCompra>();
+            NodoCompra actual = frente;
+            while (actual != null)
+            {
+                lista.Add(actual);
+                actual = actual.Siguiente;
+            }
+            return lista;
+        }
     }
 }

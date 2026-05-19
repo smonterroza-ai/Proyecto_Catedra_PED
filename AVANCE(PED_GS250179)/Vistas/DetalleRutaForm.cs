@@ -10,7 +10,6 @@ namespace AVANCE_PED_GS250179_.Vistas
 {
     public partial class DetalleRutaForm : Form
     {
-        // Atributos de sesión y ruta (Modelo Reise2go)
         private int idClienteLogueado;
         private int idRutaBusesSeleccionada;
         private decimal costoDelPasaje;
@@ -18,18 +17,16 @@ namespace AVANCE_PED_GS250179_.Vistas
         private string inicioRecorrido;
         private string finalRecorrido;
 
-        // Elementos de la Interfaz (Renderizados a mano con GDI+)
         private Label lblHeaderTitulo;
         private Label lblHeaderSubtitulo;
         private Label lblNumeroRuta;
         private Label lblItinerario;
-        private Panel pnlContenedorGrafo; // Panel donde se pinta el grafo real de la ruta
+        private Panel pnlContenedorGrafo;
         private Label lblPrecio;
         private Label lblNotaInformativa;
-        private Button btnComprarTicket; // El verde vibrante
-        private Button btnCancelar; // El rojo llamativo
+        private Button btnComprarTicket;
+        private Button btnCancelar;
 
-        // Constructor adaptado
         public DetalleRutaForm(int idCliente, int idRuta, string numeroRuta, string inicio, string final, decimal costo)
         {
             this.idClienteLogueado = idCliente;
@@ -39,7 +36,6 @@ namespace AVANCE_PED_GS250179_.Vistas
             this.finalRecorrido = final;
             this.costoDelPasaje = costo;
 
-            // Altura de 610 px optimizada para albergar el componente gráfico
             this.Size = new Size(500, 610);
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.CenterParent;
@@ -50,16 +46,13 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void InicializarInterfazEstilizada()
         {
-            // ==========================================
-            // 1. PANEL SUPERIOR DE ENCABEZADO (Header)
-            // ==========================================
             Panel pnlHeader = new Panel { Size = new Size(500, 80), Location = new Point(0, 0), BackColor = Color.FromArgb(245, 247, 250) };
 
             lblHeaderTitulo = new Label
             {
                 Text = "REISE",
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                ForeColor = Color.FromArgb(0, 102, 204), // Azul reise
+                ForeColor = Color.FromArgb(0, 102, 204),
                 Location = new Point(25, 20),
                 AutoSize = true
             };
@@ -68,7 +61,7 @@ namespace AVANCE_PED_GS250179_.Vistas
             {
                 Text = "| Detalles de Facturación y Ruta",
                 Font = new Font("Segoe UI", 11, FontStyle.Regular),
-                ForeColor = Color.FromArgb(70, 70, 70), // Gris oscuro legible
+                ForeColor = Color.FromArgb(70, 70, 70),
                 Location = new Point(125, 21),
                 AutoSize = true
             };
@@ -77,9 +70,6 @@ namespace AVANCE_PED_GS250179_.Vistas
             pnlHeader.Controls.Add(lblHeaderSubtitulo);
             this.Controls.Add(pnlHeader);
 
-            // ==========================================
-            // 2. DETALLES CENTRALES DE LA RUTA
-            // ==========================================
             lblNumeroRuta = new Label
             {
                 Text = numeroRuta.ToUpper(),
@@ -101,18 +91,11 @@ namespace AVANCE_PED_GS250179_.Vistas
             };
             this.Controls.Add(lblItinerario);
 
-            // ==========================================
-            // 3. PANEL CONTENEDOR DEL GRAFO DINÁMICO
-            // ==========================================
             pnlContenedorGrafo = new Panel { Size = new Size(450, 85), Location = new Point(25, 200), BackColor = Color.FromArgb(252, 253, 255) };
             pnlContenedorGrafo.Paint += (s, e) => DibujarBordeSuaveControl(pnlContenedorGrafo, e.Graphics, Color.FromArgb(210, 225, 240), 1, 8);
-            pnlContenedorGrafo.Paint += PnlContenedorGrafo_Paint; // Vinculamos el motor GDI+
+            pnlContenedorGrafo.Paint += PnlContenedorGrafo_Paint;
             this.Controls.Add(pnlContenedorGrafo);
 
-            // ==========================================
-            // 4. CONTENEDORES DE PAGO Y ACCIONES
-            // ==========================================
-            // Panel de Tarifa
             Panel pnlPrecioFondo = new Panel { Size = new Size(450, 70), Location = new Point(25, 300), BackColor = Color.FromArgb(248, 249, 250) };
             pnlPrecioFondo.Paint += (s, e) => DibujarBordeSuaveControl(pnlPrecioFondo, e.Graphics, Color.FromArgb(222, 226, 230), 1, 8);
 
@@ -122,7 +105,7 @@ namespace AVANCE_PED_GS250179_.Vistas
             {
                 Text = $"${costoDelPasaje:F2}",
                 Font = new Font("Segoe UI", 18, FontStyle.Bold),
-                ForeColor = Color.FromArgb(40, 167, 69), // Verde éxito
+                ForeColor = Color.FromArgb(40, 167, 69),
                 Location = new Point(335, 18),
                 AutoSize = true
             };
@@ -130,10 +113,9 @@ namespace AVANCE_PED_GS250179_.Vistas
             pnlPrecioFondo.Controls.Add(lblPrecio);
             this.Controls.Add(pnlPrecioFondo);
 
-            // Nota Informativa
             lblNotaInformativa = new Label
             {
-                Text = "📌 Nota para el cliente:\nVerifique que su recorrido seleccionado sea el correcto en el mapa relacional superior. Al presionar el botón Comprar, el sistema validará informáticamente su saldo e ingresará la petición en la cola lineal interna.",
+                Text = "📌 Nota para el cliente:\nAl presionar comprar, su boleto se generará con un código QR único y se enviará a la cola de tránsito. El conductor del autobús validará su acceso y actualizará el grafo de abordaje.",
                 Font = new Font("Segoe UI", 8.5f, FontStyle.Italic),
                 ForeColor = Color.Gray,
                 Location = new Point(25, 385),
@@ -142,10 +124,9 @@ namespace AVANCE_PED_GS250179_.Vistas
             };
             this.Controls.Add(lblNotaInformativa);
 
-            // Botón: COMPRAR PASAJE
             btnComprarTicket = new Button
             {
-                Text = "COMPRAR PASAJE",
+                Text = "COMPRAR PASAJE Y GENERAR QR",
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
                 BackColor = Color.FromArgb(40, 167, 69),
                 ForeColor = Color.White,
@@ -159,7 +140,6 @@ namespace AVANCE_PED_GS250179_.Vistas
             btnComprarTicket.Click += BtnComprarTicket_Click;
             this.Controls.Add(btnComprarTicket);
 
-            // Botón: CANCELAR
             btnCancelar = new Button
             {
                 Text = "CANCELAR Y VOLVER AL MENÚ",
@@ -177,19 +157,14 @@ namespace AVANCE_PED_GS250179_.Vistas
             this.Controls.Add(btnCancelar);
         }
 
-        // ============================================================
-        // LÓGICA DE DIBUJO COMPLETA DE VÉRTICES Y ARISTAS (GDI+)
-        // ============================================================
         private void PnlContenedorGrafo_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            // Procesamos el itinerario de forma dinámica basándonos en tu string de Origen y Destino
             string[] paradasRuta = { inicioRecorrido, "Control", finalRecorrido };
             int totalNodos = paradasRuta.Length;
 
-            // Calculamos la distribución proporcional horizontal dentro del panel
             int rangoAncho = pnlContenedorGrafo.Width - 100;
             int espacioX = rangoAncho / (totalNodos - 1);
 
@@ -199,10 +174,9 @@ namespace AVANCE_PED_GS250179_.Vistas
                 posicionesNodos[i] = new Point(50 + (i * espacioX), 35);
             }
 
-            // 1. Renderizar Aristas/Líneas de conexión del Grafo
             using (Pen lapizArista = new Pen(Color.FromArgb(0, 102, 204), 3))
             {
-                lapizArista.CustomEndCap = new AdjustableArrowCap(5, 5); // Flecha direccional
+                lapizArista.CustomEndCap = new AdjustableArrowCap(5, 5);
 
                 for (int i = 0; i < totalNodos - 1; i++)
                 {
@@ -212,12 +186,10 @@ namespace AVANCE_PED_GS250179_.Vistas
                 }
             }
 
-            // 2. Renderizar Vértices (Círculos lógicos)
             for (int i = 0; i < totalNodos; i++)
             {
                 string idNodo = (i == 0) ? "A" : (i == totalNodos - 1) ? "B" : "ℹ";
 
-                // Color corporativo diferenciado por tipo de nodo
                 Color colorNodo = (i == 0) ? Color.FromArgb(0, 102, 204) :
                                   (i == totalNodos - 1) ? Color.FromArgb(40, 167, 69) :
                                   Color.LightSlateGray;
@@ -231,15 +203,8 @@ namespace AVANCE_PED_GS250179_.Vistas
             int radio = 14;
             Rectangle rectCirculo = new Rectangle(centro.X - radio, centro.Y - radio, radio * 2, radio * 2);
 
-            using (SolidBrush pincelFondo = new SolidBrush(colorNodo))
-            {
-                g.FillEllipse(pincelFondo, rectCirculo);
-            }
-
-            using (Pen lapizBorde = new Pen(Color.White, 2))
-            {
-                g.DrawEllipse(lapizBorde, rectCirculo);
-            }
+            using (SolidBrush pincelFondo = new SolidBrush(colorNodo)) { g.FillEllipse(pincelFondo, rectCirculo); }
+            using (Pen lapizBorde = new Pen(Color.White, 2)) { g.DrawEllipse(lapizBorde, rectCirculo); }
 
             using (SolidBrush pincelTextoNodo = new SolidBrush(Color.White))
             {
@@ -258,18 +223,11 @@ namespace AVANCE_PED_GS250179_.Vistas
             }
         }
 
-        // Lógica transaccional de Base de Datos con la Cola Estructural
         private void BtnComprarTicket_Click(object sender, EventArgs e)
         {
-            DialogResult confirmacion = MessageBox.Show("¿Está seguro de que desea realizar el cobro e inscribir esta compra?",
-                                                  "Confirmar Pago", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult confirmacion = MessageBox.Show("¿Está seguro de que desea comprar este boleto? Se guardará en la cola de abordaje y se generará su código QR.",
+                                              "Confirmar Compra", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmacion != DialogResult.Yes) return;
-
-            ColaCompraManual colaFilaUnica = new ColaCompraManual();
-            colaFilaUnica.Encolar(idRutaBusesSeleccionada, costoDelPasaje, numeroRuta);
-
-            NodoCompra elementoAProcesar = colaFilaUnica.Desencolar();
-            if (elementoAProcesar == null) return;
 
             Conexion con = new Conexion();
             SqlConnection cn = con.AbrirConexion();
@@ -279,6 +237,7 @@ namespace AVANCE_PED_GS250179_.Vistas
 
             try
             {
+                // 1. Validar saldo del cliente
                 decimal saldoDisponible = 0.00m;
                 string querySaldo = "SELECT Saldo FROM InfoCliente WHERE IdCliente = @IdCliente";
                 using (SqlCommand cmdSaldo = new SqlCommand(querySaldo, cn, transaccionCentral))
@@ -288,46 +247,44 @@ namespace AVANCE_PED_GS250179_.Vistas
                     saldoDisponible = result != null ? Convert.ToDecimal(result) : 0.00m;
                 }
 
-                if (saldoDisponible < elementoAProcesar.Precio)
+                if (saldoDisponible < costoDelPasaje)
                 {
-                    MessageBox.Show($"Operación rechazada. Saldo insuficiente.\nCosto del viaje: ${elementoAProcesar.Precio:F2}\nSaldo disponible: ${saldoDisponible:F2}\n\nPor favor, recargue su cuenta.",
+                    MessageBox.Show($"Operación rechazada. Saldo insuficiente.\nCosto del viaje: ${costoDelPasaje:F2}\nSaldo disponible: ${saldoDisponible:F2}",
                                     "Fondos Insuficientes", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     transaccionCentral.Rollback();
                     return;
                 }
 
+                // 2. Descontar Saldo
                 string queryDebito = "UPDATE InfoCliente SET Saldo = Saldo - @Costo WHERE IdCliente = @IdCliente";
                 using (SqlCommand cmdDebito = new SqlCommand(queryDebito, cn, transaccionCentral))
                 {
-                    cmdDebito.Parameters.AddWithValue("@Costo", elementoAProcesar.Precio);
+                    cmdDebito.Parameters.AddWithValue("@Costo", costoDelPasaje);
                     cmdDebito.Parameters.AddWithValue("@IdCliente", idClienteLogueado);
                     cmdDebito.ExecuteNonQuery();
                 }
 
+                // 3. Obtener e Insertar Cabecera de Compra
                 int nuevoIdCompra = 1;
                 string queryMaxCompra = "SELECT ISNULL(MAX(IdCompraPasajes), 0) + 1 FROM CompraPasajes";
-                using (SqlCommand cmdMaxC = new SqlCommand(queryMaxCompra, cn, transaccionCentral))
-                {
-                    nuevoIdCompra = Convert.ToInt32(cmdMaxC.ExecuteScalar());
-                }
+                using (SqlCommand cmdMaxC = new SqlCommand(queryMaxCompra, cn, transaccionCentral)) { nuevoIdCompra = Convert.ToInt32(cmdMaxC.ExecuteScalar()); }
 
                 string queryCompra = "INSERT INTO CompraPasajes (IdCompraPasajes, IdRutaBuses, CantidadAComprar, TotalApagar) VALUES (@IdCompra, @IdRuta, 1, @Total)";
                 using (SqlCommand cmdCompra = new SqlCommand(queryCompra, cn, transaccionCentral))
                 {
                     cmdCompra.Parameters.AddWithValue("@IdCompra", nuevoIdCompra);
-                    cmdCompra.Parameters.AddWithValue("@IdRuta", elementoAProcesar.IdRuta);
-                    cmdCompra.Parameters.AddWithValue("@Total", elementoAProcesar.Precio);
+                    cmdCompra.Parameters.AddWithValue("@IdRuta", idRutaBusesSeleccionada);
+                    cmdCompra.Parameters.AddWithValue("@Total", costoDelPasaje);
                     cmdCompra.ExecuteNonQuery();
                 }
 
+                // 4. Obtener e Insertar DetalleVenta (Estado Pendiente)
                 int nuevoIdDetalle = 1;
                 string queryMaxDetalle = "SELECT ISNULL(MAX(IdDetalleVenta), 0) + 1 FROM DetalleVenta";
-                using (SqlCommand cmdMaxD = new SqlCommand(queryMaxDetalle, cn, transaccionCentral))
-                {
-                    nuevoIdDetalle = Convert.ToInt32(cmdMaxD.ExecuteScalar());
-                }
+                using (SqlCommand cmdMaxD = new SqlCommand(queryMaxDetalle, cn, transaccionCentral)) { nuevoIdDetalle = Convert.ToInt32(cmdMaxD.ExecuteScalar()); }
 
-                string queryDetalle = "INSERT INTO DetalleVenta (IdDetalleVenta, IdCompraPasajes, IdCliente, IdMetodosDePago, Hora, Estado) VALUES (@IdDetalle, @IdCompra, @IdCliente, 1, GETDATE(), 'Aprobado')";
+                string queryDetalle = "INSERT INTO DetalleVenta (IdDetalleVenta, IdCompraPasajes, IdCliente, IdMetodosDePago, Hora, Estado) " +
+                                      "VALUES (@IdDetalle, @IdCompra, @IdCliente, 1, GETDATE(), 'Pendiente')";
                 using (SqlCommand cmdDetalle = new SqlCommand(queryDetalle, cn, transaccionCentral))
                 {
                     cmdDetalle.Parameters.AddWithValue("@IdDetalle", nuevoIdDetalle);
@@ -336,18 +293,30 @@ namespace AVANCE_PED_GS250179_.Vistas
                     cmdDetalle.ExecuteNonQuery();
                 }
 
+                // Confirmamos los cambios en la Base de Datos
                 transaccionCentral.Commit();
 
-                MessageBox.Show($"¡Pago del pasaje registrado exitosamente!\nBuen viaje en la {elementoAProcesar.NombreRuta}.",
-                                "Viaje Confirmado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // =========================================================================
+                // 🌟 ENCOLAR EN MEMORIA RAM: Enviamos el nuevoIdDetalle relacional de SQL
+                // =========================================================================
+                ColaCompraManual.InstanciaCompartida.Encolar(
+                    idRutaBusesSeleccionada,
+                    costoDelPasaje,
+                    numeroRuta,
+                    nuevoIdDetalle // <-- Pasado con éxito al constructor del nodo
+                );
+
+                // 5. Popup Visor de QR síncrono (El texto se genera de forma temporal al vuelo)
+                string datosEstructuradosQR = $"REISE_TICKET|ID:{nuevoIdDetalle}|Ruta:{numeroRuta}|Monto:{costoDelPasaje}";
+                MostrarPopupQR(datosEstructuradosQR, nuevoIdDetalle, numeroRuta);
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)
             {
-                transaccionCentral.Rollback();
-                MessageBox.Show("Fallo interno fatal al procesar el nodo de compra: " + ex.Message, "Error Crítico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (transaccionCentral.Connection != null) transaccionCentral.Rollback();
+                MessageBox.Show("Error fatal al procesar el ticket QR: " + ex.Message, "Error Crítico", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -355,7 +324,36 @@ namespace AVANCE_PED_GS250179_.Vistas
             }
         }
 
-        // Dibujar Sombra Exterior
+        private void MostrarPopupQR(string datosQR, int idDetalle, string rName)
+        {
+            Form frmPopupQR = new Form { Size = new Size(320, 400), Text = "Tu Pase de Abordaje QR", StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedToolWindow, BackColor = Color.White };
+            PictureBox picBoxQR = new PictureBox { Dock = DockStyle.Top, Height = 260, SizeMode = PictureBoxSizeMode.Zoom };
+
+            try
+            {
+                string urlSegura = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + Uri.EscapeDataString(datosQR);
+                using (System.Net.WebClient webClient = new System.Net.WebClient())
+                {
+                    byte[] imageBytes = webClient.DownloadData(urlSegura);
+                    using (System.IO.MemoryStream ms = new System.IO.MemoryStream(imageBytes)) { picBoxQR.Image = Image.FromStream(ms); }
+                }
+            }
+            catch
+            {
+                Bitmap bmpError = new Bitmap(250, 250);
+                using (Graphics g = Graphics.FromImage(bmpError))
+                {
+                    g.Clear(Color.FromArgb(240, 240, 240));
+                    g.DrawString("Boleto Registrado\n[Falta conexión para QR]", new Font("Segoe UI", 10, FontStyle.Bold), Brushes.DarkRed, new RectangleF(0, 0, 250, 250), new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                }
+                picBoxQR.Image = bmpError;
+            }
+
+            Label lblInstruccion = new Label { Text = $"Boleto #{idDetalle} - Ruta {rName}\nMuestre este QR al conductor al subir.", Dock = DockStyle.Fill, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), TextAlign = ContentAlignment.MiddleCenter, ForeColor = Color.FromArgb(50, 50, 50) };
+            frmPopupQR.Controls.Add(lblInstruccion); frmPopupQR.Controls.Add(picBoxQR);
+            frmPopupQR.ShowDialog();
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -376,7 +374,6 @@ namespace AVANCE_PED_GS250179_.Vistas
             }
         }
 
-        // Recortar Bordes de Botones
         private void RecortarBordesControl(Control c, int radioBorde)
         {
             GraphicsPath path = new GraphicsPath();
@@ -390,7 +387,6 @@ namespace AVANCE_PED_GS250179_.Vistas
             c.Region = new Region(path);
         }
 
-        // Dibujar contorno de paneles
         private void DibujarBordeSuaveControl(Control c, Graphics g, Color color, int thickness, int radio)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -13,46 +14,25 @@ namespace AVANCE_PED_GS250179_
     public partial class Form6 : Form
     {
         GestionUnidadesService service = new GestionUnidadesService();
+        private int _idRol;
 
-        public Form6()
+        public Form6(int idRol = 1)
         {
             InitializeComponent();
+            _idRol = idRol;
         }
 
         private void Form6_Load(object sender, EventArgs e)
         {
             CargarTabla();
-        }
 
-        private void btnAtras_Click(object sender, EventArgs e)
-        {
-            if (this.Owner != null)
+            // Ocultación inmediata antes de pintar la interfaz
+            if (_idRol == 2)
             {
-                this.Owner.Show(); // Volvemos a mostrar el Form2 original con su rol intacto
-                this.Close();      // Cerramos esta ventana actual por completo para liberar memoria
+                btnAgregar.Visible = false;
+                btnEditar.Visible = false;
+                btnEliminar.Visible = false;
             }
-            else
-            {
-                // Por si acaso lo abriste directo sin pasarle el dueño, abrimos uno por defecto
-                Form2 menu = new Form2(1);
-                menu.Show();
-                this.Hide();
-            }
-        }
-
-        private void Añadir_U_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void EditarU_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void EliminarU_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
@@ -70,66 +50,55 @@ namespace AVANCE_PED_GS250179_
             dgvUnidades.EnableHeadersVisualStyles = false;
             dgvUnidades.ColumnHeadersDefaultCellStyle.BackColor = Color.LightSlateGray;
             dgvUnidades.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
+            if (_idRol == 2) return;
+
             Form7 Au = new Form7();
             Au.Show();
-
             this.Hide();
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
+            if (_idRol == 2) return;
+
             try
             {
                 if (dgvUnidades.Rows.Count == 0)
                 {
-                    MessageBox.Show(
-                        "No hay datos"
-                    );
-
+                    MessageBox.Show("No hay datos");
                     return;
                 }
 
                 if (dgvUnidades.CurrentRow == null)
                 {
-                    MessageBox.Show(
-                        "Seleccione una fila"
-                    );
-
+                    MessageBox.Show("Seleccione una fila");
                     return;
                 }
 
-                int id =
-                    Convert.ToInt32(
-                        dgvUnidades.CurrentRow.Cells["Id"].Value
-                    );
+                int id = Convert.ToInt32(dgvUnidades.CurrentRow.Cells["Id"].Value);
 
-                Form7 form =
-                    new Form7(id);
-
+                Form7 form = new Form7(id);
                 form.ShowDialog();
 
                 CargarTabla();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message
-                );
+                MessageBox.Show(ex.Message);
             }
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
+            if (_idRol == 2) return;
+
             if (dgvUnidades.Rows.Count > 0)
             {
-                int id = Convert.ToInt32(
-                    dgvUnidades.CurrentRow.Cells[0].Value
-                );
+                int id = Convert.ToInt32(dgvUnidades.CurrentRow.Cells[0].Value);
 
                 DialogResult resultado = MessageBox.Show("¿Desea eliminar esta unidad?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -140,7 +109,6 @@ namespace AVANCE_PED_GS250179_
                     if (eliminado)
                     {
                         MessageBox.Show("Unidad eliminada");
-
                         CargarTabla();
                     }
                     else
@@ -157,11 +125,11 @@ namespace AVANCE_PED_GS250179_
 
             if (menuPrincipal != null)
             {
-                menuPrincipal.Show(); // Lo volvemos a mostrar
+                menuPrincipal.Show();
             }
             else if (this.Owner != null)
             {
-                this.Owner.Show(); // Plan B, por si acaso sí tiene Owner
+                this.Owner.Show();
             }
 
             this.Close();
@@ -169,10 +137,17 @@ namespace AVANCE_PED_GS250179_
 
         private void Form6_Shown(object sender, EventArgs e)
         {
-            RedondearBoton.RedondearBotones(btnAgregar, 30);
-            RedondearBoton.RedondearBotones(btnEditar, 30);
-            RedondearBoton.RedondearBotones(btnEliminar, 30);
+            // Evitamos aplicar redondeo a botones ocultos para que el render nativo no falle
+            if (btnAgregar.Visible) RedondearBoton.RedondearBotones(btnAgregar, 30);
+            if (btnEditar.Visible) RedondearBoton.RedondearBotones(btnEditar, 30);
+            if (btnEliminar.Visible) RedondearBoton.RedondearBotones(btnEliminar, 30);
             RedondearBoton.RedondearBotones(btnRegresar, 30);
         }
+
+        // Métodos del diseñador obsoletos o sin uso
+        private void btnAtras_Click(object sender, EventArgs e) { }
+        private void Añadir_U_Click(object sender, EventArgs e) { }
+        private void EditarU_Click(object sender, EventArgs e) { }
+        private void EliminarU_Click(object sender, EventArgs e) { }
     }
 }

@@ -540,7 +540,7 @@ namespace AVANCE_PED_GS250179_
 
             if (cn == null)
             {
-                MessageBox.Show("No se pudo establecer conexión con el servidor de Reise2go.", "Error de Red", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se pudo establecer conexión con el servidor de Reise.", "Error de Red", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

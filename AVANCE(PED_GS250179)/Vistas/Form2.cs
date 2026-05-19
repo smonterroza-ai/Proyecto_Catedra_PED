@@ -13,28 +13,144 @@ namespace AVANCE_PED_GS250179_
 {
     public partial class Form2 : Form
     {
+        private Button btnAbrirValidador;
+        private int rolUsuarioActual;
+        private static bool MostrarMensaje = false;
+
         public Form2(int idRol)
         {
             InitializeComponent();
+            this.rolUsuarioActual = idRol;
 
             if (idRol == 2)
             {
-                // Aquí pones el nombre de los botones ocultas
                 btnT.Visible = false;
                 ptConductor.Visible = false;
             }
         }
 
-        private static bool MostrarMensaje = false;
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            CargarMetricasHoy();
+
+            if (rolUsuarioActual == 2)
+            {
+                CentrarBotonesEmpleado();
+
+                if (btnAbrirValidador == null)
+                {
+                    CrearBotonEnlaceValidador();
+                }
+            }
+        }
+
+        private void CargarMetricasHoy()
+        {
+            Conexion conexion = new Conexion();
+            SqlConnection cn = conexion.AbrirConexion();
+
+            try
+            {
+                string queryPasajeros = @"
+                    SELECT ISNULL(SUM(cp.CantidadAComprar), 0) 
+                    FROM DetalleVenta dv
+                    INNER JOIN CompraPasajes cp ON dv.IdCompraPasajes = cp.IdCompraPasajes
+                    WHERE CAST(dv.Hora AS DATE) = CAST(GETDATE() AS DATE) AND dv.Estado = 'Aprobado'";
+
+                using (SqlCommand cmdPasajeros = new SqlCommand(queryPasajeros, cn))
+                {
+                    int totalPasajeros = Convert.ToInt32(cmdPasajeros.ExecuteScalar());
+                    lblPasajeros.Text = totalPasajeros.ToString();
+                }
+
+                string queryRecaudacion = @"
+                    SELECT ISNULL(SUM(cp.TotalApagar), 0) 
+                    FROM DetalleVenta dv
+                    INNER JOIN CompraPasajes cp ON dv.IdCompraPasajes = cp.IdCompraPasajes
+                    WHERE CAST(dv.Hora AS DATE) = CAST(GETDATE() AS DATE) AND dv.Estado = 'Aprobado'";
+
+                using (SqlCommand cmdRecaudacion = new SqlCommand(queryRecaudacion, cn))
+                {
+                    decimal totalRecaudacion = Convert.ToDecimal(cmdRecaudacion.ExecuteScalar());
+                    lblRecaudacion.Text = "$" + totalRecaudacion.ToString("0.00");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar las métricas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                conexion.CerrarConexion(cn);
+            }
+        }
+
+        private void CentrarBotonesEmpleado()
+        {
+            int centroFormulario = this.ClientSize.Width / 2;
+            int espacioEntreBotones = 40;
+
+            btnR.Left = centroFormulario - btnR.Width - (espacioEntreBotones / 2);
+            btnU.Left = centroFormulario + (espacioEntreBotones / 2);
+        }
+
+        private void CrearBotonEnlaceValidador()
+        {
+            btnAbrirValidador = new Button();
+            btnAbrirValidador.Text = "📊 MONITOR DE GRAFOS";
+            btnAbrirValidador.Size = new Size(220, 45);
+
+            btnAbrirValidador.Left = this.ClientSize.Width - btnAbrirValidador.Width - 25;
+            btnAbrirValidador.Top = this.ClientSize.Height - 75;
+
+            btnAbrirValidador.BackColor = Color.FromArgb(0, 184, 148);
+            btnAbrirValidador.ForeColor = Color.White;
+            btnAbrirValidador.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            btnAbrirValidador.FlatStyle = FlatStyle.Flat;
+            btnAbrirValidador.FlatAppearance.BorderSize = 0;
+            btnAbrirValidador.Cursor = Cursors.Hand;
+
+            btnAbrirValidador.Click += (s, e) => {
+                ValidarQrForm pantallaGrafo = new ValidarQrForm();
+                pantallaGrafo.Owner = this;
+                pantallaGrafo.Show();
+                this.Hide();
+            };
+
+            this.Controls.Add(btnAbrirValidador);
+            btnAbrirValidador.BringToFront();
+        }
+
+        // --- Eventos de Navegación del Menú Modificados para Pasar el Rol ---
 
         private void btnR_Click(object sender, EventArgs e)
         {
-            Form3 ruta = new Form3();
+            // 📌 PASAMOS EL ROL ACTUAL AL CONSTRUCTOR DE FORM3
+            Form3 ruta = new Form3(this.rolUsuarioActual);
             ruta.Show(this);
             this.Hide();
+        }
 
+        private void btnT_Click(object sender, EventArgs e)
+        {
+            Form5 Tran = new Form5();
+            Tran.Show(this);
+            this.Hide();
+        }
 
+        private void btnU_Click(object sender, EventArgs e)
+        {
+            // 📌 PASAMOS EL ROL ACTUAL AL CONSTRUCTOR DE FORM6
+            Form6 Uni = new Form6(this.rolUsuarioActual);
+            Uni.Show(this);
+            this.Hide();
+        }
 
+        private void ptConductor_Click(object sender, EventArgs e)
+        {
+            Form8 Conductor = new Form8();
+            Conductor.Show(this);
+            this.Hide();
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
@@ -48,78 +164,6 @@ namespace AVANCE_PED_GS250179_
                 login.Show();
                 this.Close();
             }
-        }
-
-        private void CargarMetricasHoy()
-        {
-            Conexion conexion = new Conexion();
-            SqlConnection cn = conexion.AbrirConexion();
-
-            try
-            {
-                // 1. Consulta para Pasajeros de Hoy
-                string queryPasajeros = @"
-            SELECT ISNULL(SUM(cp.CantidadAComprar), 0) 
-            FROM DetalleVenta dv
-            INNER JOIN CompraPasajes cp ON dv.IdCompraPasajes = cp.IdCompraPasajes
-            WHERE CAST(dv.Hora AS DATE) = CAST(GETDATE() AS DATE) AND dv.Estado = 'Aprobado'";
-
-                SqlCommand cmdPasajeros = new SqlCommand(queryPasajeros, cn);
-                int totalPasajeros = Convert.ToInt32(cmdPasajeros.ExecuteScalar());
-
-                // Lo mostramos en la etiqueta
-                lblPasajeros.Text = totalPasajeros.ToString();
-
-                // 2. Consulta para Recaudación de Hoy
-                string queryRecaudacion = @"
-            SELECT ISNULL(SUM(cp.TotalApagar), 0) 
-            FROM DetalleVenta dv
-            INNER JOIN CompraPasajes cp ON dv.IdCompraPasajes = cp.IdCompraPasajes
-            WHERE CAST(dv.Hora AS DATE) = CAST(GETDATE() AS DATE) AND dv.Estado = 'Aprobado'";
-
-                SqlCommand cmdRecaudacion = new SqlCommand(queryRecaudacion, cn);
-                decimal totalRecaudacion = Convert.ToDecimal(cmdRecaudacion.ExecuteScalar());
-
-                // Lo mostramos en la etiqueta con formato de dinero ($0.00)
-                lblRecaudacion.Text = "$" + totalRecaudacion.ToString("0.00");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al cargar las métricas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                conexion.CerrarConexion(cn);
-            }
-        }
-
-        private void Form2_Load(object sender, EventArgs e)
-        {
-            CargarMetricasHoy();
-        }
-
-        private void btnT_Click(object sender, EventArgs e)
-        {
-            Form5 Tran = new Form5();
-            Tran.Show(this);
-
-            this.Hide();
-        }
-
-        private void btnU_Click(object sender, EventArgs e)
-        {
-            Form6 Uni = new Form6();
-            Uni.Show(this);
-
-            this.Hide();
-        }
-
-        private void ptConductor_Click(object sender, EventArgs e)
-        {
-            Form8 Conductor = new Form8();
-            Conductor.Show(this);
-
-            this.Hide();
         }
     }
 }
