@@ -30,7 +30,7 @@ namespace AVANCE_PED_GS250179_.Servicio
 
             try
             {
-                // Agregamos el WHERE indispensable y quitamos la coma errónea antes del FROM
+                
                 string query = @"
                     SELECT 
                         IdCliente,     -- Posición 0
@@ -42,7 +42,7 @@ namespace AVANCE_PED_GS250179_.Servicio
 
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
-                    // Cambiamos @Nombre por @Correo y @contra por @Contra para que coincidan con el query anterior
+                    
                     cmd.Parameters.AddWithValue("@Correo", correo.Trim());
                     cmd.Parameters.AddWithValue("@Contra", HashearContrasena(contrasena.Trim()));
 

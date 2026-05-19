@@ -26,7 +26,7 @@ namespace AVANCE_PED_GS250179_
 
         private void btnAtras_Click(object sender, EventArgs e)
         {
-<<<<<<< Updated upstream
+
             if (this.Owner != null)
             {
                 this.Owner.Show(); // Volvemos a mostrar el Form2 original con su rol intacto
@@ -39,9 +39,6 @@ namespace AVANCE_PED_GS250179_
                 menu.Show();
                 this.Hide();
             }
-=======
-
->>>>>>> Stashed changes
         }
 
         private void Añadir_U_Click(object sender, EventArgs e)

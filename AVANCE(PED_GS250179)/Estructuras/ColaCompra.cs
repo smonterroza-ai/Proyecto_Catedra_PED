@@ -22,7 +22,7 @@ namespace AVANCE_PED_GS250179_.Estructuras
         }
     }
 
-    // 2. La Cola: Manejo manual de Front (Frente) y Rear (Final)
+    //Cola
     public class ColaCompraManual
     {
         private NodoCompra frente;
@@ -34,7 +34,7 @@ namespace AVANCE_PED_GS250179_.Estructuras
             final = null;
         }
 
-        // Encolar: Insertar al final
+        // Encolar
         public void Encolar(int id, decimal precio, string nombre)
         {
             NodoCompra nuevo = new NodoCompra(id, precio, nombre);
@@ -50,7 +50,7 @@ namespace AVANCE_PED_GS250179_.Estructuras
             }
         }
 
-        // Desencolar: Sacar del frente
+        // Desencolar
         public NodoCompra Desencolar()
         {
             if (frente == null) return null;
