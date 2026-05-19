@@ -160,5 +160,45 @@ namespace AVANCE_PED_GS250179_.Vistas
             RedondearBoton.RedondearBotones(button1, 30);
             RedondearBoton.RedondearBotones(btnRegresar, 30);
         }
+
+        private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true; // Ignora cualquier otro símbolo o número
+            }
+        }
+
+        private void txtDUI_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+                return;
+            }
+
+            // Agregar guion automáticamente después de 8 números 
+            if (txtDUI.Text.Length == 8 && e.KeyChar != (char)Keys.Back)
+            {
+                txtDUI.Text += "-";
+                txtDUI.SelectionStart = txtDUI.Text.Length;
+            }
+        }
+
+        private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+                return;
+            }
+
+            // Agregar guion automáticamente después de 4 números
+            if (txtTelefono.Text.Length == 4 && e.KeyChar != (char)Keys.Back)
+            {
+                txtTelefono.Text += "-";
+                txtTelefono.SelectionStart = txtTelefono.Text.Length;
+            }
+        }
     }
 }

@@ -22,6 +22,8 @@ namespace AVANCE_PED_GS250179_.Vistas
             InitializeComponent();
         }
 
+        bool contraseñaVisible = false;
+
         private void btnguardar_Click(object sender, EventArgs e)
         {
 
@@ -31,7 +33,6 @@ namespace AVANCE_PED_GS250179_.Vistas
         {
 
         }
-        bool contraseñaVisible = false;
 
         private void ptojo_Click(object sender, EventArgs e)
         {
@@ -180,38 +181,45 @@ namespace AVANCE_PED_GS250179_.Vistas
 
             try
             {
-                // Generamos el ID
-                string queryId = "SELECT ISNULL(MAX(IdEmpleado), 0) + 1 FROM Empleado";
-                SqlCommand cmdId = new SqlCommand(queryId, cn);
-                int nuevoIdEmpleado = Convert.ToInt32(cmdId.ExecuteScalar());
+                string queryInfo = @"
+        INSERT INTO InfoEmpleado 
+        (Nombre, DUI, FechaNacimiento, Direccion, Telefono, FechaContratacion, Correo, Usuario, Contraseña)
+        VALUES 
+        (@nombre, @dui, @fechaNac, @direccion, @telefono, @fechaContratacion, @correo, @usuario, @contrasena);
 
-                // INSERT 1: Tabla Empleado
-                string queryEmpleado = @"INSERT INTO Empleado (IdEmpleado, IdRolEmpleado) VALUES (@id, 1)";
-                SqlCommand cmdEmpleado = new SqlCommand(queryEmpleado, cn);
-                cmdEmpleado.Parameters.AddWithValue("@id", nuevoIdEmpleado);
-                cmdEmpleado.ExecuteNonQuery();
+        SELECT SCOPE_IDENTITY();";
 
-                // INSERT 2: Tabla InfoEmpleado (Aquí van todos los datos personales)
-                string queryInfo = @"INSERT INTO InfoEmpleado (IdEmpleado, Nombre, DUI, FechaNacimiento, Direccion, Telefono, FechaContratacion, Correo, Usuario, Contraseña) VALUES (@id, @nombre, @dui, @fechaNac, @direccion, @telefono, @fechaContratacion, @correo, @usuario, @contrasena)";
                 SqlCommand cmdInfo = new SqlCommand(queryInfo, cn);
-                cmdInfo.Parameters.AddWithValue("@id", nuevoIdEmpleado);
+
                 cmdInfo.Parameters.AddWithValue("@nombre", txtNombre.Text.Trim());
                 cmdInfo.Parameters.AddWithValue("@dui", txtDui.Text.Trim());
                 cmdInfo.Parameters.AddWithValue("@fechaNac", dtpNa.Value.Date);
-
-                // Como no hay Textbox de dirección en tu pantalla, mandamos un texto por defecto
                 cmdInfo.Parameters.AddWithValue("@direccion", "No especificada");
-
                 cmdInfo.Parameters.AddWithValue("@telefono", txtTel.Text.Trim());
                 cmdInfo.Parameters.AddWithValue("@fechaContratacion", dtpCon.Value.Date);
                 cmdInfo.Parameters.AddWithValue("@correo", txtCorreo.Text.Trim());
                 cmdInfo.Parameters.AddWithValue("@usuario", txtUsuario.Text.Trim());
                 cmdInfo.Parameters.AddWithValue("@contrasena", contrasenaEncriptada);
-                cmdInfo.ExecuteNonQuery();
 
-                MessageBox.Show("¡Administrador registrado exitosamente!\nAhora puedes iniciar sesión.", "Primer Uso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                int nuevoIdEmpleado = Convert.ToInt32(cmdInfo.ExecuteScalar());
 
-                // Cerramos esta pantalla y abrimos el Login
+                string queryEmpleado = @"
+        INSERT INTO Empleado (IdEmpleado, IdRolEmpleado) 
+        VALUES (@id, 1)";
+
+                SqlCommand cmdEmpleado = new SqlCommand(queryEmpleado, cn);
+                cmdEmpleado.Parameters.AddWithValue("@id", nuevoIdEmpleado);
+                cmdEmpleado.ExecuteNonQuery();
+
+                // MENSAJE
+                MessageBox.Show(
+                    "¡Administrador registrado exitosamente!\nAhora puedes iniciar sesión.",
+                    "Primer Uso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                // LOGIN
                 this.Hide();
                 Form1 login = new Form1();
                 login.Show();

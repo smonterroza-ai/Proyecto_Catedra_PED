@@ -170,7 +170,18 @@ namespace AVANCE_PED_GS250179_.Vistas
 
         private void btnRegresar_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            var menuPrincipal = Application.OpenForms.OfType<Form2>().FirstOrDefault();
+
+            if (menuPrincipal != null)
+            {
+                menuPrincipal.Show(); // Lo volvemos a mostrar
+            }
+            else if (this.Owner != null)
+            {
+                this.Owner.Show(); // Plan B, por si acaso sí tiene Owner
+            }
+
+            this.Close();
         }
     }
 }

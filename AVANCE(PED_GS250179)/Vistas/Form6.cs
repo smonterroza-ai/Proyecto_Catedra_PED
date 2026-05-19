@@ -26,7 +26,6 @@ namespace AVANCE_PED_GS250179_
 
         private void btnAtras_Click(object sender, EventArgs e)
         {
-
             if (this.Owner != null)
             {
                 this.Owner.Show(); // Volvemos a mostrar el Form2 original con su rol intacto
@@ -154,7 +153,18 @@ namespace AVANCE_PED_GS250179_
 
         private void btnRegresar_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            var menuPrincipal = Application.OpenForms.OfType<Form2>().FirstOrDefault();
+
+            if (menuPrincipal != null)
+            {
+                menuPrincipal.Show(); // Lo volvemos a mostrar
+            }
+            else if (this.Owner != null)
+            {
+                this.Owner.Show(); // Plan B, por si acaso sí tiene Owner
+            }
+
+            this.Close();
         }
 
         private void Form6_Shown(object sender, EventArgs e)

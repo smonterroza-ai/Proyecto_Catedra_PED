@@ -125,9 +125,11 @@
             // txtTelefono
             // 
             txtTelefono.Location = new Point(618, 243);
+            txtTelefono.MaxLength = 9;
             txtTelefono.Name = "txtTelefono";
             txtTelefono.Size = new Size(143, 23);
             txtTelefono.TabIndex = 54;
+            txtTelefono.KeyPress += txtTelefono_KeyPress;
             // 
             // dtpNacimiento
             // 
@@ -185,9 +187,11 @@
             // txtDUI
             // 
             txtDUI.Location = new Point(261, 243);
+            txtDUI.MaxLength = 10;
             txtDUI.Name = "txtDUI";
             txtDUI.Size = new Size(141, 23);
             txtDUI.TabIndex = 46;
+            txtDUI.KeyPress += txtDUI_KeyPress;
             // 
             // label1
             // 
@@ -207,6 +211,7 @@
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(500, 23);
             txtNombre.TabIndex = 44;
+            txtNombre.KeyPress += txtNombre_KeyPress;
             // 
             // btnRegresar
             // 

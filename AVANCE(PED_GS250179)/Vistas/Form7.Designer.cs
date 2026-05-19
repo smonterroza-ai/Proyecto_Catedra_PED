@@ -49,9 +49,11 @@
             // txtPlaca
             // 
             txtPlaca.Location = new Point(305, 186);
+            txtPlaca.MaxLength = 8;
             txtPlaca.Name = "txtPlaca";
             txtPlaca.Size = new Size(84, 23);
             txtPlaca.TabIndex = 16;
+            txtPlaca.KeyPress += txtPlaca_KeyPress;
             // 
             // label1
             // 

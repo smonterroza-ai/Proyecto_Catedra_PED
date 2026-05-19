@@ -84,6 +84,7 @@ namespace AVANCE_PED_GS250179_
 
                 Form4 frmRuta = new Form4();
                 frmRuta.Owner = this;
+                this.Hide();
 
 
                 frmRuta.ConfigurarModoEditar(rutaSeleccionada);
