@@ -22,6 +22,7 @@ namespace AVANCE_PED_GS250179_
             InitializeComponent();
             this.rolUsuarioActual = idRol;
 
+            // Si es empleado, ocultamos las opciones de Transacciones y Conductores
             if (idRol == 2)
             {
                 btnT.Visible = false;
@@ -33,6 +34,7 @@ namespace AVANCE_PED_GS250179_
         {
             CargarMetricasHoy();
 
+            // 📌 SOLO PARA EMPLEADO: Reorganizamos la interfaz
             if (rolUsuarioActual == 2)
             {
                 CentrarBotonesEmpleado();
@@ -87,11 +89,26 @@ namespace AVANCE_PED_GS250179_
 
         private void CentrarBotonesEmpleado()
         {
-            int centroFormulario = this.ClientSize.Width / 2;
-            int espacioEntreBotones = 40;
+            // 📌 TRIPLE FILTRO DE SEGURIDAD: Esto solo se ejecuta si es Empleado (idRol == 2)
+            if (rolUsuarioActual == 2)
+            {
+                int centroFormulario = this.ClientSize.Width / 2;
+                int espacioEntreBotones = 45; // Separación ideal para que se vea limpio y ordenado
 
-            btnR.Left = centroFormulario - btnR.Width - (espacioEntreBotones / 2);
-            btnU.Left = centroFormulario + (espacioEntreBotones / 2);
+                // 1. El botón central (Cliente) se posiciona exactamente en el medio del Form
+                ptCliente.Left = centroFormulario - (ptCliente.Width / 2);
+
+                // 2. El botón izquierdo (Rutas) se alinea hacia atrás tomando como base a Cliente
+                btnR.Left = ptCliente.Left - btnR.Width - espacioEntreBotones;
+
+                // 3. El botón derecho (Unidades) se alinea hacia adelante tomando como base a Cliente
+                btnU.Left = ptCliente.Right + espacioEntreBotones;
+
+                // 4. Sincronizamos la altura (Y) de los tres botones para mantener una línea horizontal perfecta
+                int alturaUnificada = ptCliente.Top;
+                btnR.Top = alturaUnificada;
+                btnU.Top = alturaUnificada;
+            }
         }
 
         private void CrearBotonEnlaceValidador()
@@ -121,11 +138,10 @@ namespace AVANCE_PED_GS250179_
             btnAbrirValidador.BringToFront();
         }
 
-        // --- Eventos de Navegación del Menú Modificados para Pasar el Rol ---
+        // --- Eventos de Navegación del Menú ---
 
         private void btnR_Click(object sender, EventArgs e)
         {
-            // 📌 PASAMOS EL ROL ACTUAL AL CONSTRUCTOR DE FORM3
             Form3 ruta = new Form3(this.rolUsuarioActual);
             ruta.Show(this);
             this.Hide();
@@ -140,7 +156,6 @@ namespace AVANCE_PED_GS250179_
 
         private void btnU_Click(object sender, EventArgs e)
         {
-            // 📌 PASAMOS EL ROL ACTUAL AL CONSTRUCTOR DE FORM6
             Form6 Uni = new Form6(this.rolUsuarioActual);
             Uni.Show(this);
             this.Hide();
@@ -170,7 +185,6 @@ namespace AVANCE_PED_GS250179_
         {
             Form13 cliente = new Form13();
             cliente.Show(this);
-            
             this.Hide();
         }
     }
