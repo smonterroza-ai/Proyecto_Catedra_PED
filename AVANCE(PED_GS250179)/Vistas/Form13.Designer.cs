@@ -43,7 +43,7 @@
             btnRegresar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnRegresar.ForeColor = SystemColors.ControlLightLight;
             btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
-            btnRegresar.Location = new Point(324, 420);
+            btnRegresar.Location = new Point(383, 446);
             btnRegresar.Name = "btnRegresar";
             btnRegresar.Size = new Size(111, 38);
             btnRegresar.TabIndex = 34;
@@ -56,17 +56,17 @@
             // 
             txtBuscar.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txtBuscar.ForeColor = SystemColors.WindowText;
-            txtBuscar.Location = new Point(656, 27);
+            txtBuscar.Location = new Point(734, 40);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.PlaceholderText = "Buscar por nombre";
-            txtBuscar.Size = new Size(214, 25);
+            txtBuscar.Size = new Size(196, 25);
             txtBuscar.TabIndex = 33;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
             // dgvClientes
             // 
             dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClientes.Location = new Point(324, 69);
+            dgvClientes.Location = new Point(383, 87);
             dgvClientes.Margin = new Padding(3, 2, 3, 2);
             dgvClientes.Name = "dgvClientes";
             dgvClientes.RowHeadersWidth = 51;
@@ -75,13 +75,13 @@
             // 
             // label6
             // 
-            label6.BackColor = Color.FromArgb(0, 0, 64);
+            label6.BackColor = Color.MidnightBlue;
             label6.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label6.ForeColor = Color.White;
             label6.ImageAlign = ContentAlignment.BottomCenter;
-            label6.Location = new Point(324, 22);
+            label6.Location = new Point(383, 40);
             label6.Name = "label6";
-            label6.Size = new Size(295, 28);
+            label6.Size = new Size(284, 28);
             label6.TabIndex = 31;
             label6.Text = "MONITOR DE CLIENTES";
             label6.TextAlign = ContentAlignment.MiddleLeft;
@@ -92,7 +92,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.fondo_transacciones;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(881, 470);
+            ClientSize = new Size(973, 496);
             Controls.Add(btnRegresar);
             Controls.Add(txtBuscar);
             Controls.Add(dgvClientes);

@@ -99,5 +99,40 @@ namespace AVANCE_PED_GS250179_.Servicio
 
             return tabla;
         }
+
+        public DataTable BuscarClientes(string texto)
+        {
+            DataTable tabla = new DataTable();
+
+            using (SqlConnection cn = conexion.AbrirConexion())
+            {
+                string query = @"
+        SELECT
+            c.IdCliente,
+            ic.Nombre,
+            ic.Apellido,
+            ic.Correo,
+            ic.Saldo
+        FROM Cliente c
+        INNER JOIN InfoCliente ic
+            ON c.IdCliente = ic.IdCliente
+        WHERE
+            ic.Nombre LIKE @texto
+            OR ic.Apellido LIKE @texto
+            OR ic.Correo LIKE @texto";
+
+                SqlDataAdapter da =
+                    new SqlDataAdapter(query, cn);
+
+                da.SelectCommand.Parameters.AddWithValue(
+                    "@texto",
+                    "%" + texto + "%"
+                );
+
+                da.Fill(tabla);
+            }
+
+            return tabla;
+        }
     }
 }
